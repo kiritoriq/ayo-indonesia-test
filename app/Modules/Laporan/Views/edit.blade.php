@@ -31,23 +31,60 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-lg-3 col-3 col-form-label">Alamat Pelapor <span class="text-danger">*</span></label>
-                            <div class="col-lg-8 col-8">
-                                <input type="text" class="form-control" id="alamat" placeholder="Masukkan alamat pelapor" name="alamat_pelapor" value="{{ $laporan->alamat_pelapor }}" required>
-                            </div>
-                        </div>
-                        <div class="form-group row">
                             <label class="col-lg-3 col-3 col-form-label">No. Telepon Pelapor <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-8">
                                 <input type="text" class="form-control" id="no_telp" placeholder="62812xxxxxxxx" name="no_telp_pelapor" value="{{ $laporan->no_telp_pelapor }}" required>
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-lg-3 col-3 col-form-label">Provinsi Pelapor <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-8">
+                                {!! getProvinsi($laporan->prov_id) !!}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-3 col-form-label">Kab / Kota Pelapor <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-8">
+                                <div id="result_kab">
+                                    <input type="hidden" class="selected_kota" value="{{ $laporan->kab_id }}">
+                                    <select name="kab_id" id="kab" placeholder="Pilih Kab / Kota" disabled class="form-control">
+                                        <option value="">Pilih Kab / Kota</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-3 col-form-label">Kecamatan Pelapor <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-8">
+                                <div id="result_kec">
+                                    <input type="hidden" class="selected_kec" value="{{ $laporan->kec_id }}">
+                                    <select name="kec_id" id="kec" placeholder="Pilih Kecamatan" disabled class="form-control">
+                                        <option value="">Pilih Kecamatan</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-3 col-form-label">Kelurahan Pelapor <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-8">
+                                <div id="result_kel">
+                                    <input type="hidden" class="selected_kel" value="{{ $laporan->kel_id }}">
+                                    <select name="kel_id" id="kel" placeholder="Pilih Kelurahan" disabled class="form-control">
+                                        <option value="">Pilih Kelurahan</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-3 col-form-label">Alamat Pelapor <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-8">
+                                <input type="text" class="form-control" id="alamat" placeholder="Masukkan alamat pelapor" name="alamat_pelapor" value="{{ $laporan->alamat_pelapor }}" required>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-lg-3 col-3 col-form-label">Isi Laporan <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-8">
-                                <textarea name="isi_laporan" id="isi_laporan" class="form-control" rows="3" required>
-                                    {!! trim($laporan->isi_laporan) !!}
-                                </textarea>
+                                <textarea name="isi_laporan" id="isi_laporan" class="form-control" rows="3" required>{!! trim($laporan->isi_laporan) !!}</textarea>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -65,7 +102,7 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 col-3 col-form-label">Asal Instansi / Faskes <span class="text-danger">*</span></label>
                                 <div class="col-lg-8 col-8">
-                                    <input type="text" class="form-control" id="asal_instansi" placeholder="Masukkan Asal Instansi / Faskes" name="asal_instansi" value="{{ $laporan->asal_instansi }}" required>
+                                    <input type="text" class="form-control" id="asal_instansi" placeholder="Masukkan Asal Instansi / Faskes" name="asal_instansi" value="{{ $laporan->asal_instansi }}">
                                 </div>
                             </div>
                         </div>
@@ -166,7 +203,7 @@
                             let no_telp = $('#no_telp').val();
                             let isi_laporan = $('#isi_laporan').val();
                             let instansi = $('#instansi').val();
-                            let asal_instansi = $('#asal_instansi').val();
+                            let asal_instansi = ($('#asal_instansi').length)?$('#asal_instansi').val():'';
                             $.ajax({
                                 url: site_url + 'laporan/edit-action',
                                 type: 'POST',
@@ -181,6 +218,10 @@
                                     isi_laporan: isi_laporan,
                                     instansi: instansi,
                                     asal_instansi: asal_instansi,
+                                    prov_id: $('#prov_id').val(),
+                                    kab_id: $('#kab_id').val(),
+                                    kec_id: $('#kec_id').val(),
+                                    kel_id: $('#kel_id').val(),
                                 },
                                 beforeSend: function() {
 
@@ -242,6 +283,49 @@
 
         $(document).ready(function() {
             SubmitForm.init();
+            $('select').select2()
+
+            $('#prov_id').change(function(e) {
+                e.preventDefault();
+                var prov_id = $(this).val()
+                $.ajax({
+                    url: site_url + 'laporan/get_kota',
+                    type: 'post',
+                    data: { 'parent_id': prov_id, 'selected': $('.selected_kota').val(), '_token': $('input[name="_token"]').val() },
+                    success: function(response) {
+                        $('#result_kab').html(response);
+                        $('.kabkota').select2();
+                        $('.kabkota').change(function(a) {
+                            a.preventDefault();
+                            var kab_id = $('#kab_id').val()
+                            $.ajax({
+                                url: site_url + 'laporan/get_kecamatan',
+                                type: 'post',
+                                data: { 'parent_id': kab_id, 'selected': $('.selected_kec').val(), '_token': $('input[name="_token"]').val() },
+                                success: function(response) {
+                                    $('#result_kec').html(response);
+                                    $('.kec').select2();
+                                    $('.kec').change(function(r) {
+                                        r.preventDefault();
+                                        var kec_id = $('#kec_id').val();
+                                        $.ajax({
+                                            url: site_url + 'laporan/get_kelurahan',
+                                            type: 'post',
+                                            data: { 'parent_id': kec_id, 'selected': $('.selected_kel').val(), '_token': $('input[name="_token"]').val() },
+                                            success: function(response) {
+                                                $('#result_kel').html(response);
+                                                $('.kel').select2();
+                                            }
+                                        })
+                                    }).trigger('change')
+                                }
+                            })
+                        }).trigger('change')
+                    }
+                })
+            }).trigger('change')
+
+            $('#asalfaskes').hide();
 
             $('#instansi').change(function(e) {
                 e.preventDefault();
@@ -252,7 +336,7 @@
                 } else {
                     $('#asalfaskes').hide();
                 }
-            })
+            }).trigger('change')
         })
     </script>
 @endsection

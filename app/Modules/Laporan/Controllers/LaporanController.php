@@ -55,6 +55,10 @@ class LaporanController extends Controller {
                 'isi_laporan' => $request->isi_laporan,
                 'instansi' => $request->instansi,
                 'asal_instansi' => ($request->asal_instansi != '')?$request->asal_instansi:'',
+                'prov_id' => $request->prov_id,
+                'kab_id' => $request->kab_id,
+                'kec_id' => $request->kec_id,
+                'kel_id' => $request->kel_id,
                 'user_id' => Auth::user()->id,
                 'role_id' => Session::get('role_id')[0],
                 'created_at' => date('Y-m-d H:i:s'),
@@ -91,6 +95,10 @@ class LaporanController extends Controller {
                 'isi_laporan' => $request->isi_laporan,
                 'instansi' => $request->instansi,
                 'asal_instansi' => ($request->asal_instansi != '')?$request->asal_instansi:'',
+                'prov_id' => $request->prov_id,
+                'kab_id' => $request->kab_id,
+                'kec_id' => $request->kec_id,
+                'kel_id' => $request->kel_id,
                 'user_id' => Auth::user()->id,
                 'role_id' => Session::get('role_id')[0],
                 'updated_at' => date('Y-m-d H:i:s'),
@@ -125,7 +133,17 @@ class LaporanController extends Controller {
         } else {
             return response()->json(['status' => 'failed', 'msg' => 'Data tidak berhasil dihapus']);
         }
+    }
 
+    public function getKota(Request $request) {
+        return getKota($request->parent_id, $request->selected);
+    }
 
+    public function getKecamatan(Request $request) {
+        return getKecamatan($request->parent_id, $request->selected);
+    }
+
+    public function getKelurahan(Request $request) {
+        return getKelurahan($request->parent_id, $request->selected);
     }
 }

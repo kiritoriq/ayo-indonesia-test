@@ -178,7 +178,7 @@ var KTLogin = function () {
                 _reloadCaptcha();
                 $("#btnLogin").prop("disabled", false);
               } else {
-                toastr.options.closeDuration = 1000;
+                toastr.options.closeDuration = 500;
                 toastr.options.onHidden = function() { window.location.href = site_url + 'dashboard'; }
                 toastr.success("Yay, " + data.msg);
               }

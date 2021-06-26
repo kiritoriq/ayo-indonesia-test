@@ -99,12 +99,6 @@
                                             <a href="#" class="btn btn-sm btn-clean btn-icon" data-toggle="tooltip" data-theme="dark" title="Ubah USer">
                                                 <span class="la la-2x la-edit text-primary"></span>
                                             </a>
-                                            <a href="#" class="btn btn-sm btn-clean btn-icon aktif-user" data-status="{{ ($user->status == 1 ? "Non Aktif" : "Aktif") }}" data-user="{{ $user->fullname }}" data-toggle="tooltip" data-theme="dark" title="Nonaktifkan USer">
-                                                <span class="la la-2x la-eye-slash text-warning"></span>
-                                            </a>
-                                            <a href="#" class="btn btn-sm btn-clean btn-icon" data-toggle="tooltip" data-theme="dark" title="Login sebagai {{ $user->fullname }}">
-                                                <span class="la la-2x la-sign-in text-success"></span>
-                                            </a>
                                             <a href="#" class="btn btn-sm btn-clean btn-icon hapus-user" data-user="{{ $user->fullname }}" data-toggle="tooltip" data-theme="dark" title="Hapus User">
                                                 <span class="la la-2x la-trash text-danger"></span>
                                             </a>
