@@ -88,6 +88,12 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-lg-3 col-3 col-form-label">Solusi</label>
+                            <div class="col-lg-8 col-8">
+                                <textarea name="solusi" id="solusi" class="form-control" rows="3" required>{!! trim($laporan->solusi) !!}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-lg-3 col-3 col-form-label">Instansi <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-8">
                                 <select name="instansi" class="form-control" id="instansi" required>
@@ -202,6 +208,7 @@
                             let alamat = $('#alamat').val();
                             let no_telp = $('#no_telp').val();
                             let isi_laporan = $('#isi_laporan').val();
+                            let solusi = $('#solusi').val();
                             let instansi = $('#instansi').val();
                             let asal_instansi = ($('#asal_instansi').length)?$('#asal_instansi').val():'';
                             $.ajax({
@@ -217,6 +224,7 @@
                                     no_telp_pelapor: no_telp,
                                     isi_laporan: isi_laporan,
                                     instansi: instansi,
+                                    solusi: solusi,
                                     asal_instansi: asal_instansi,
                                     prov_id: $('#prov_id').val(),
                                     kab_id: $('#kab_id').val(),
