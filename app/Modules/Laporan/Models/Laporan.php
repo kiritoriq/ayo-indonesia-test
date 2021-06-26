@@ -19,6 +19,7 @@ class Laporan extends Model {
         'user_id',
         'role_id',
         'created_at',
+        'solusi',
         'updated_at',
         'deleted_at'
     ];
