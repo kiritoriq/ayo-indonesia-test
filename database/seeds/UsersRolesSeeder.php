@@ -13,8 +13,8 @@ class UsersRolesSeeder extends Seeder
     public function run()
     {
         $users_roles = [
-            [1, 1],
-            [1, 2],
+            [2, 1],
+            [2, 2],
             [7, 2],
             [8, 2],
             [9, 2],
