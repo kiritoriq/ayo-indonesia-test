@@ -54,7 +54,7 @@
                                         <th>No. Telp Pelapor</th>
                                         <th>Alamat Pelapor</th>
                                         <th>Isi Laporan</th>
-                                        <th>Id Petugas</th>
+                                        <th>Petugas Input</th>
                                         <th>Tanggal Input</th>
                                         <th width="10%" class="text-center">Aksi</th>
                                     </tr>
@@ -66,7 +66,7 @@
                                         <th>No. Telp Pelapor</th>
                                         <th>Alamat Pelapor</th>
                                         <th>Isi Laporan</th>
-                                        <th>Id Petugas</th>
+                                        <th>Petugas Input</th>
                                         <th>Tanggal Input</th>
                                         <th width="10%" class="text-center">Aksi</th>
                                     </tr>
@@ -86,10 +86,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <strong>{!! $laporan->petugas[0]->username !!}</strong>
-                                            <div>
-                                                <small>Id Petugas: {!! $laporan->user_id !!}</small>
-                                            </div>
+                                            {!! $laporan->petugas[0]->username !!}
                                         </td>
                                         <td>{!! formatTanggalPanjang(date('Y-m-d', strtotime($laporan->created_at))) !!}, Pukul {!! date('H:i', strtotime($laporan->created_at)) !!}</td>
                                         <td width="10%" class="text-center">

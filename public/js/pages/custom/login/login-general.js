@@ -178,9 +178,16 @@ var KTLogin = function () {
                 _reloadCaptcha();
                 $("#btnLogin").prop("disabled", false);
               } else {
-                toastr.options.closeDuration = 500;
-                toastr.options.onHidden = function() { window.location.href = site_url + 'dashboard'; }
-                toastr.success("Yay, " + data.msg);
+                Swal.fire({
+                  toast: true,
+                  position: 'top-end',
+                  showConfirmButton: false,
+                  icon: 'success',
+                  title: 'Yay, ' + data.msg,
+                  timer: 1500
+                }).then(() => {
+                  window.location.href = site_url + 'dashboard';
+                })
               }
             }, error: function (x, t, m) {
 

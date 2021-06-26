@@ -3,7 +3,7 @@
 @section('content')
 <div class="d-flex flex-column flex-root">
     <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
-        <div class="login-aside d-flex flex-column flex-row-auto" style="background-color: #E8F4FF;">
+        <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: linear-gradient(white, #fcf26a, #d72126, #0d2e37);">
             <div class="d-flex flex-column-auto flex-column mt-15">
                 <a href="#" class="text-center mb-10">
                     <img src="{{ asset('media/logos/logo-jateng2.png') }}" class="max-h-90px" alt="" />
@@ -13,7 +13,7 @@
 					<span class="text-primary">Government Resources Management System</span>
 				</h3>
             </div>
-            <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-bottom bgi-position-x-center" style="background-image: url({{ asset('media/bg/login-frame.png') }}); background-size: contain"></div>
+            <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-bottom bgi-position-x-center" style="background-image: url({{ asset('media/bg/Master-01.png') }}); background-size: 63vh"></div>
         </div>
         <div class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
             <div class="d-flex flex-column-fluid flex-center">
