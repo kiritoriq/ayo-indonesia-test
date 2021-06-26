@@ -26,7 +26,7 @@ class LaporanController extends Controller {
 
     public function index()
     {
-        $laporans = $this->model->with(['petugas'])->orderBy('created_at', 'desc')->get();
+        $laporans = $this->model->with(['petugas'])->where('deleted_at', '=', null)->orderBy('created_at', 'desc')->get();
         // dd($laporans);
         return view('Laporan::index', ['laporans' => $laporans]);
     }
@@ -54,6 +54,7 @@ class LaporanController extends Controller {
                 'no_telp_pelapor' => $request->no_telp_pelapor,
                 'isi_laporan' => $request->isi_laporan,
                 'instansi' => $request->instansi,
+                'asal_instansi' => ($request->asal_instansi != '')?$request->asal_instansi:'',
                 'user_id' => Auth::user()->id,
                 'role_id' => Session::get('role_id')[0],
                 'created_at' => date('Y-m-d H:i:s'),
@@ -89,6 +90,7 @@ class LaporanController extends Controller {
                 'no_telp_pelapor' => $request->no_telp_pelapor,
                 'isi_laporan' => $request->isi_laporan,
                 'instansi' => $request->instansi,
+                'asal_instansi' => ($request->asal_instansi != '')?$request->asal_instansi:'',
                 'user_id' => Auth::user()->id,
                 'role_id' => Session::get('role_id')[0],
                 'updated_at' => date('Y-m-d H:i:s'),
@@ -104,5 +106,26 @@ class LaporanController extends Controller {
     public function getDetails($id) {
         $laporan = $this->model->where('id', '=', $id)->first();
         return view('Laporan::details', ['laporan' => $laporan]);
+    }
+
+    public function postDelete($id) {
+        $data = $this->model->find($id);
+        $insert_log = DB::table('delete_log')->insert([
+            'laporan_id' => $id,
+            'user_id' => Auth::user()->id,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        if($insert_log) {
+            $update = $this->model->where('id', '=', $id)->update(['deleted_at' => date('Y-m-d H:i:s')]);
+            if($update) {
+                return response()->json(['status' => 'success', 'msg' => 'Data Laporan berhasil dihapus']);
+            }
+        } else {
+            return response()->json(['status' => 'failed', 'msg' => 'Data tidak berhasil dihapus']);
+        }
+
+
     }
 }

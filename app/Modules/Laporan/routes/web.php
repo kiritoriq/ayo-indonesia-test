@@ -11,4 +11,6 @@ Route::group(['module' => 'Laporan', 'middleware' => ['web','prevent-back-histor
     Route::post('laporan/edit-action', 'LaporanController@postEdit')->name('laporan.edit.action');
 
     Route::get('laporan/details/{id}', 'LaporanController@getDetails')->name('laporan.details');
+
+    Route::post('laporan/delete/{id}', 'LaporanController@postDelete')->name('laporan.delete');
 });

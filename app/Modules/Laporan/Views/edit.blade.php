@@ -46,7 +46,7 @@
                             <label class="col-lg-3 col-3 col-form-label">Isi Laporan <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-8">
                                 <textarea name="isi_laporan" id="isi_laporan" class="form-control" rows="3" required>
-                                    {{ $laporan->isi_laporan }}
+                                    {!! trim($laporan->isi_laporan) !!}
                                 </textarea>
                             </div>
                         </div>
@@ -59,6 +59,14 @@
                                     <option value="2" {{ ($laporan->instansi==2)?'selected':'' }}>Faskes</option>
                                 </select>
                                 {{-- <input type="text" class="form-control border-primary" id="nama" placeholder="Masukkan nama kelompok" name="nama"> --}}
+                            </div>
+                        </div>
+                        <div id="asalfaskes">
+                            <div class="form-group row">
+                                <label class="col-lg-3 col-3 col-form-label">Asal Instansi / Faskes <span class="text-danger">*</span></label>
+                                <div class="col-lg-8 col-8">
+                                    <input type="text" class="form-control" id="asal_instansi" placeholder="Masukkan Asal Instansi / Faskes" name="asal_instansi" value="{{ $laporan->asal_instansi }}" required>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -158,6 +166,7 @@
                             let no_telp = $('#no_telp').val();
                             let isi_laporan = $('#isi_laporan').val();
                             let instansi = $('#instansi').val();
+                            let asal_instansi = $('#asal_instansi').val();
                             $.ajax({
                                 url: site_url + 'laporan/edit-action',
                                 type: 'POST',
@@ -171,6 +180,7 @@
                                     no_telp_pelapor: no_telp,
                                     isi_laporan: isi_laporan,
                                     instansi: instansi,
+                                    asal_instansi: asal_instansi,
                                 },
                                 beforeSend: function() {
 
@@ -232,6 +242,17 @@
 
         $(document).ready(function() {
             SubmitForm.init();
+
+            $('#instansi').change(function(e) {
+                e.preventDefault();
+                var val = $(this).val()
+                console.log(val);
+                if(val == '2') {
+                    $('#asalfaskes').show();
+                } else {
+                    $('#asalfaskes').hide();
+                }
+            })
         })
     </script>
 @endsection

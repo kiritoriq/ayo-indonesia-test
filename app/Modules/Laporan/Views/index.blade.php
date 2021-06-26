@@ -30,7 +30,7 @@
                     <div class="card-body">
                         <div class="form-group row fv-plugins-icon-container">
                             <div class="col-lg-10 col-10">
-                                <input type="text" id="cari-nama" class="form-control" placeholder="Cari laporan">
+                                <input type="text" id="cari-nama" class="form-control" placeholder="Cari laporan" name="nama">
                             </div>
                             <div class="col-lg-2 col-2">
                                 <div class="btn-group btn-group-justified btn-group-xs" role="group" aria-label="Large button group">
@@ -112,7 +112,7 @@
                                                 </svg></span>
                                             </a>
                                             @if(array_intersect(Session::get('role_id'), [1]))
-                                                <button type="button" id="btnDelete" data-id="{!! $laporan->id !!}" data-href="" class="btn btn-delete btn-sm btn-default btn-text-danger btn-hover-primary btn-icon" data-toggle="tooltip" data-theme="dark" title="Hapus Laporan">
+                                                <button type="button" id="btnDelete" data-id="{!! $laporan->id !!}" data-href="{{ route('laporan.delete', $laporan->id) }}" class="btn btn-delete btn-sm btn-default btn-text-danger btn-hover-primary btn-icon" data-toggle="tooltip" data-theme="dark" title="Hapus Laporan">
                                                     <span class="svg-icon svg-icon-danger"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                             <rect x="0" y="0" width="24" height="24"/>
@@ -169,19 +169,71 @@
 
     {{-- page scripts --}}
     <script type="text/javascript">
+        const dataControl = function(){
+            const deleteUser = function deleteUser(param){
+                $('#table-instansi tbody').on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+                let id = $(this).attr('data-id');
+                let urls = $(this).attr("data-href");
 
-        $('.detail').click(function(e) {
-            e.preventDefault();
-            var id = $(this).attr('data-id');
-            $.ajax({
-                url: site_url + "laporan/details/"+id,
-                type: 'get',
-                success: function(response) {
-                    $('#exampleModal .modal-body').html(response);
-                    $('#exampleModal').modal('show');
-                } 
-            })
-        })
+                Swal.fire({
+                    title: `Yakin hapus data ?`,
+                    text: `Data yang dihapus tidak dapat dikembalikan.`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes!'
+                }).then((result) => {
+                    if (result.value) {
+                        let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                        $.ajax({
+                            url: urls,
+                            type: 'POST',
+                            dataType: "JSON",
+                            timeout: 10000,
+                            data: {
+                                _token: CSRF_TOKEN,
+                                id: id
+                            },
+                            beforeSend: function () {
+
+                            },
+                            success: function (data) {
+                                if (data.status == "failed") {
+                                    Swal.fire({
+                                        title: `Terjadi Kesalahan!`,
+                                        text: data.msg,
+                                        icon: 'error',
+                                        showConfirmButtonn: true,
+                                        confirmButtonText: 'Ok' 
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        title: `Data Berhasil Dihapus`,
+                                        icon: 'success',
+                                        showConfirmButtonn: true,
+                                        confirmButtonText: 'Ok' 
+                                    }).then(() => {
+                                        window.location.href = "{{ route('laporan.index') }}"
+                                    })
+                                }
+                            },
+                            error: function (x, t, m) {
+
+                            }
+                        });
+                    }
+                })
+                })
+            }
+
+            return {
+                init: function init() {
+                    deleteUser();
+                }
+            };
+        }();
 
         const KTDatatablesBasicBasic = function () {
             const dataTableInit = function dataTableInit() {
@@ -222,7 +274,19 @@
         }();
         $(document).ready(function() {
             KTDatatablesBasicBasic.init();
-            // dataControl.init();
+            dataControl.init();
+            $('.detail').click(function(e) {
+            e.preventDefault();
+            var id = $(this).attr('data-id');
+            $.ajax({
+                url: site_url + "laporan/details/"+id,
+                type: 'get',
+                success: function(response) {
+                    $('#exampleModal .modal-body').html(response);
+                    $('#exampleModal').modal('show');
+                } 
+            })
+        })
         })
     </script>
 @endsection

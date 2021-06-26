@@ -1,5 +1,5 @@
 @extends('layout.default')
-
+@section('title', 'Dashboard')
 @section('content')
 
 <div class="d-flex flex-column-fluid">
@@ -16,7 +16,7 @@
                             </g>
                         </svg><!--end::Svg Icon--></span>
                     </div>
-                    <div class="alert-text">Selamat datang di Aplikasi Pencatatan Laporan Call Center COVID 19 Provinsi Jawa Tengah.</div>
+                    <div class="alert-text">Selamat datang di Aplikasi Hotline Corona Jateng.</div>
                     <div class="alert-close">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"><i class="ki ki-close"></i></span>

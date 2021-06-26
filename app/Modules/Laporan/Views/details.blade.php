@@ -23,6 +23,14 @@
                             {{ ($laporan->instansi==1)?'Umum':'Faskes' }}
                         </td>
                     </tr>
+                    @if($laporan->instansi==2)
+                    <tr>
+                        <td width="30%">Asal Instansi</td>
+                        <td>
+                            {{ $laporan->asal_instansi }}
+                        </td>
+                    </tr>
+                    @endif
                     <tr>
                         <td width="30%">Petugas Input</td>
                         <td>
