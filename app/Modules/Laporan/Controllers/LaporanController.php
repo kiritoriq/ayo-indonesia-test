@@ -36,7 +36,6 @@ class LaporanController extends Controller {
     }
 
     public function postCreate(Request $request) {
-        // dd($request);
         $validator = Validator::make($request->all(), [
             'nama_pelapor' => 'required',
             'alamat_pelapor' => 'required',

@@ -227,11 +227,10 @@
                                     kel_id: $('#kel_id').val(),
                                 },
                                 beforeSend: function() {
-
+                                    
                                 },
                                 success: function(response) {
-                                    // var response = parseJSON(res);
-                                    console.log(response);
+                                    // console.log(response);
                                     if(response.status == 'failed') {
                                         Swal.fire({
                                             title: 'Gagal Simpan',
