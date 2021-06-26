@@ -36,7 +36,6 @@ class LaporanController extends Controller {
     }
 
     public function postCreate(Request $request) {
-        // dd($request);
         $validator = Validator::make($request->all(), [
             'nama_pelapor' => 'required',
             'alamat_pelapor' => 'required',
@@ -59,6 +58,7 @@ class LaporanController extends Controller {
                 'kab_id' => $request->kab_id,
                 'kec_id' => $request->kec_id,
                 'kel_id' => $request->kel_id,
+                'solusi' => $request->solusi,
                 'user_id' => Auth::user()->id,
                 'role_id' => Session::get('role_id')[0],
                 'created_at' => date('Y-m-d H:i:s'),
@@ -95,11 +95,12 @@ class LaporanController extends Controller {
                 'isi_laporan' => $request->isi_laporan,
                 'instansi' => $request->instansi,
                 'asal_instansi' => ($request->asal_instansi != '')?$request->asal_instansi:'',
-                'prov_id' => $request->prov_id,
-                'kab_id' => $request->kab_id,
-                'kec_id' => $request->kec_id,
-                'kel_id' => $request->kel_id,
+                // 'prov_id' => $request->prov_id,
+                // 'kab_id' => $request->kab_id,
+                // 'kec_id' => $request->kec_id,
+                // 'kel_id' => $request->kel_id,
                 'user_id' => Auth::user()->id,
+                'solusi' => $request->solusi,
                 'role_id' => Session::get('role_id')[0],
                 'updated_at' => date('Y-m-d H:i:s'),
             ]);

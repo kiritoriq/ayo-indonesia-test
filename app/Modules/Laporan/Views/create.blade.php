@@ -52,7 +52,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-lg-3 col-3 col-form-label">Kecamatan Pelapor <span class="text-danger">*</span></label>
+                            <label class="col-lg-3 col-3 col-form-label">Kecamatan Pelapor</label>
                             <div class="col-lg-8 col-8">
                                 <div id="result_kec">
                                     <select name="kec_id" id="kec" placeholder="Pilih Kecamatan" disabled class="form-control">
@@ -62,7 +62,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-lg-3 col-3 col-form-label">Kelurahan Pelapor <span class="text-danger">*</span></label>
+                            <label class="col-lg-3 col-3 col-form-label">Kelurahan Pelapor</label>
                             <div class="col-lg-8 col-8">
                                 <div id="result_kel">
                                     <select name="kel_id" id="kel" placeholder="Pilih Kelurahan" disabled class="form-control">
@@ -72,7 +72,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-lg-3 col-3 col-form-label">Alamat Pelapor <span class="text-danger">*</span></label>
+                            <label class="col-lg-3 col-3 col-form-label">Alamat Pelapor</label>
                             <div class="col-lg-8 col-8">
                                 <input type="text" class="form-control" id="alamat" placeholder="Detail alamat pelapor (gang, jalan, nomor rumah, dsb)" name="alamat_pelapor" required>
                             </div>
@@ -81,6 +81,12 @@
                             <label class="col-lg-3 col-3 col-form-label">Isi Laporan <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-8">
                                 <textarea name="isi_laporan" id="isi_laporan" class="form-control" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-3 col-3 col-form-label">Solusi</label>
+                            <div class="col-lg-8 col-8">
+                                <textarea name="solusi" id="solusi" class="form-control" rows="3"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -204,6 +210,7 @@
                             let alamat = $('#alamat').val();
                             let no_telp = $('#no_telp').val();
                             let isi_laporan = $('#isi_laporan').val();
+                            let solusi = $('#solusi').val();
                             let instansi = $('#instansi').val();
                             let asal_instansi = ($('#asal_instansi').length)?$('#asal_instansi').val():'';
                             $.ajax({
@@ -218,6 +225,7 @@
                                     no_telp_pelapor: no_telp,
                                     isi_laporan: isi_laporan,
                                     instansi: instansi,
+                                    solusi: solusi,
                                     asal_instansi: asal_instansi,
                                     prov_id: $('#prov_id').val(),
                                     kab_id: $('#kab_id').val(),
@@ -225,11 +233,10 @@
                                     kel_id: $('#kel_id').val(),
                                 },
                                 beforeSend: function() {
-
+                                    
                                 },
                                 success: function(response) {
-                                    // var response = parseJSON(res);
-                                    console.log(response);
+                                    // console.log(response);
                                     if(response.status == 'failed') {
                                         Swal.fire({
                                             title: 'Gagal Simpan',

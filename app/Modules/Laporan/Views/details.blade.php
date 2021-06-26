@@ -18,6 +18,12 @@
                         </td>
                     </tr>
                     <tr>
+                        <td width="30%">Solusi</td>
+                        <td>
+                            {{ $laporan->solusi }}
+                        </td>
+                    </tr>
+                    <tr>
                         <td width="30%">Jenis Pelapor</td>
                         <td>
                             {{ ($laporan->instansi==1)?'Umum':'Faskes' }}
