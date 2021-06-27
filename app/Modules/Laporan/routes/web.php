@@ -13,6 +13,7 @@ Route::group(['module' => 'Laporan', 'middleware' => ['web','prevent-back-histor
     Route::get('laporan/add-pasien', 'LaporanController@add_pasien')->name('laporan.add-pasien');
     Route::post('laporan/add-pasien-action', 'LaporanController@add_pasien_action')->name('laporan.add-pasien-action');
     Route::get('laporan/add-nik', 'LaporanController@add_nik')->name('laporan.add-nik');
+    Route::post('laporan/hapus-pasien', 'LaporanController@hapus_pasien')->name('laporan.add-hapus-pasien');
 
     Route::post('laporan/get_kota', 'LaporanController@getKota')->name('get-kota');
     Route::post('laporan/get_kecamatan', 'LaporanController@getKecamatan')->name('get-kecamatan');

@@ -146,22 +146,67 @@ class LaporanController extends Controller {
         if($validator->fails()) {
             return response()->json(['status' => 'validate', 'error' => ucwords(implode(', ', str_replace('field is required.', 'Tidak Boleh Kosong', str_replace('The ', '', $validator->errors()->all()))))]);
         } else {
-            $update = Laporan::where('id', '=', $request->id)->update([
-                'nama_pelapor' => $request->nama_pelapor,
-                'alamat_pelapor' => $request->alamat_pelapor,
-                'no_telp_pelapor' => $request->no_telp_pelapor,
-                'isi_laporan' => $request->isi_laporan,
-                'instansi' => $request->instansi,
-                'asal_instansi' => ($request->asal_instansi != '')?$request->asal_instansi:'',
-                'prov_id' => $request->prov_id,
-                'kab_id' => $request->kab_id,
-                'kec_id' => $request->kec_id,
-                'kel_id' => $request->kel_id,
-                'user_id' => Auth::user()->id,
-                'solusi' => $request->solusi,
-                'role_id' => Session::get('role_id')[0],
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
+
+            $update = Laporan::find($request->id);
+            $update->nama_pelapor = $request->nama_pelapor;
+            $update->alamat_pelapor = $request->alamat_pelapor;
+            $update->no_telp_pelapor = $request->no_telp_pelapor;
+            $update->isi_laporan = $request->isi_laporan;
+            $update->instansi = $request->instansi;
+            $update->asal_instansi = ($request->asal_instansi != '')?$request->asal_instansi:'';
+            $update->prov_id = $request->prov_id;
+            $update->kab_id = $request->kab_id;
+            $update->kec_id = $request->kec_id;
+            $update->kel_id = $request->kel_id;
+            $update->user_id = Auth::user()->id;
+            $update->solusi = $request->solusi;
+            $update->role_id = Session::get('role_id')[0];
+            $update->updated_at = date('Y-m-d H:i:s');
+            $update->save();
+
+            if (isset($request->nik_pasien)) {
+                $_pasien = [];
+                foreach($request->nik_pasien as $key => $item) {
+                    $_pasien[] = (object)[
+                        'nik_pasien' => $item,
+                        'nama_lengkap_pasien' => ($request->nama_lengkap_pasien[$key] ? $request->nama_lengkap_pasien[$key] : 0),
+                        'prov_id_pasien' => ($request->prov_id_pasien[$key] ? $request->prov_id_pasien[$key] : 0),
+                        'kab_id_pasien' => ($request->kab_id_pasien[$key] ? $request->kab_id_pasien[$key] : 0),
+                        'kec_id_pasien' => ($request->kec_id_pasien[$key] ? $request->kec_id_pasien[$key] : 0),
+                        'kel_id_pasien' => ($request->kel_id_pasien[$key] ? $request->kel_id_pasien[$key] : 0),
+                        'alamat_pasien' => ($request->alamat_pasien[$key] ? $request->alamat_pasien[$key] : 0),
+                        'tgl_lahir_pasien' => ($request->tgl_lahir_pasien[$key] ? $request->tgl_lahir_pasien[$key] : 0),
+                        'golongan_darah_pasien' => ($request->golongan_darah_pasien[$key] ? $request->golongan_darah_pasien[$key] : 0),
+                        'f' => ($request->f[$key] ? $request->f[$key] : 0),
+                    ];
+                }
+                
+                foreach($_pasien as $items) {
+                    $chk = DB::select("SELECT * FROM laporan_pasien WHERE nik = '$items->nik_pasien' AND laporan_id = $request->id");
+                    if (!$chk) {
+                        $laporan_pasien = new LaporanPasien;
+                        $laporan_pasien->laporan_id = $request->id;
+                        $laporan_pasien->nama_lengkap = $items->nama_lengkap_pasien;
+                        if ($items->f=='f-api') {
+                            $laporan_pasien->prov_id = getAreaFromKdc($items->prov_id_pasien)[0]->id;
+                            $laporan_pasien->kab_id = getAreaFromKdc($items->kab_id_pasien)[0]->id;
+                            $laporan_pasien->kec_id = getAreaFromKdc($items->kec_id_pasien)[0]->id;
+                            $laporan_pasien->kel_id = getAreaFromKdc($items->kel_id_pasien)[0]->id;
+                        } else {
+                            $laporan_pasien->prov_id = $items->prov_id_pasien;
+                            $laporan_pasien->kab_id = $items->kab_id_pasien;
+                            $laporan_pasien->kec_id = $items->kec_id_pasien;
+                            $laporan_pasien->kel_id = $items->kel_id_pasien;
+                        }
+                        $laporan_pasien->alamat = $items->alamat_pasien;
+                        $laporan_pasien->tgl_lahir = (isset(explode(', ',$items->tgl_lahir_pasien)[1]) ? explode(', ',$items->tgl_lahir_pasien)[1] : $items->tgl_lahir_pasien);
+                        $laporan_pasien->golongan_darah = $items->golongan_darah_pasien;
+                        $laporan_pasien->nik = $items->nik_pasien;
+                        $laporan_pasien->save();
+                    }
+                }
+            }
+
             if($update) {
                 return response()->json(['status' => 'success', 'msg' => 'Laporan telah berhasil disimpan!']);
             } else {
@@ -253,4 +298,12 @@ class LaporanController extends Controller {
             return (json_encode($check));
         }
     }
+
+    public function hapus_pasien(Request $request)
+    {
+        $data = LaporanPasien::find($request->id);
+        $data->delete();
+        return response()->json(['status' => 'success', 'msg' => 'Data Pasien berhasil dihapus']);
+    }
+
 }

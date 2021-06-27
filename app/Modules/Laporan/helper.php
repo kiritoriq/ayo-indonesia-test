@@ -72,3 +72,8 @@ function getAreaFromKdc($kdc) {
     $data = DB::select("SELECT * FROM area WHERE kdc = $kdc");
     return $data;
 }
+
+function getEditPasien($laporan_id) {
+    $data = DB::select("SELECT * FROM laporan_pasien WHERE laporan_id = $laporan_id");
+    return $data;
+}
