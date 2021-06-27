@@ -108,12 +108,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-3 col-form-label">Solusi <span class="text-danger">*</span></label>
-                            <div class="col-lg-8 col-8">
-                                <textarea name="solusi" id="solusi" class="form-control" rows="3" required></textarea>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
