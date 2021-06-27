@@ -60,3 +60,15 @@ function getKelurahan($parent_id="", $isSel="") {
     $html.= "</select>";
     return $html;
 }
+
+function print_pre($array) {
+    echo '<pre>';
+    print_r($array);
+    echo '</pre>';
+    return $array;
+}
+
+function getAreaFromKdc($kdc) {
+    $data = DB::select("SELECT * FROM area WHERE kdc = $kdc");
+    return $data;
+}

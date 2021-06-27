@@ -10,6 +10,9 @@ Route::group(['module' => 'Laporan', 'middleware' => ['web','prevent-back-histor
     Route::post('laporan/edit-action', 'LaporanController@postEdit')->name('laporan.edit.action');
     Route::get('laporan/details/{id}', 'LaporanController@getDetails')->name('laporan.details');
     Route::post('laporan/delete/{id}', 'LaporanController@postDelete')->name('laporan.delete');
+    Route::get('laporan/add-pasien', 'LaporanController@add_pasien')->name('laporan.add-pasien');
+    Route::post('laporan/add-pasien-action', 'LaporanController@add_pasien_action')->name('laporan.add-pasien-action');
+    Route::get('laporan/add-nik', 'LaporanController@add_nik')->name('laporan.add-nik');
 
     Route::post('laporan/get_kota', 'LaporanController@getKota')->name('get-kota');
     Route::post('laporan/get_kecamatan', 'LaporanController@getKecamatan')->name('get-kecamatan');

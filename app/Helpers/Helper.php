@@ -411,4 +411,49 @@ class Helper
 
 		return $resp;
 	}
+
+    public static function getCapil()
+    {
+        $data = array(
+            'nik'       => $nik,
+            'user_id'   => $userId,
+            'password'  => $password,
+            'ip_user'   => $ip
+        );
+
+        $data_string = json_encode($data);
+
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-type: application/json',
+                'accept: application/json'
+            )
+        );
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15); //timeout in seconds
+
+        $output = curl_exec($ch);
+        $result = $output;
+        if($output == false or $output != 0){
+            $result = json_encode($output);
+        }
+        DB::table('api_capil_log')->insert([
+            'id'         => Str::uuid()->toString(),
+            'nik'        => $nik,
+            'result'     => $result,
+            'created_at' => now()
+        ]);
+        curl_close($ch);
+        if($output == false) {
+            return 'Api Capil Sedang Bermasalah Mohon dicoba kembali 5-10 menit lagi !';
+        }
+        return $output;
+    }
+
 }
