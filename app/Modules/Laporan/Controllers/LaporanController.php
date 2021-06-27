@@ -3,8 +3,10 @@
 namespace App\Modules\Laporan\Controllers;
 
 use Illuminate\Http\Request;
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Modules\Laporan\Models\Laporan;
+use App\Modules\Laporan\Models\LaporanPasien;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -35,7 +37,11 @@ class LaporanController extends Controller {
         return view('Laporan::create');
     }
 
-    public function postCreate(Request $request) {
+    public function postCreate(Request $request) 
+    {
+
+        // print_pre($request->all());
+        // exit;
         $validator = Validator::make($request->all(), [
             'nama_pelapor' => 'required',
             'alamat_pelapor' => 'required',
@@ -47,22 +53,66 @@ class LaporanController extends Controller {
         if($validator->fails()) {
             return response()->json(['status' => 'validate', 'error' => ucwords(implode(', ', str_replace('field is required.', 'Tidak Boleh Kosong', str_replace('The ', '', $validator->errors()->all()))))]);
         } else {
-            $create = Laporan::create([
-                'nama_pelapor' => $request->nama_pelapor,
-                'alamat_pelapor' => $request->alamat_pelapor,
-                'no_telp_pelapor' => $request->no_telp_pelapor,
-                'isi_laporan' => $request->isi_laporan,
-                'instansi' => $request->instansi,
-                'asal_instansi' => ($request->asal_instansi != '')?$request->asal_instansi:'',
-                'prov_id' => $request->prov_id,
-                'kab_id' => $request->kab_id,
-                'kec_id' => $request->kec_id,
-                'kel_id' => $request->kel_id,
-                'solusi' => $request->solusi,
-                'user_id' => Auth::user()->id,
-                'role_id' => Session::get('role_id')[0],
-                'created_at' => date('Y-m-d H:i:s'),
-            ]);
+
+            $create = new Laporan;
+            $create->nama_pelapor = $request->nama_pelapor;
+            $create->alamat_pelapor = $request->alamat_pelapor;
+            $create->no_telp_pelapor = $request->no_telp_pelapor;
+            $create->isi_laporan = $request->isi_laporan;
+            $create->instansi = $request->instansi;
+            $create->asal_instansi = ($request->asal_instansi != '')?$request->asal_instansi:'';
+            $create->prov_id = $request->prov_id;
+            $create->kab_id = $request->kab_id;
+            $create->kec_id = $request->kec_id;
+            $create->kel_id = $request->kel_id;
+            $create->solusi = $request->solusi;
+            $create->user_id = Auth::user()->id;
+            $create->role_id = Session::get('role_id')[0];
+            $create->created_at = date('Y-m-d H:i:s');
+            $create->save();
+
+            if (isset($request->nik_pasien)) {
+                $_pasien = [];
+                foreach($request->nik_pasien as $key => $item) {
+                    $_pasien[] = (object)[
+                        'nik_pasien' => $item,
+                        'nama_lengkap_pasien' => ($request->nama_lengkap_pasien[$key] ? $request->nama_lengkap_pasien[$key] : 0),
+                        'prov_id_pasien' => ($request->prov_id_pasien[$key] ? $request->prov_id_pasien[$key] : 0),
+                        'kab_id_pasien' => ($request->kab_id_pasien[$key] ? $request->kab_id_pasien[$key] : 0),
+                        'kec_id_pasien' => ($request->kec_id_pasien[$key] ? $request->kec_id_pasien[$key] : 0),
+                        'kel_id_pasien' => ($request->kel_id_pasien[$key] ? $request->kel_id_pasien[$key] : 0),
+                        'alamat_pasien' => ($request->alamat_pasien[$key] ? $request->alamat_pasien[$key] : 0),
+                        'tgl_lahir_pasien' => ($request->tgl_lahir_pasien[$key] ? $request->tgl_lahir_pasien[$key] : 0),
+                        'golongan_darah_pasien' => ($request->golongan_darah_pasien[$key] ? $request->golongan_darah_pasien[$key] : 0),
+                        'f' => ($request->f[$key] ? $request->f[$key] : 0),
+                    ];
+                }
+                
+                foreach($_pasien as $items) {
+                    $laporan_pasien = new LaporanPasien;
+                    $laporan_pasien->laporan_id = $create->id;
+                    $laporan_pasien->nama_lengkap = $items->nama_lengkap_pasien;
+                    if ($items->f=='f-api') {
+                        $laporan_pasien->prov_id = getAreaFromKdc($items->prov_id_pasien)[0]->id;
+                        $laporan_pasien->kab_id = getAreaFromKdc($items->kab_id_pasien)[0]->id;
+                        $laporan_pasien->kec_id = getAreaFromKdc($items->kec_id_pasien)[0]->id;
+                        $laporan_pasien->kel_id = getAreaFromKdc($items->kel_id_pasien)[0]->id;
+                    } else {
+                        $laporan_pasien->prov_id = $items->prov_id_pasien;
+                        $laporan_pasien->kab_id = $items->kab_id_pasien;
+                        $laporan_pasien->kec_id = $items->kec_id_pasien;
+                        $laporan_pasien->kel_id = $items->kel_id_pasien;
+                    }
+                    $laporan_pasien->alamat = $items->alamat_pasien;
+                    $laporan_pasien->tgl_lahir = (isset(explode(', ',$items->tgl_lahir_pasien)[1]) ? explode(', ',$items->tgl_lahir_pasien)[1] : $items->tgl_lahir_pasien);
+                    $laporan_pasien->golongan_darah = $items->golongan_darah_pasien;
+                    $laporan_pasien->nik = $items->nik_pasien;
+                    $laporan_pasien->save();
+                }
+
+            }
+            // exit;
+
             if($create) {
                 return response()->json(['status' => 'success', 'msg' => 'Laporan telah berhasil disimpan!']);
             } else {
@@ -74,6 +124,14 @@ class LaporanController extends Controller {
     public function getEdit($id) {
         $laporan = $this->model->where('id', '=', $id)->first();
         return view('Laporan::edit', ['laporan' => $laporan]);
+    }
+    
+    public function add_pasien() {
+        return view('Laporan::add_pasien');
+    }
+    
+    public function add_nik() {
+        return view('Laporan::add_nik');
     }
 
     public function postEdit(Request $request) {
@@ -88,22 +146,67 @@ class LaporanController extends Controller {
         if($validator->fails()) {
             return response()->json(['status' => 'validate', 'error' => ucwords(implode(', ', str_replace('field is required.', 'Tidak Boleh Kosong', str_replace('The ', '', $validator->errors()->all()))))]);
         } else {
-            $update = Laporan::where('id', '=', $request->id)->update([
-                'nama_pelapor' => $request->nama_pelapor,
-                'alamat_pelapor' => $request->alamat_pelapor,
-                'no_telp_pelapor' => $request->no_telp_pelapor,
-                'isi_laporan' => $request->isi_laporan,
-                'instansi' => $request->instansi,
-                'asal_instansi' => ($request->asal_instansi != '')?$request->asal_instansi:'',
-                // 'prov_id' => $request->prov_id,
-                // 'kab_id' => $request->kab_id,
-                // 'kec_id' => $request->kec_id,
-                // 'kel_id' => $request->kel_id,
-                'user_id' => Auth::user()->id,
-                'solusi' => $request->solusi,
-                'role_id' => Session::get('role_id')[0],
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
+
+            $update = Laporan::find($request->id);
+            $update->nama_pelapor = $request->nama_pelapor;
+            $update->alamat_pelapor = $request->alamat_pelapor;
+            $update->no_telp_pelapor = $request->no_telp_pelapor;
+            $update->isi_laporan = $request->isi_laporan;
+            $update->instansi = $request->instansi;
+            $update->asal_instansi = ($request->asal_instansi != '')?$request->asal_instansi:'';
+            $update->prov_id = $request->prov_id;
+            $update->kab_id = $request->kab_id;
+            $update->kec_id = $request->kec_id;
+            $update->kel_id = $request->kel_id;
+            $update->user_id = Auth::user()->id;
+            $update->solusi = $request->solusi;
+            $update->role_id = Session::get('role_id')[0];
+            $update->updated_at = date('Y-m-d H:i:s');
+            $update->save();
+
+            if (isset($request->nik_pasien)) {
+                $_pasien = [];
+                foreach($request->nik_pasien as $key => $item) {
+                    $_pasien[] = (object)[
+                        'nik_pasien' => $item,
+                        'nama_lengkap_pasien' => ($request->nama_lengkap_pasien[$key] ? $request->nama_lengkap_pasien[$key] : 0),
+                        'prov_id_pasien' => ($request->prov_id_pasien[$key] ? $request->prov_id_pasien[$key] : 0),
+                        'kab_id_pasien' => ($request->kab_id_pasien[$key] ? $request->kab_id_pasien[$key] : 0),
+                        'kec_id_pasien' => ($request->kec_id_pasien[$key] ? $request->kec_id_pasien[$key] : 0),
+                        'kel_id_pasien' => ($request->kel_id_pasien[$key] ? $request->kel_id_pasien[$key] : 0),
+                        'alamat_pasien' => ($request->alamat_pasien[$key] ? $request->alamat_pasien[$key] : 0),
+                        'tgl_lahir_pasien' => ($request->tgl_lahir_pasien[$key] ? $request->tgl_lahir_pasien[$key] : 0),
+                        'golongan_darah_pasien' => ($request->golongan_darah_pasien[$key] ? $request->golongan_darah_pasien[$key] : 0),
+                        'f' => ($request->f[$key] ? $request->f[$key] : 0),
+                    ];
+                }
+                
+                foreach($_pasien as $items) {
+                    $chk = DB::select("SELECT * FROM laporan_pasien WHERE nik = '$items->nik_pasien' AND laporan_id = $request->id");
+                    if (!$chk) {
+                        $laporan_pasien = new LaporanPasien;
+                        $laporan_pasien->laporan_id = $request->id;
+                        $laporan_pasien->nama_lengkap = $items->nama_lengkap_pasien;
+                        if ($items->f=='f-api') {
+                            $laporan_pasien->prov_id = getAreaFromKdc($items->prov_id_pasien)[0]->id;
+                            $laporan_pasien->kab_id = getAreaFromKdc($items->kab_id_pasien)[0]->id;
+                            $laporan_pasien->kec_id = getAreaFromKdc($items->kec_id_pasien)[0]->id;
+                            $laporan_pasien->kel_id = getAreaFromKdc($items->kel_id_pasien)[0]->id;
+                        } else {
+                            $laporan_pasien->prov_id = $items->prov_id_pasien;
+                            $laporan_pasien->kab_id = $items->kab_id_pasien;
+                            $laporan_pasien->kec_id = $items->kec_id_pasien;
+                            $laporan_pasien->kel_id = $items->kel_id_pasien;
+                        }
+                        $laporan_pasien->alamat = $items->alamat_pasien;
+                        $laporan_pasien->tgl_lahir = (isset(explode(', ',$items->tgl_lahir_pasien)[1]) ? explode(', ',$items->tgl_lahir_pasien)[1] : $items->tgl_lahir_pasien);
+                        $laporan_pasien->golongan_darah = $items->golongan_darah_pasien;
+                        $laporan_pasien->nik = $items->nik_pasien;
+                        $laporan_pasien->save();
+                    }
+                }
+            }
+
             if($update) {
                 return response()->json(['status' => 'success', 'msg' => 'Laporan telah berhasil disimpan!']);
             } else {
@@ -147,4 +250,60 @@ class LaporanController extends Controller {
     public function getKelurahan(Request $request) {
         return getKelurahan($request->parent_id, $request->selected);
     }
+
+    public function add_pasien_action(Request $request)
+    {
+        $nik = $request->nik;
+        $url = 'http://172.16.160.43:8080/dukcapil/get_json/33/diskominfo_33/call_nik';
+        $ip = '10.33.0.30';
+        $userId = '202002066kominfo';
+        $password = 'kominfo2020';
+
+        $data = array(
+            'nik'       => $nik,
+            'user_id'   => $userId,
+            'password'  => $password,
+            'ip_user'   => $ip
+        );
+
+        // CHECK APAKAH ADA DI DB ATAU BELUM
+        $check = DB::select("SELECT * FROM laporan_pasien WHERE nik = '$nik'");
+        if (!$check) {
+            $data_string = json_encode($data);
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-type: application/json',
+                'accept: application/json'
+            ));
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 15); //timeout in seconds
+
+            $output = curl_exec($ch);
+            $result = $output;
+            if($output == false or $output != 0){
+                $result = json_encode($output);
+            }
+
+            curl_close($ch);
+            if($output == false) {
+                return 'Api Capil Sedang Bermasalah Mohon dicoba kembali 5-10 menit lagi !';
+            }
+            return ($output);
+        } else {
+            return (json_encode($check));
+        }
+    }
+
+    public function hapus_pasien(Request $request)
+    {
+        $data = LaporanPasien::find($request->id);
+        $data->delete();
+        return response()->json(['status' => 'success', 'msg' => 'Data Pasien berhasil dihapus']);
+    }
+
 }

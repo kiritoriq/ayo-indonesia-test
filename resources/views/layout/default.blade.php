@@ -54,6 +54,29 @@
         {{-- Includable JS --}}
         @yield('scripts')
 
+        <script>
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": true,
+                "progressBar": false,
+                "positionClass": "toast-bottom-left",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": 0,
+                "extendedTimeOut": 0,
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut",
+                "tapToDismiss": false
+            };
+
+            toastr.success("<strong>Informasi:</strong> Penambahan fitur baru input NIK sudah ada di Form Input Laporan. NIK Bersifat Optional, hanya di input ketika ada laporan pasien / orang yang terpapar covid19");
+        </script>
+
     </body>
 </html>
 
