@@ -14,4 +14,6 @@ Route::group(['module' => 'Laporan', 'middleware' => ['web','prevent-back-histor
     Route::post('laporan/get_kota', 'LaporanController@getKota')->name('get-kota');
     Route::post('laporan/get_kecamatan', 'LaporanController@getKecamatan')->name('get-kecamatan');
     Route::post('laporan/get_kelurahan', 'LaporanController@getKelurahan')->name('get-kelurahan');
+
+    Route::post('laporan/load-data', 'LaporanController@loadDataTables')->name('load-data');
 });

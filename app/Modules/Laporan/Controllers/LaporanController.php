@@ -31,6 +31,10 @@ class LaporanController extends Controller {
         return view('Laporan::index', ['laporans' => $laporans]);
     }
 
+    public function loadDataTables() {
+        //
+    }
+
     public function getCreate() {
         return view('Laporan::create');
     }

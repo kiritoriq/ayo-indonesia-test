@@ -34,13 +34,16 @@
                             </div>
                             <div class="col-lg-2 col-2">
                                 <div class="btn-group btn-group-justified btn-group-xs" role="group" aria-label="Large button group">
-                                    <a href="{{ route('laporan.insert') }}" class="btn btn-primary btn-lg py-3" data-toggle="tooltip" data-theme="dark" title="Tambah Data">
+                                    <a href="{{ route('laporan.insert') }}" class="btn btn-primary py-3" data-toggle="tooltip" data-theme="dark" title="Tambah Data">
                                         <span class="svg-icon svg-icon-white"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                 <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
                                                 <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
                                             </g>
                                         </svg></span> Input
+                                    </a>
+                                    <a href="" class="btn btn-success py-3" data-toggle="tooltip" data-theme="dark" title="Cetak Excel">
+                                        <i class="far fa-file-excel text-light"></i> Cetak Excel
                                     </a>
                                 </div>
                             </div>
@@ -90,7 +93,7 @@
                                         </td>
                                         <td>{!! formatTanggalPanjang(date('Y-m-d', strtotime($laporan->created_at))) !!}, Pukul {!! date('H:i', strtotime($laporan->created_at)) !!}</td>
                                         <td width="10%" class="text-center">
-                                            <button type="button" id="detail" data-id="{{ $laporan->id }}" data-src="{{ route('laporan.details', $laporan->id) }}" data-theme="dark" class="btn btn-sm btn-default btn-text-warning btn-hover-warning btn-icon detail" data-toggle="tooltip" title="Detail">
+                                            <button type="button" id="detail" data-id="{{ $laporan->id }}" data-src="{{ route('laporan.details', $laporan->id) }}" data-theme="dark" class="btn btn-sm btn-default btn-text-warning btn-hover-warning btn-icon detail" data-toggle="modal" data-target="#exampleModal" title="Detail">
                                                 <span class="svg-icon svg-icon-warning svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-04-19-122603/theme/html/demo1/dist/../src/media/svg/icons/Text/Menu.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                         <rect x="0" y="0" width="24" height="24"/>
