@@ -34,6 +34,14 @@ class LaporanController extends Controller {
     }
 
     public function loadDataTables() {
+        // DIGARAP MAS ULIL
+    }
+
+    public function getCetakExcel() {
+        return view('Laporan::filter_cetak');
+    }
+    
+    public function postCetakExcel(Request $request) {
         //
     }
 

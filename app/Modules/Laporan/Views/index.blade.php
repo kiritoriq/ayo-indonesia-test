@@ -42,9 +42,9 @@
                                             </g>
                                         </svg></span> Input
                                     </a>
-                                    <a href="" class="btn btn-success py-3" data-toggle="tooltip" data-theme="dark" title="Cetak Excel">
+                                    <button class="btn btn-success py-3" data-fancybox data-type="ajax" data-src="{{ route('laporan.get-cetak-excel') }}" data-toggle="tooltip" data-theme="dark" title="Cetak Excel">
                                         <i class="far fa-file-excel text-light"></i> Cetak Excel
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
