@@ -108,12 +108,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-lg-3 col-3 col-form-label">Solusi <span class="text-danger">*</span></label>
-                            <div class="col-lg-8 col-8">
-                                <textarea name="solusi" id="solusi" class="form-control" rows="3" required></textarea>
-                            </div>
+                        <hr>
+                        <button type="button" class="btn btn-primary float-right" data-fancybox data-type="ajax" data-src="{{ route('laporan.add-pasien') }}" id="btn-add-pasien"><i class="fa fa-plus-circle"></i> Tambah Pasien</button>
+                        <div class="float-right" style="padding-right:20px; margin-top:4px;">
+                            <input type="checkbox" id="isSame" /> Apakah Pelapor adalah Pasien?
                         </div>
+                        <br />
+                        <h5><strong>Data Pasien</strong></h5>
+                        <table class="table table-bordered table-striped mt-4">
+                            <thead>
+                                <th>NIK</th>
+                                <th>Nama</th>
+                                <th>Alamat</th>
+                                <th>Golongan Darah</th>
+                                <th>Aksi</th>
+                            </thead>
+                            <tbody id="place-tb-pasien">
+                                
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -205,32 +218,14 @@
                     validation.validate().then(function(status) {
                         $('#btnsubmit').prop('disabled', true);
                         if(status == 'Valid') {
-                            let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                            let nama = $('#nama').val();
-                            let alamat = $('#alamat').val();
-                            let no_telp = $('#no_telp').val();
-                            let isi_laporan = $('#isi_laporan').val();
-                            let solusi = $('#solusi').val();
-                            let instansi = $('#instansi').val();
-                            let asal_instansi = ($('#asal_instansi').length)?$('#asal_instansi').val():'';
                             $.ajax({
                                 url: site_url + 'laporan/insert-action',
+                                data: $('#kt_form').serialize(),
                                 type: 'POST',
-                                dataType: 'JSON',
-                                timeout: 10000,
-                                data: {
-                                    _token: CSRF_TOKEN,
-                                    nama_pelapor: nama,
-                                    alamat_pelapor: alamat,
-                                    no_telp_pelapor: no_telp,
-                                    isi_laporan: isi_laporan,
-                                    instansi: instansi,
-                                    solusi: solusi,
-                                    asal_instansi: asal_instansi,
-                                    prov_id: $('#prov_id').val(),
-                                    kab_id: $('#kab_id').val(),
-                                    kec_id: $('#kec_id').val(),
-                                    kel_id: $('#kel_id').val(),
+                                cache: false,
+                                dataType: 'json',
+                                headers: {
+                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                                 },
                                 beforeSend: function() {
                                     
@@ -289,10 +284,103 @@
             };
         }();
 
-        $(document).ready(function() {
+        let tambahPasienKeForm = (
+            nik,
+            nama_lengkap,
+            prov_id,
+            kab_id,
+            kec_id,
+            kel_id,
+            alamat,
+            tgl_lahir,
+            golongan_darah,
+            f
+        ) => {
+            $('#place-tb-pasien').append(`
+                <tr>
+                    <td>${nik}</td>
+                    <td>${nama_lengkap}</td>
+                    <td>${alamat}</td>
+                    <td>${golongan_darah}</td>
+                    <td>
+                        <input type="hidden" name="nik_pasien[]" value="${nik}" />
+                        <input type="hidden" name="nama_lengkap_pasien[]" value="${nama_lengkap}" />
+                        <input type="hidden" name="prov_id_pasien[]" value="${prov_id}" />
+                        <input type="hidden" name="kab_id_pasien[]" value="${kab_id}" />
+                        <input type="hidden" name="kec_id_pasien[]" value="${kec_id}" />
+                        <input type="hidden" name="kel_id_pasien[]" value="${kel_id}" />
+                        <input type="hidden" name="alamat_pasien[]" value="${alamat}" />
+                        <input type="hidden" name="tgl_lahir_pasien[]" value="${tgl_lahir}" />
+                        <input type="hidden" name="golongan_darah_pasien[]" value="${golongan_darah}" />
+                        <input type="hidden" name="f[]" value="${f}" />
+                        <a href="javascript:;" class="btn btn-danger btn-delete-pasien"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+            `)
+
+            $('.btn-delete-pasien').on('click', function(){
+                $(this).parent().parent().remove()
+            })
+
+        }
+
+        $('document').ready(function() {
             SubmitForm.init();
             $('#asalfaskes').hide();
             $('select').select2()
+
+            $.extend($.fancybox.defaults, {
+                afterClose: function(){
+                },
+                beforeClose: function(){
+                    $('#isSame').prop('checked', false);
+                }
+            });
+
+            $('#isSame').on('change',function() {
+                if (this.checked) {
+                    if ($('#nama').val()=='') {
+                        $('#isSame').prop('checked', false);
+                        Swal.fire({ title: 'Nama Kosong!', text: 'Inputkan Nama Terlebih dahulu', icon: 'error' })
+                    } else {
+                        if ($('#prov_id').val()=='') {
+                            $('#isSame').prop('checked', false);
+                            Swal.fire({ title: 'Provinsi Kosong!', text: 'Inputkan Provinsi Terlebih dahulu', icon: 'error' })
+                        } else {
+                            if ($('#kab').val()=='') {
+                                $('#isSame').prop('checked', false);
+                                Swal.fire({ title: 'Kabupaten/Kota Kosong!', text: 'Inputkan Kabupaten/Kota Terlebih dahulu', icon: 'error' })
+                            } else {
+                                if ($('#kec').val()=='') {
+                                    $('#isSame').prop('checked', false);
+                                    Swal.fire({ title: 'Kecamatan Kosong!', text: 'Inputkan Kecamatan Terlebih dahulu', icon: 'error' })
+                                } else {
+                                    if ($('#kel').val()=='') {
+                                        $('#isSame').prop('checked', false);
+                                        Swal.fire({ title: 'Kelurahan/Desa Kosong!', text: 'Inputkan Kelurahan/Desa Terlebih dahulu', icon: 'error' })
+                                    } else {
+                                        if ($('#alamat').val()=='') {
+                                            $('#isSame').prop('checked', false);
+                                            Swal.fire({ title: 'Alamat Kosong!', text: 'Inputkan Alamat Terlebih dahulu', icon: 'error' })
+                                        } else {
+                                            $.fancybox.open({
+                                                src: `{{ route('laporan.add-nik') }}`,
+                                                type: 'ajax',
+                                                closeBtn: false,
+                                                closeClickOutside : false,
+                                                opts: { touch : false },
+                                            })
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                } else {
+                    console.log('unchecked')
+                }
+            });
 
             $('#prov_id').change(function(e) {
                 e.preventDefault();
