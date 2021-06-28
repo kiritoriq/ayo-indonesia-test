@@ -93,7 +93,7 @@
                                         </td>
                                         <td>{!! formatTanggalPanjang(date('Y-m-d', strtotime($laporan->created_at))) !!}, Pukul {!! date('H:i', strtotime($laporan->created_at)) !!}</td>
                                         <td width="10%" class="text-center">
-                                            <button type="button" id="detail" data-id="{{ $laporan->id }}" data-src="{{ route('laporan.details', $laporan->id) }}" data-theme="dark" class="btn btn-sm btn-default btn-text-warning btn-hover-warning btn-icon detail" data-toggle="modal" data-target="#exampleModal" title="Detail">
+                                            <button type="button" id="detail" data-fancybox data-type="ajax" data-src="{{ route('laporan.details', $laporan->id) }}" data-theme="dark" class="btn btn-sm btn-default btn-text-warning btn-hover-warning btn-icon detail" data-toggle="modal" data-target="#exampleModal" title="Detail">
                                                 <span class="svg-icon svg-icon-warning svg-icon-2x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-04-19-122603/theme/html/demo1/dist/../src/media/svg/icons/Text/Menu.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                         <rect x="0" y="0" width="24" height="24"/>
@@ -135,26 +135,6 @@
     </div>
 </div>
 
-<!-- Modal-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Detail Laporan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i aria-hidden="true" class="ki ki-close"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
-                {{-- <button id="" type="button" class="btn btn-primary font-weight-bold">Save changes</button> --}}
-            </div>
-        </div>
-    </div>
-</div>
 @endsection
 
 {{-- Styles Section --}}
@@ -275,18 +255,6 @@
         $(document).ready(function() {
             KTDatatablesBasicBasic.init();
             dataControl.init();
-            $('.detail').click(function(e) {
-            e.preventDefault();
-            var id = $(this).attr('data-id');
-            $.ajax({
-                url: site_url + "laporan/details/"+id,
-                type: 'get',
-                success: function(response) {
-                    $('#exampleModal .modal-body').html(response);
-                    $('#exampleModal').modal('show');
-                } 
-            })
-        })
         })
     </script>
 @endsection

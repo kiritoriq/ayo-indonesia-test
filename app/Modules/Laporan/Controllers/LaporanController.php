@@ -42,7 +42,14 @@ class LaporanController extends Controller {
     }
     
     public function postCetakExcel(Request $request) {
-        //
+        $tanggal1 = date('Y-m-d H:i:s', strtotime($request->tanggal1));
+        $tanggal2 = date('Y-m-d H:i:s', strtotime($request->tanggal2));
+        $data = $this->model->with(['petugas'])->where('deleted_at','=',null)->whereRaw("created_at BETWEEN '".$tanggal1."' AND '".$tanggal2."'")->orderBy('created_at', 'desc')->get();
+        
+        // dd($data);
+        $pada_1 = strtoupper(formatTanggalPanjang(date('Y-m-d', strtotime($request->tanggal1))));
+        $pada_2 = strtoupper(formatTanggalPanjang(date('Y-m-d', strtotime($request->tanggal2))));
+        return view('Laporan::cetak_excel', ['datas' => $data, 'pada_1' => $pada_1, 'pada_2' => $pada_2, 'tanggal_1' => $tanggal1, 'tanggal_2' => $tanggal2]);
     }
 
     public function getCreate() {
