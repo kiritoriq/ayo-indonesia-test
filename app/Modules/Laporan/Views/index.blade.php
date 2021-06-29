@@ -214,19 +214,6 @@
                         }, 500);
                     });
 
-                    $('.detail').click(function (e) {
-                        e.preventDefault();
-
-                        var id = $(this).attr('data-id');
-                        $.ajax({
-                            url: site_url + "laporan/details/" + id,
-                            type: 'get',
-                            success: function (response) {
-                                $('#exampleModal .modal-body').html(response);
-                                $('#exampleModal').modal('show');
-                            }
-                        })
-                    });
                 }
 
             });
@@ -316,21 +303,10 @@
 
     $(document).ready(function () {
         dataControl.init();
-        console.log('asdadsa')
-        $('#detail').click(function (e) {
-            console.log('heeerere')
+        $('.detail').click(function (e) {
             e.preventDefault();
 
             var id = $(this).attr('data-id');
-            $.ajax({
-                url: site_url + "laporan/details/" + id,
-                type: 'get',
-                success: function (response) {
-                    console.log(response)
-                    $('#exampleModal .modal-body').html(response);
-                    $('#exampleModal').modal('show');
-                }
-            })
         })
     })
 

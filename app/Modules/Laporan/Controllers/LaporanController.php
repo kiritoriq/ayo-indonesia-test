@@ -71,11 +71,11 @@ class LaporanController extends Controller
                     $list["petugas_input"] = $row->username;
                     $list["tanggal_input"] = formatTanggalPanjang(date(('Y-m-d'), strtotime($row->created_at))) . ' Pukul ' . date('H:i', strtotime($row->created_at));
                     $list["aksi"] = '
-                    <button type="button" id="detail" data-id='.$row->id.'
+                    <button type="button" id="detail" data-fancybox='.$row->id.' data-type="ajax"
                     data-src='.route("laporan.details", $row->id).'
                     data-theme="dark"
                     class="btn btn-sm btn-default btn-text-warning btn-hover-warning btn-icon detail"
-                    data-toggle="modal" data-target="#exampleModal" title="Detail">
+                    title="Detail">
                     <span class="svg-icon svg-icon-warning svg-icon-2x">
                         <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-04-19-122603/theme/html/demo1/dist/../src/media/svg/icons/Text/Menu.svg--><svg
                             xmlns="http://www.w3.org/2000/svg"
