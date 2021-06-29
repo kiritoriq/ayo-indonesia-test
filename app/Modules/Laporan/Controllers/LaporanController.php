@@ -11,9 +11,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Modules\Laporan\DataTables\LaporanWargaDataTable;
+use App\Modules\Laporan\Dto\LaporanDto;
 
-class LaporanController extends Controller {
-
+class LaporanController extends Controller
+{
     private $model;
     /**
      * Create a new controller instance.
@@ -28,28 +30,116 @@ class LaporanController extends Controller {
 
     public function index()
     {
-        $laporans = $this->model->with(['petugas'])->where('deleted_at', '=', null)->orderBy('created_at', 'desc')->get();
-        // dd($laporans);
-        return view('Laporan::index', ['laporans' => $laporans]);
+        // dd($this->loadDataTables());
+
+        // $laporans = $this->model->with(['petugas'])->where('deleted_at', '=', null)->orderBy('created_at', 'desc')->get();
+        // return view('Laporan::index', ['laporans' => $laporans]);
+        
+        return view('Laporan::index');
     }
 
-    public function loadDataTables() {
-        // DIGARAP MAS ULIL
+    public function loadDataTables()
+    {
+        $draw = $_REQUEST['draw'];
+        $limit_data = $_REQUEST['length'];
+        $offset_data = $_REQUEST['start'];
+        $cari_data =  $_POST['search']['value'];
+        $order_data = "desc";
+        $data = DB::select("SELECT * FROM call_center_cari_laporan_warga('".$cari_data."', '".$order_data."', '".$limit_data."', '".$offset_data."' )");
+        // dd("SELECT * FROM call_center_cari_laporan_warga('".$cari_data."', '".$order_data."', '".$limit_data."', '".$offset_data."' )");
+        
+        $output_table = array();
+        $output_table['aaData'] = array();
+        $total_row = 0;
+        
+        if ($data != null || $data[0]->level != 1) {
+            foreach ($data as $row) {
+                if ($row->level == 1) {
+                    $list = [];
+                    $list["no"] = $row->row_data;
+                    $list["nama_pelapor"] = ucwords($row->nama_pelapor);
+                    $list["no_telp_pelapor"] = $row->no_telp_pelapor;
+                    $list["alamat_pelapor"] = $row->alamat_pelapor;
+
+                    if (strlen($row->isi_laporan) > 30) {
+                        $isi_laporan = substr_replace($row->isi_laporan, ' ...', 30);
+                    } else {
+                        $isi_laporan = $row->isi_laporan;
+                    }
+
+                    $list["isi_laporan"] = $isi_laporan;
+                    $list["petugas_input"] = $row->username;
+                    $list["tanggal_input"] = formatTanggalPanjang(date(('Y-m-d'), strtotime($row->created_at))) . ' Pukul ' . date('H:i', strtotime($row->created_at));
+                    $list["aksi"] = '
+                    <button type="button" id="detail" data-id='.$row->id.'
+                    data-src='.route("laporan.details", $row->id).'
+                    data-theme="dark"
+                    class="btn btn-sm btn-default btn-text-warning btn-hover-warning btn-icon detail"
+                    data-toggle="modal" data-target="#exampleModal" title="Detail">
+                    <span class="svg-icon svg-icon-warning svg-icon-2x">
+                        <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-04-19-122603/theme/html/demo1/dist/../src/media/svg/icons/Text/Menu.svg--><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                            viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <rect fill="#000000" x="4" y="5" width="16" height="3" rx="1.5" />
+                                <path
+                                    d="M5.5,15 L18.5,15 C19.3284271,15 20,15.6715729 20,16.5 C20,17.3284271 19.3284271,18 18.5,18 L5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 Z M5.5,10 L18.5,10 C19.3284271,10 20,10.6715729 20,11.5 C20,12.3284271 19.3284271,13 18.5,13 L5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 Z"
+                                    fill="#000000" opacity="0.3" />
+                            </g>
+                        </svg>
+                        <!--end::Svg Icon--></span>
+                </button>
+
+                <a class="btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon"
+                    data-toggle="tooltip" data-theme="dark" title="Edit Laporan"
+                    href='.route("laporan.edit", $row->id).'>
+                    <span class="svg-icon svg-icon-primary"><svg xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                            viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <rect x="0" y="0" width="24" height="24" />
+                                <path
+                                    d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z"
+                                    fill="#000000" fill-rule="nonzero"
+                                    transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) " />
+                                <rect fill="#000000" opacity="0.3" x="5" y="20" width="15"
+                                    height="2" rx="1" />
+                            </g>
+                        </svg></span>
+                </a>
+                    ';
+
+                    $output_table['aaData'][] = $list;
+                } elseif ($row->level == 99) {
+                    $total_row = ($row->row_data != null) ? $row->row_data : 0;
+                }
+            }
+        }
+
+        $output_table['sEcho'] = $draw;
+        $output_table['iTotalRecords'] = $output_table['iTotalDisplayRecords'] = $total_row;
+      
+        return response()->json($output_table);
     }
 
-    public function getCetakExcel() {
+    public function getCetakExcel()
+    {
         return view('Laporan::filter_cetak');
     }
     
-    public function postCetakExcel(Request $request) {
+    public function postCetakExcel(Request $request)
+    {
         //
     }
 
-    public function getCreate() {
+    public function getCreate()
+    {
         return view('Laporan::create');
     }
 
-    public function postCreate(Request $request) 
+    public function postCreate(Request $request)
     {
 
         // print_pre($request->all());
@@ -62,10 +152,9 @@ class LaporanController extends Controller {
             'instansi' => 'required',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json(['status' => 'validate', 'error' => ucwords(implode(', ', str_replace('field is required.', 'Tidak Boleh Kosong', str_replace('The ', '', $validator->errors()->all()))))]);
         } else {
-
             $create = new Laporan;
             $create->nama_pelapor = $request->nama_pelapor;
             $create->alamat_pelapor = $request->alamat_pelapor;
@@ -85,7 +174,7 @@ class LaporanController extends Controller {
 
             if (isset($request->nik_pasien)) {
                 $_pasien = [];
-                foreach($request->nik_pasien as $key => $item) {
+                foreach ($request->nik_pasien as $key => $item) {
                     $_pasien[] = (object)[
                         'nik_pasien' => $item,
                         'nama_lengkap_pasien' => ($request->nama_lengkap_pasien[$key] ? $request->nama_lengkap_pasien[$key] : 0),
@@ -100,7 +189,7 @@ class LaporanController extends Controller {
                     ];
                 }
                 
-                foreach($_pasien as $items) {
+                foreach ($_pasien as $items) {
                     $laporan_pasien = new LaporanPasien;
                     $laporan_pasien->laporan_id = $create->id;
                     $laporan_pasien->nama_lengkap = $items->nama_lengkap_pasien;
@@ -116,16 +205,15 @@ class LaporanController extends Controller {
                         $laporan_pasien->kel_id = $items->kel_id_pasien;
                     }
                     $laporan_pasien->alamat = $items->alamat_pasien;
-                    $laporan_pasien->tgl_lahir = (isset(explode(', ',$items->tgl_lahir_pasien)[1]) ? explode(', ',$items->tgl_lahir_pasien)[1] : $items->tgl_lahir_pasien);
+                    $laporan_pasien->tgl_lahir = (isset(explode(', ', $items->tgl_lahir_pasien)[1]) ? explode(', ', $items->tgl_lahir_pasien)[1] : $items->tgl_lahir_pasien);
                     $laporan_pasien->golongan_darah = $items->golongan_darah_pasien;
                     $laporan_pasien->nik = $items->nik_pasien;
                     $laporan_pasien->save();
                 }
-
             }
             // exit;
 
-            if($create) {
+            if ($create) {
                 return response()->json(['status' => 'success', 'msg' => 'Laporan telah berhasil disimpan!']);
             } else {
                 return response()->json(['status' => 'failed', 'msg' => 'Laporan gagal disimpan!', 'error' => $create]);
@@ -133,20 +221,24 @@ class LaporanController extends Controller {
         }
     }
 
-    public function getEdit($id) {
+    public function getEdit($id)
+    {
         $laporan = $this->model->where('id', '=', $id)->first();
         return view('Laporan::edit', ['laporan' => $laporan]);
     }
     
-    public function add_pasien() {
+    public function add_pasien()
+    {
         return view('Laporan::add_pasien');
     }
     
-    public function add_nik() {
+    public function add_nik()
+    {
         return view('Laporan::add_nik');
     }
 
-    public function postEdit(Request $request) {
+    public function postEdit(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'nama_pelapor' => 'required',
             'alamat_pelapor' => 'required',
@@ -155,10 +247,9 @@ class LaporanController extends Controller {
             'instansi' => 'required',
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json(['status' => 'validate', 'error' => ucwords(implode(', ', str_replace('field is required.', 'Tidak Boleh Kosong', str_replace('The ', '', $validator->errors()->all()))))]);
         } else {
-
             $update = Laporan::find($request->id);
             $update->nama_pelapor = $request->nama_pelapor;
             $update->alamat_pelapor = $request->alamat_pelapor;
@@ -178,7 +269,7 @@ class LaporanController extends Controller {
 
             if (isset($request->nik_pasien)) {
                 $_pasien = [];
-                foreach($request->nik_pasien as $key => $item) {
+                foreach ($request->nik_pasien as $key => $item) {
                     $_pasien[] = (object)[
                         'nik_pasien' => $item,
                         'nama_lengkap_pasien' => ($request->nama_lengkap_pasien[$key] ? $request->nama_lengkap_pasien[$key] : 0),
@@ -193,7 +284,7 @@ class LaporanController extends Controller {
                     ];
                 }
                 
-                foreach($_pasien as $items) {
+                foreach ($_pasien as $items) {
                     $chk = DB::select("SELECT * FROM laporan_pasien WHERE nik = '$items->nik_pasien' AND laporan_id = $request->id");
                     if (!$chk) {
                         $laporan_pasien = new LaporanPasien;
@@ -211,7 +302,7 @@ class LaporanController extends Controller {
                             $laporan_pasien->kel_id = $items->kel_id_pasien;
                         }
                         $laporan_pasien->alamat = $items->alamat_pasien;
-                        $laporan_pasien->tgl_lahir = (isset(explode(', ',$items->tgl_lahir_pasien)[1]) ? explode(', ',$items->tgl_lahir_pasien)[1] : $items->tgl_lahir_pasien);
+                        $laporan_pasien->tgl_lahir = (isset(explode(', ', $items->tgl_lahir_pasien)[1]) ? explode(', ', $items->tgl_lahir_pasien)[1] : $items->tgl_lahir_pasien);
                         $laporan_pasien->golongan_darah = $items->golongan_darah_pasien;
                         $laporan_pasien->nik = $items->nik_pasien;
                         $laporan_pasien->save();
@@ -219,7 +310,7 @@ class LaporanController extends Controller {
                 }
             }
 
-            if($update) {
+            if ($update) {
                 return response()->json(['status' => 'success', 'msg' => 'Laporan telah berhasil disimpan!']);
             } else {
                 return response()->json(['status' => 'failed', 'msg' => 'Laporan gagal disimpan!', 'error' => $update]);
@@ -227,12 +318,14 @@ class LaporanController extends Controller {
         }
     }
 
-    public function getDetails($id) {
+    public function getDetails($id)
+    {
         $laporan = $this->model->where('id', '=', $id)->first();
         return view('Laporan::details', ['laporan' => $laporan]);
     }
 
-    public function postDelete($id) {
+    public function postDelete($id)
+    {
         $data = $this->model->find($id);
         $insert_log = DB::table('delete_log')->insert([
             'laporan_id' => $id,
@@ -241,9 +334,9 @@ class LaporanController extends Controller {
             'updated_at' => date('Y-m-d H:i:s')
         ]);
 
-        if($insert_log) {
+        if ($insert_log) {
             $update = $this->model->where('id', '=', $id)->update(['deleted_at' => date('Y-m-d H:i:s')]);
-            if($update) {
+            if ($update) {
                 return response()->json(['status' => 'success', 'msg' => 'Data Laporan berhasil dihapus']);
             }
         } else {
@@ -251,15 +344,18 @@ class LaporanController extends Controller {
         }
     }
 
-    public function getKota(Request $request) {
+    public function getKota(Request $request)
+    {
         return getKota($request->parent_id, $request->selected);
     }
 
-    public function getKecamatan(Request $request) {
+    public function getKecamatan(Request $request)
+    {
         return getKecamatan($request->parent_id, $request->selected);
     }
 
-    public function getKelurahan(Request $request) {
+    public function getKelurahan(Request $request)
+    {
         return getKelurahan($request->parent_id, $request->selected);
     }
 
@@ -297,12 +393,12 @@ class LaporanController extends Controller {
 
             $output = curl_exec($ch);
             $result = $output;
-            if($output == false or $output != 0){
+            if ($output == false or $output != 0) {
                 $result = json_encode($output);
             }
 
             curl_close($ch);
-            if($output == false) {
+            if ($output == false) {
                 return 'Api Capil Sedang Bermasalah Mohon dicoba kembali 5-10 menit lagi !';
             }
             return ($output);
@@ -317,5 +413,4 @@ class LaporanController extends Controller {
         $data->delete();
         return response()->json(['status' => 'success', 'msg' => 'Data Pasien berhasil dihapus']);
     }
-
 }

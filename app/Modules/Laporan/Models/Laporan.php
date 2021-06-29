@@ -23,8 +23,7 @@ class Laporan extends Model {
         'updated_at',
         'deleted_at',
         'asal_instansi',
-        'prov_id',
-        'solusi'
+        'prov_id'
     ];
 
     public function petugas() {
