@@ -13,7 +13,7 @@
                 </tr>
                 <tr>
                     <td width="30%">Alamat Pelapor</td>
-                    <td>{{ $laporan->alamat_pelapor }}</td>
+                    <td>{{ $laporan->alamat_pelapor.(($laporan->kel_id != null)?', KEL. '.getNamaWilayah($laporan->kel_id):'').(($laporan->kec_id != null)?', KEC. '.getNamaWilayah($laporan->kec_id):'').(($laporan->kab_id != null)?', '.getNamaWilayah($laporan->kab_id):'').(($laporan->prov_id != null)?', '.getNamaWilayah($laporan->prov_id):'') }}</td>
                 </tr>
                 <tr>
                     <td width="30%">No. Telp. Pelapor</td>
