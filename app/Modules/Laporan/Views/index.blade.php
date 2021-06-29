@@ -214,7 +214,7 @@
 
     const dataControl = function () {
         const deleteUser = function deleteUser(param) {
-            $('#table-instansi tbody').on('click', '.btn-delete', function (e) {
+            $('#table-laporan tbody').on('click', '.btn-delete', function (e) {
                 e.preventDefault();
                 let id = $(this).attr('data-id');
                 let urls = $(this).attr("data-href");
@@ -278,17 +278,8 @@
             }
         };
     }();
-
-
-            
-            return {
-                init: function init() {
-                dataTableInit();
-                }
-            };
-        }();
         $(document).ready(function() {
-            KTDatatablesBasicBasic.init();
+            // KTDatatablesBasicBasic.init();
             dataControl.init();
         })
     </script>
