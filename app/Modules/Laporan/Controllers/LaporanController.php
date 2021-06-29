@@ -46,7 +46,6 @@ class LaporanController extends Controller
         $cari_data =  $_POST['search']['value'];
         $order_data = "desc";
         $data = DB::select("SELECT * FROM call_center_cari_laporan_warga('".$cari_data."', '".$order_data."', '".$limit_data."', '".$offset_data."' )");
-        // dd("SELECT * FROM call_center_cari_laporan_warga('".$cari_data."', '".$order_data."', '".$limit_data."', '".$offset_data."' )");
         
         $output_table = array();
         $output_table['aaData'] = array();
@@ -70,7 +69,8 @@ class LaporanController extends Controller
                     $list["isi_laporan"] = $isi_laporan;
                     $list["petugas_input"] = $row->username;
                     $list["tanggal_input"] = formatTanggalPanjang(date(('Y-m-d'), strtotime($row->created_at))) . ' Pukul ' . date('H:i', strtotime($row->created_at));
-                    $list["aksi"] = '
+                    $list["aksi"] =
+                    $button = '
                     <button type="button" id="detail" data-fancybox='.$row->id.' data-type="ajax"
                     data-src='.route("laporan.details", $row->id).'
                     data-theme="dark"
@@ -109,8 +109,22 @@ class LaporanController extends Controller
                             </g>
                         </svg></span>
                 </a>
-                    ';
-
+                ';
+                    if (array_intersect(Session::get('role_id'), [1])) {
+                        $button .=
+                                '
+                                    <button type="button" id="btnDelete" data-id='.$row->id .' data-href='.route("laporan.delete", $row->id).' class="btn btn-delete btn-sm btn-default btn-text-danger btn-hover-primary btn-icon" data-toggle="tooltip" data-theme="dark" title="Hapus Laporan">
+                                        <span class="svg-icon svg-icon-danger"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24"/>
+                                                <path d="M6,8 L18,8 L17.106535,19.6150447 C17.04642,20.3965405 16.3947578,21 15.6109533,21 L8.38904671,21 C7.60524225,21 6.95358004,20.3965405 6.89346498,19.6150447 L6,8 Z M8,10 L8.45438229,14.0894406 L15.5517885,14.0339036 L16,10 L8,10 Z" fill="#000000" fill-rule="nonzero"/>
+                                                <path d="M14,4.5 L14,3.5 C14,3.22385763 13.7761424,3 13.5,3 L10.5,3 C10.2238576,3 10,3.22385763 10,3.5 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"/>
+                                            </g>
+                                        </svg></span>
+                                    </button>
+                                ';
+                    }
+                    $list["aksi"] = $button;
                     $output_table['aaData'][] = $list;
                 } elseif ($row->level == 99) {
                     $total_row = ($row->row_data != null) ? $row->row_data : 0;
