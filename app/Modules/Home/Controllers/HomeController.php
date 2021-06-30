@@ -4,6 +4,7 @@ namespace App\Modules\Home\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -92,5 +93,73 @@ class HomeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function loadDataTablesRS() {
+        $draw = $_REQUEST['draw'];
+        $limit_data = $_REQUEST['length'];
+        $offset_data = $_REQUEST['start'];
+        $cari_data =  $_POST['search']['value'];
+        $order_data = "desc";
+        $data = DB::select("SELECT * FROM data_rs_jateng('".$cari_data."', '".$order_data."', '".$limit_data."', '".$offset_data."' )");
+        
+        $output_table = array();
+        $output_table['aaData'] = array();
+        $total_row = 0;
+
+        if ($data != null || $data[0]->level != 1) {
+            foreach ($data as $row) {
+                if ($row->level == 1) {
+                    $list = [];
+                    $list["no"] = $row->row_data;
+                    $list["nama_rs"] = ucwords($row->nama_rs);
+                    $list["kls_rs"] = ucwords($row->kls_rs);
+                    $list["nama_direktur"] = ucwords($row->nama_direktur);
+                    $list["no_telp"] = $row->no_telp;
+                    $output_table['aaData'][] = $list;
+                } elseif ($row->level == 99) {
+                    $total_row = ($row->row_data != null) ? $row->row_data : 0;
+                }
+            }
+        }
+
+        $output_table['sEcho'] = $draw;
+        $output_table['iTotalRecords'] = $output_table['iTotalDisplayRecords'] = $total_row;
+      
+        return response()->json($output_table);
+    }
+
+    public function loadDataTablesPuskesmas() {
+        $draw = $_REQUEST['draw'];
+        $limit_data = $_REQUEST['length'];
+        $offset_data = $_REQUEST['start'];
+        $cari_data =  $_POST['search']['value'];
+        $order_data = "desc";
+        $data = DB::select("SELECT * FROM data_puskesmas_jateng('".$cari_data."', '".$order_data."', '".$limit_data."', '".$offset_data."' )");
+        
+        $output_table = array();
+        $output_table['aaData'] = array();
+        $total_row = 0;
+
+        if ($data != null || $data[0]->level != 1) {
+            foreach ($data as $row) {
+                if ($row->level == 1) {
+                    $list = [];
+                    $list["no"] = $row->row_data;
+                    $list["nama_wilayah"] = ucwords($row->nama_wilayah);
+                    $list["nama_puskesmas"] = ucwords($row->nama_puskesmas);
+                    $list["kepala_puskesmas"] = ucwords($row->kepala_puskesmas);
+                    $list["no_telp"] = $row->no_telp;
+                    $output_table['aaData'][] = $list;
+                } elseif ($row->level == 99) {
+                    $total_row = ($row->row_data != null) ? $row->row_data : 0;
+                }
+            }
+        }
+
+        $output_table['sEcho'] = $draw;
+        $output_table['iTotalRecords'] = $output_table['iTotalDisplayRecords'] = $total_row;
+      
+        return response()->json($output_table);
     }
 }
