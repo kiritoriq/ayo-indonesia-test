@@ -366,17 +366,17 @@ class LaporanController extends Controller
 
     public function getKota(Request $request)
     {
-        return getKota($request->parent_id, $request->selected);
+        return getKota($request->id, $request->parent_id, $request->selected);
     }
 
     public function getKecamatan(Request $request)
     {
-        return getKecamatan($request->parent_id, $request->selected);
+        return getKecamatan($request->id, $request->parent_id, $request->selected);
     }
 
     public function getKelurahan(Request $request)
     {
-        return getKelurahan($request->parent_id, $request->selected);
+        return getKelurahan($request->id, $request->parent_id, $request->selected);
     }
 
     public function add_pasien_action(Request $request)

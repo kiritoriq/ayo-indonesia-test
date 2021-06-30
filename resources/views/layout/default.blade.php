@@ -56,7 +56,7 @@
 
         <script>
             toastr.options = {
-                "closeButton": false,
+                "closeButton": true,
                 "debug": false,
                 "newestOnTop": true,
                 "progressBar": false,
@@ -65,7 +65,7 @@
                 "onclick": null,
                 "showDuration": "300",
                 "hideDuration": "1000",
-                "timeOut": 0,
+                "timeOut": 5000,
                 "extendedTimeOut": 0,
                 "showEasing": "swing",
                 "hideEasing": "linear",

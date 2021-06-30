@@ -38,7 +38,7 @@
                         <div class="form-group row">
                             <label class="col-lg-3 col-3 col-form-label">Provinsi Pelapor <span class="text-danger">*</span></label>
                             <div class="col-lg-8 col-8">
-                                {!! getProvinsi("") !!}
+                                {!! getProvinsi("prov_id", "") !!}
                             </div>
                         </div>
                         <div class="form-group row">
@@ -111,7 +111,7 @@
                         <hr>
                         <button type="button" class="btn btn-primary float-right" data-fancybox data-type="ajax" data-src="{{ route('laporan.add-pasien') }}" id="btn-add-pasien"><i class="fa fa-plus-circle"></i> Tambah Pasien</button>
                         <div class="float-right" style="padding-right:20px; margin-top:4px;">
-                            <input type="checkbox" id="isSame" /> Apakah Pelapor adalah Pasien?
+                            {{-- <input type="checkbox" id="isSame" /> Apakah Pelapor adalah Pasien? --}}
                         </div>
                         <br />
                         <h5><strong>Data Pasien</strong></h5>
@@ -337,50 +337,50 @@
                 }
             });
 
-            $('#isSame').on('change',function() {
-                if (this.checked) {
-                    if ($('#nama').val()=='') {
-                        $('#isSame').prop('checked', false);
-                        Swal.fire({ title: 'Nama Kosong!', text: 'Inputkan Nama Terlebih dahulu', icon: 'error' })
-                    } else {
-                        if ($('#prov_id').val()=='') {
-                            $('#isSame').prop('checked', false);
-                            Swal.fire({ title: 'Provinsi Kosong!', text: 'Inputkan Provinsi Terlebih dahulu', icon: 'error' })
-                        } else {
-                            if ($('#kab').val()=='') {
-                                $('#isSame').prop('checked', false);
-                                Swal.fire({ title: 'Kabupaten/Kota Kosong!', text: 'Inputkan Kabupaten/Kota Terlebih dahulu', icon: 'error' })
-                            } else {
-                                if ($('#kec').val()=='') {
-                                    $('#isSame').prop('checked', false);
-                                    Swal.fire({ title: 'Kecamatan Kosong!', text: 'Inputkan Kecamatan Terlebih dahulu', icon: 'error' })
-                                } else {
-                                    if ($('#kel').val()=='') {
-                                        $('#isSame').prop('checked', false);
-                                        Swal.fire({ title: 'Kelurahan/Desa Kosong!', text: 'Inputkan Kelurahan/Desa Terlebih dahulu', icon: 'error' })
-                                    } else {
-                                        if ($('#alamat').val()=='') {
-                                            $('#isSame').prop('checked', false);
-                                            Swal.fire({ title: 'Alamat Kosong!', text: 'Inputkan Alamat Terlebih dahulu', icon: 'error' })
-                                        } else {
-                                            $.fancybox.open({
-                                                src: `{{ route('laporan.add-nik') }}`,
-                                                type: 'ajax',
-                                                closeBtn: false,
-                                                closeClickOutside : false,
-                                                opts: { touch : false },
-                                            })
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+            // $('#isSame').on('change',function() {
+            //     if (this.checked) {
+            //         if ($('#nama').val()=='') {
+            //             $('#isSame').prop('checked', false);
+            //             Swal.fire({ title: 'Nama Kosong!', text: 'Inputkan Nama Terlebih dahulu', icon: 'error' })
+            //         } else {
+            //             if ($('#prov_id').val()=='') {
+            //                 $('#isSame').prop('checked', false);
+            //                 Swal.fire({ title: 'Provinsi Kosong!', text: 'Inputkan Provinsi Terlebih dahulu', icon: 'error' })
+            //             } else {
+            //                 if ($('#kab').val()=='') {
+            //                     $('#isSame').prop('checked', false);
+            //                     Swal.fire({ title: 'Kabupaten/Kota Kosong!', text: 'Inputkan Kabupaten/Kota Terlebih dahulu', icon: 'error' })
+            //                 } else {
+            //                     if ($('#kec').val()=='') {
+            //                         $('#isSame').prop('checked', false);
+            //                         Swal.fire({ title: 'Kecamatan Kosong!', text: 'Inputkan Kecamatan Terlebih dahulu', icon: 'error' })
+            //                     } else {
+            //                         if ($('#kel').val()=='') {
+            //                             $('#isSame').prop('checked', false);
+            //                             Swal.fire({ title: 'Kelurahan/Desa Kosong!', text: 'Inputkan Kelurahan/Desa Terlebih dahulu', icon: 'error' })
+            //                         } else {
+            //                             if ($('#alamat').val()=='') {
+            //                                 $('#isSame').prop('checked', false);
+            //                                 Swal.fire({ title: 'Alamat Kosong!', text: 'Inputkan Alamat Terlebih dahulu', icon: 'error' })
+            //                             } else {
+            //                                 $.fancybox.open({
+            //                                     src: `{{ route('laporan.add-nik') }}`,
+            //                                     type: 'ajax',
+            //                                     closeBtn: false,
+            //                                     closeClickOutside : false,
+            //                                     opts: { touch : false },
+            //                                 })
+            //                             }
+            //                         }
+            //                     }
+            //                 }
+            //             }
+            //         }
 
-                } else {
-                    console.log('unchecked')
-                }
-            });
+            //     } else {
+            //         console.log('unchecked')
+            //     }
+            // });
 
             $('#prov_id').change(function(e) {
                 e.preventDefault();
@@ -388,7 +388,7 @@
                 $.ajax({
                     url: site_url + 'laporan/get_kota',
                     type: 'post',
-                    data: { 'parent_id': prov_id, 'selected': '', '_token': $('input[name="_token"]').val() },
+                    data: { 'parent_id': prov_id, 'selected': '', id: 'kab_id', '_token': $('input[name="_token"]').val() },
                     success: function(response) {
                         $('#result_kab').html(response);
                         $('.kabkota').select2();
@@ -398,7 +398,7 @@
                             $.ajax({
                                 url: site_url + 'laporan/get_kecamatan',
                                 type: 'post',
-                                data: { 'parent_id': kab_id, 'selected': '', '_token': $('input[name="_token"]').val() },
+                                data: { 'parent_id': kab_id, 'selected': '', id: 'kec_id', '_token': $('input[name="_token"]').val() },
                                 success: function(response) {
                                     $('#result_kec').html(response);
                                     $('.kec').select2();
@@ -408,7 +408,7 @@
                                         $.ajax({
                                             url: site_url + 'laporan/get_kelurahan',
                                             type: 'post',
-                                            data: { 'parent_id': kec_id, 'selected': '', '_token': $('input[name="_token"]').val() },
+                                            data: { 'parent_id': kec_id, 'selected': '', id: 'kel_id', '_token': $('input[name="_token"]').val() },
                                             success: function(response) {
                                                 $('#result_kel').html(response);
                                                 $('.kel').select2();
