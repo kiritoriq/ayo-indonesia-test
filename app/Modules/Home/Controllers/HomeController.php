@@ -26,7 +26,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view("Home::index");
+        $data_psc = DB::table('data_psc119')->select('*')->get();
+        return view("Home::index", ['data_psc' => $data_psc]);
     }
 
     /**
