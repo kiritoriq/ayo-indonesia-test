@@ -15,7 +15,7 @@ function formatTanggalPanjang($tanggal) {
 
 function getProvinsi($id="", $isSel="") {
     $datas = DB::select('SELECT id, name, kdc FROM area WHERE parent_id = 0 AND id != 9999999');
-    $html = "<select name='".$id."' id='".$id."' class='form-control h-auto py-5 px-6 rounded-lg prov'>";
+    $html = "<select name='".$id."' id='".$id."' class='form-control h-auto py-5 px-6 rounded-lg prov' required>";
     $html.= "<option value=''>Pilih Provinsi</option>";
     foreach($datas as $data) {
         $selected = ($data->id==$isSel)?'selected':'';
@@ -27,7 +27,7 @@ function getProvinsi($id="", $isSel="") {
 
 function getKota($id="", $parent_id="", $isSel="") {
     $datas = DB::select('SELECT id, name, kdc FROM area WHERE parent_id = '.$parent_id.'::int8 ');
-    $html = "<select name='".$id."' id='".$id."' class='form-control h-auto py-5 px-6 rounded-lg kabkota'>";
+    $html = "<select name='".$id."' id='".$id."' class='form-control h-auto py-5 px-6 rounded-lg kabkota' required>";
     $html.= "<option value=''>Pilih Kab/Kota</option>";
     foreach($datas as $data) {
         $selected = ($data->id==$isSel)?'selected':'';
@@ -39,7 +39,7 @@ function getKota($id="", $parent_id="", $isSel="") {
 
 function getKecamatan($id="", $parent_id="", $isSel="") {
     $datas = DB::select("SELECT id, name, kdc FROM area WHERE parent_id = ".$parent_id." ::int8 ");
-    $html = "<select name='".$id."' id='".$id."' class='form-control h-auto py-5 px-6 rounded-lg kec'>";
+    $html = "<select name='".$id."' id='".$id."' class='form-control h-auto py-5 px-6 rounded-lg kec' required>";
     $html.= "<option value=''>Pilih Kecamatan</option>";
     foreach($datas as $data) {
         $selected = ($data->id==$isSel)?'selected':'';
@@ -51,7 +51,7 @@ function getKecamatan($id="", $parent_id="", $isSel="") {
 
 function getKelurahan($id="", $parent_id="", $isSel="") {
     $datas = DB::select("SELECT id, name, kdc FROM area WHERE parent_id = ".$parent_id." ::int8 ");
-    $html = "<select name='".$id."' id='".$id."' class='form-control h-auto py-5 px-6 rounded-lg kel'>";
+    $html = "<select name='".$id."' id='".$id."' class='form-control h-auto py-5 px-6 rounded-lg kel' required>";
     $html.= "<option value=''>Pilih Kelurahan</option>";
     foreach($datas as $data) {
         $selected = ($data->id==$isSel)?'selected':'';
@@ -144,4 +144,17 @@ function force_download($filename = '', $data = '')
     }
 
     exit($data);
+}
+
+/* Function untuk menampilkan pilihan (select) jenis_aduan */
+function getJenisAduan($id="", $isSel="") {
+    $datas = DB::select('SELECT * FROM jenis_aduan WHERE "isAktif" != 0');
+    $html = "<select name='".$id."' id='".$id."' class='form-control h-auto py-5 px-6 rounded-lg jenis_aduan' required>";
+    $html.= "<option>.: Pilih Jenis Aduan :.</option>";
+    foreach($datas as $data) {
+        $selected = ($data->id==$isSel)?'selected':'';
+        $html.= "<option value='".$data->id."' ".$selected.">".$data->jenis_aduan."</option>";
+    }
+    $html.= "</select>";
+    return $html;
 }

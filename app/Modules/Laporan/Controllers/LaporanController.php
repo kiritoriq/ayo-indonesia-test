@@ -34,8 +34,9 @@ class LaporanController extends Controller
 
         // $laporans = $this->model->with(['petugas'])->where('deleted_at', '=', null)->orderBy('created_at', 'desc')->get();
         // return view('Laporan::index', ['laporans' => $laporans]);
-        
-        return view('Laporan::index');
+        $jenis_aduan = DB::table('jenis_aduan')->select('*')->whereRaw('"isAktif" != 0')->get();
+
+        return view('Laporan::index', ['jenis_aduans' => $jenis_aduan]);
     }
 
     public function loadDataTables()
@@ -43,9 +44,11 @@ class LaporanController extends Controller
         $draw = $_REQUEST['draw'];
         $limit_data = $_REQUEST['length'];
         $offset_data = $_REQUEST['start'];
-        $cari_data =  $_POST['search']['value'];
+        $jenis_aduan = ((substr($_POST['search']['value'],0,5)=='aduan')?explode('-',$_POST['search']['value'])[1]:'');
+        $cari_data =  ((substr($_POST['search']['value'],0,5)!='aduan')?$_POST['search']['value']:'');
+        // dd($jenis_aduan);
         $order_data = "desc";
-        $data = DB::select("SELECT * FROM call_center_cari_laporan_warga('".$cari_data."', '".$order_data."', '".$limit_data."', '".$offset_data."' )");
+        $data = DB::select("SELECT * FROM call_center_cari_laporan_warga('".$cari_data."', '".$order_data."', '".$limit_data."', '".$offset_data."', '".$jenis_aduan."' )");
         
         $output_table = array();
         $output_table['aaData'] = array();
@@ -67,6 +70,7 @@ class LaporanController extends Controller
                     }
 
                     $list["isi_laporan"] = $isi_laporan;
+                    $list["jenis_aduan"] = (($row->jenis_aduan!=null)?'<span class="label label-lg font-weight-bold label-light-primary label-inline mr-3">'.$row->jenis_aduan.'</span>':'<i>Tidak diketahui</i>');
                     $list["petugas_input"] = $row->username;
                     $list["tanggal_input"] = formatTanggalPanjang(date(('Y-m-d'), strtotime($row->created_at))) . ' Pukul ' . date('H:i', strtotime($row->created_at));
                     $list["aksi"] =
@@ -168,8 +172,13 @@ class LaporanController extends Controller
             'nama_pelapor' => 'required',
             'alamat_pelapor' => 'required',
             'no_telp_pelapor' => 'required',
+            'prov_id' => 'required',
+            'kab_id' => 'required',
+            'kec_id' => 'required',
+            'kel_id' => 'required',
             'isi_laporan' => 'required',
             'instansi' => 'required',
+            'id_jenis_aduan' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -187,6 +196,7 @@ class LaporanController extends Controller
             $create->kec_id = $request->kec_id;
             $create->kel_id = $request->kel_id;
             $create->solusi = $request->solusi;
+            $create->id_jenis_aduan = $request->id_jenis_aduan;
             $create->user_id = Auth::user()->id;
             $create->role_id = Session::get('role_id')[0];
             $create->created_at = date('Y-m-d H:i:s');
@@ -263,8 +273,13 @@ class LaporanController extends Controller
             'nama_pelapor' => 'required',
             'alamat_pelapor' => 'required',
             'no_telp_pelapor' => 'required',
+            'prov_id' => 'required',
+            'kab_id' => 'required',
+            'kec_id' => 'required',
+            'kel_id' => 'required',
             'isi_laporan' => 'required',
             'instansi' => 'required',
+            'id_jenis_aduan' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -283,6 +298,7 @@ class LaporanController extends Controller
             $update->kel_id = $request->kel_id;
             $update->user_id = Auth::user()->id;
             $update->solusi = $request->solusi;
+            $update->id_jenis_aduan = $request->id_jenis_aduan;
             $update->role_id = Session::get('role_id')[0];
             $update->updated_at = date('Y-m-d H:i:s');
             $update->save();
@@ -340,7 +356,8 @@ class LaporanController extends Controller
 
     public function getDetails($id)
     {
-        $laporan = $this->model->where('id', '=', $id)->first();
+        $laporan = $this->model->with(['petugas', 'jenisAduan'])->where('id', '=', $id)->first();
+        // dd($laporan);
         return view('Laporan::details', ['laporan' => $laporan]);
     }
 
