@@ -148,7 +148,7 @@ function force_download($filename = '', $data = '')
 
 /* Function untuk menampilkan pilihan (select) jenis_aduan */
 function getJenisAduan($id="", $isSel="") {
-    $datas = DB::select('SELECT * FROM jenis_aduan WHERE "isAktif" != 0');
+    $datas = DB::select('SELECT * FROM jenis_aduan WHERE "isAktif" != 0 ORDER BY id ASC');
     $html = "<select name='".$id."' id='".$id."' class='form-control h-auto py-5 px-6 rounded-lg jenis_aduan' required>";
     $html.= "<option>.: Pilih Jenis Aduan :.</option>";
     foreach($datas as $data) {
