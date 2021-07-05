@@ -43,9 +43,17 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group row fv-plugins-icon-container">
-                            <div class="col-lg-10 col-10">
+                            <div class="col-lg-6 col-6">
                                 <input type="text" id="cariData" class="form-control" placeholder="Cari laporan"
                                     name="nama">
+                            </div>
+                            <div class="col-lg-4 col-4">
+                                <select name="id_jenis_aduan" id="id_jenis_aduan" class="form-control jenis_aduan">
+                                    <option value="">.: Cari Berdasarkan Jenis Aduan :.</option>
+                                    @foreach($jenis_aduans as $aduan)
+                                        <option value="{{ $aduan->id }}">{{ $aduan->jenis_aduan }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-lg-2 col-2">
                                 <div class="btn-group btn-group-justified btn-group-xs" role="group"
@@ -81,6 +89,7 @@
                                         <th>No. Telp Pelapor</th>
                                         <th>Alamat Pelapor</th>
                                         <th>Isi Laporan</th>
+                                        <th>Jenis Aduan</th>
                                         <th>Petugas Input</th>
                                         <th>Tanggal Input</th>
                                         <th width="10%" class="text-center">Aksi</th>
@@ -142,7 +151,8 @@
                     type: 'POST',
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
-                        cari_data: $('#cariData').val()
+                        cari_data: $('#cariData').val(),
+                        // jenis_aduan: _jenis_aduan
                     }
                 },
                 columnDefs: [
@@ -171,6 +181,9 @@
                         data: 'isi_laporan'
                     },
                     {
+                        data: 'jenis_aduan'
+                    },
+                    {
                         data: 'petugas_input'
                     },
                     {
@@ -192,6 +205,21 @@
                                 cari_data).draw();
                         }, 500);
                     });
+
+                    $("#id_jenis_aduan").change(function(e) {
+                        e.preventDefault()
+                        if($(this).val() != '') {
+                            jenis_aduan = 'aduan-' + this.value
+                        } else {
+                            jenis_aduan = '';
+                        }
+                        table = table
+
+                        clearTimeout(input_filter_timeout);
+                        input_filter_timeout = setTimeout(function () {
+                            table.search(jenis_aduan).draw();
+                        }, 500);
+                    })
 
                 }
 

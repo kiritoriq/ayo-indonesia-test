@@ -84,6 +84,12 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-lg-3 col-3 col-form-label">Jenis Aduan <span class="text-danger">*</span></label>
+                            <div class="col-lg-8 col-8">
+                                {!! getJenisAduan('id_jenis_aduan', '') !!}
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-lg-3 col-3 col-form-label">Solusi</label>
                             <div class="col-lg-8 col-8">
                                 <textarea name="solusi" id="solusi" class="form-control" rows="3"></textarea>
@@ -235,7 +241,7 @@
                                     if(response.status == 'failed') {
                                         Swal.fire({
                                             title: 'Gagal Simpan',
-                                            text: response.msg,
+                                            text: response.error,
                                             icon: 'error',
                                         })
                                         $('btnsubmit').prop('disabled', false);

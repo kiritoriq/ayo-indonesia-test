@@ -20,9 +20,15 @@
                     <td>{{ $laporan->no_telp_pelapor }}</td>
                 </tr>
                 <tr>
-                    <td width="30%">No. Telp. Pelapor</td>
+                    <td width="30%">Isi Laporan</td>
                     <td>
                         {{ $laporan->isi_laporan }}
+                    </td>
+                </tr>
+                <tr>
+                    <td width="30%">Jenis Aduan</td>
+                    <td>
+                        {{ (($laporan->id_jenis_aduan!=null)?$laporan->jenisAduan->jenis_aduan:'Belum Diketahui') }}
                     </td>
                 </tr>
                 <tr>

@@ -3,6 +3,7 @@ namespace App\Modules\Laporan\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use App\Modules\Laporan\Models\JenisAduan;
 
 class Laporan extends Model {
 
@@ -23,11 +24,16 @@ class Laporan extends Model {
         'updated_at',
         'deleted_at',
         'asal_instansi',
-        'prov_id'
+        'prov_id',
+        'id_jenis_aduan'
     ];
 
     public function petugas() {
         return $this->hasMany(User::class, 'id', 'user_id');
+    }
+
+    public function jenisAduan() {
+        return $this->hasOne(JenisAduan::class, 'id', 'id_jenis_aduan');
     }
 
 }
