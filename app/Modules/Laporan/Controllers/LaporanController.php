@@ -34,7 +34,7 @@ class LaporanController extends Controller
 
         // $laporans = $this->model->with(['petugas'])->where('deleted_at', '=', null)->orderBy('created_at', 'desc')->get();
         // return view('Laporan::index', ['laporans' => $laporans]);
-        $jenis_aduan = DB::table('jenis_aduan')->select('*')->whereRaw('"isAktif" != 0')->get();
+        $jenis_aduan = DB::table('jenis_aduan')->select('*')->whereRaw('"isAktif" != 0')->orderBy('id', 'asc')->get();
 
         return view('Laporan::index', ['jenis_aduans' => $jenis_aduan]);
     }
@@ -44,8 +44,8 @@ class LaporanController extends Controller
         $draw = $_REQUEST['draw'];
         $limit_data = $_REQUEST['length'];
         $offset_data = $_REQUEST['start'];
-        $jenis_aduan = ((substr($_POST['search']['value'],0,5)=='aduan')?explode('-',$_POST['search']['value'])[1]:'');
-        $cari_data =  ((substr($_POST['search']['value'],0,5)!='aduan')?$_POST['search']['value']:'');
+        $jenis_aduan = (($_POST['columns'][5]['search']['value'] != '')?$_POST['columns'][5]['search']['value']:'');
+        $cari_data =  $_POST['search']['value'];
         // dd($jenis_aduan);
         $order_data = "desc";
         $data = DB::select("SELECT * FROM call_center_cari_laporan_warga('".$cari_data."', '".$order_data."', '".$limit_data."', '".$offset_data."', '".$jenis_aduan."' )");

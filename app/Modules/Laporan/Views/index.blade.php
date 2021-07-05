@@ -127,6 +127,7 @@
         });
 
         var initTable = function () {
+            // var _aduan = '';
             var table = $('#table-laporan').DataTable({
                 retrieve: true,
                 ordering: false,
@@ -152,7 +153,7 @@
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
                         cari_data: $('#cariData').val(),
-                        // jenis_aduan: _jenis_aduan
+                        // jenis_aduan: _aduan
                     }
                 },
                 columnDefs: [
@@ -208,17 +209,18 @@
 
                     $("#id_jenis_aduan").change(function(e) {
                         e.preventDefault()
-                        if($(this).val() != '') {
-                            jenis_aduan = 'aduan-' + this.value
-                        } else {
-                            jenis_aduan = '';
-                        }
-                        table = table
+                        // if($(this).val() != '') {
+                        //     jenis_aduan = 'aduan-' + this.value
+                        // } else {
+                        //     jenis_aduan = '';
+                        // }
+                        // table = table
 
-                        clearTimeout(input_filter_timeout);
-                        input_filter_timeout = setTimeout(function () {
-                            table.search(jenis_aduan).draw();
-                        }, 500);
+                        // clearTimeout(input_filter_timeout);
+                        // input_filter_timeout = setTimeout(function () {
+                        //     table.search(jenis_aduan).draw();
+                        // }, 500);
+                        table.columns(5).search($(this).val()).draw();
                     })
 
                 }
