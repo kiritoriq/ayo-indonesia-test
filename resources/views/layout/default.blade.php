@@ -74,7 +74,7 @@
                 "tapToDismiss": false
             };
 
-            toastr.success("<strong>Informasi:</strong> Penambahan fitur baru input NIK sudah ada di Form Input Laporan. NIK Bersifat Optional, hanya di input ketika ada laporan pasien / orang yang terpapar covid19");
+            toastr.success("<strong>Informasi:</strong> Penambahan pilihan Jenis Aduan pada input laporan. Pada index laporan terdapat juga filter pencarian berdasarkan Jenis Aduan.");
         </script>
 
     </body>
