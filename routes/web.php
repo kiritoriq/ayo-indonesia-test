@@ -42,3 +42,4 @@ Route::get('/quick-search', 'PagesController@quickSearch')->name('quick-search')
 
 Auth::routes();
 Route::post('register', 'Auth\RegisterController@register')->name('register.action');
+Route::get('cetak-vaksinasi-kpcpen', 'Auth\RegisterController@cetakDataVaksinasi');

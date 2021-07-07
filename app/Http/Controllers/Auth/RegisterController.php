@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Helpers\Helper;
 
 class RegisterController extends Controller
 {
@@ -84,5 +86,12 @@ class RegisterController extends Controller
             
             return response()->json(['status' => 'success', 'msg' => 'Data Berhasil disimpan']);
         }
+    }
+
+    public function cetakDataVaksinasi() {
+        $tgl_skrg = Helper::formatTanggalPanjang(date('Y-m-d'));
+        $data = DB::select("select * from get_vaksinasi()");
+        
+        return view('auth.cetak_excel_vaksinasi', ['datas' => $data, 'tgl_skrg' => $tgl_skrg]);
     }
 }
