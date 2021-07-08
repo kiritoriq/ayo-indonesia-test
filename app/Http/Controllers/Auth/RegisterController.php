@@ -96,12 +96,12 @@ class RegisterController extends Controller
     }
 
     public function getDataVaksin() {
-        $datas = DB::table('lokasi_vaksin')->select('*')->where('is_aktif', '=', 1)->get();
-        foreach($datas as $key => $data) {
-            $datas[$key]->kab_id = ($data->kab_id!=null)?getNamaWilayah($data->kab_id):Null;
-            $datas[$key]->kec_id = ($data->kec_id!=null)?getNamaWilayah($data->kec_id):Null;
-            $datas[$key]->kel_id = ($data->kel_id!=null)?getNamaWilayah($data->kel_id):Null;
-        }
+        $datas = DB::table('lokasi_vaksin as v')
+                ->select('kab.name as kab_name', 'kec.name as kec_name', 'kel.name as kel_name', 'v.sentra_vaksinasi', 'v.alamat')
+                ->leftjoin('area as kab', 'kab.id', '=', 'v.kab_id')
+                ->leftjoin('area as kec', 'kec.id', '=', 'v.kec_id')
+                ->leftjoin('area as kel', 'kel.id', '=', 'v.kel_id')
+                ->where('is_aktif', '=', 1)->get();
 
         return response()->json($datas, 200);
     }
