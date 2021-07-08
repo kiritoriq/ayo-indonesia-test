@@ -89,9 +89,20 @@ class RegisterController extends Controller
     }
 
     public function cetakDataVaksinasi() {
-        $tgl_skrg = Helper::formatTanggalPanjang(date('Y-m-d'));
         $data = DB::select("select * from get_vaksinasi()");
+        $tgl_skrg = Helper::formatTanggalPanjang(date('Y-m-d', strtotime($data[0]->tanggal_scraping)));
         
         return view('auth.cetak_excel_vaksinasi', ['datas' => $data, 'tgl_skrg' => $tgl_skrg]);
+    }
+
+    public function getDataVaksin() {
+        $datas = DB::table('lokasi_vaksin')->select('*')->where('is_aktif', '=', 1)->get();
+        foreach($datas as $key => $data) {
+            $datas[$key]->kab_id = ($data->kab_id!=null)?getNamaWilayah($data->kab_id):Null;
+            $datas[$key]->kec_id = ($data->kec_id!=null)?getNamaWilayah($data->kec_id):Null;
+            $datas[$key]->kel_id = ($data->kel_id!=null)?getNamaWilayah($data->kel_id):Null;
+        }
+
+        return response()->json($datas, 200);
     }
 }
