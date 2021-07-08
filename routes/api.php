@@ -23,3 +23,5 @@ Route::group(['prefix' => 'v1', 'namespace' => 'v1'], function () {
         Route::post('logout', 'AuthController@logout_api')->name('api.logout');
     });
 });
+
+Route::get('get-data-sentravaksin', 'Auth\RegisterController@getDataVaksin')->name('api.data-vaksin');
