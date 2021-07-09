@@ -124,7 +124,7 @@ $w = "<?xml version=\"1.0\"?>
     <Cell ss:StyleID=\"s18\"><Data ss:Type=\"String\">No</Data></Cell>
     <Cell ss:StyleID=\"s18\"><Data ss:Type=\"String\">Nama Kota</Data></Cell>
     <Cell ss:StyleID=\"s19\"><Data ss:Type=\"String\">Jumlah Orang Vaksin 1</Data></Cell>
-    <Cell ss:StyleID=\"s72\"><Data ss:Type=\"String\">Cakupan Vaksin 2</Data></Cell>
+    <Cell ss:StyleID=\"s72\"><Data ss:Type=\"String\">Cakupan Vaksin 1</Data></Cell>
     <Cell ss:StyleID=\"s19\"><Data ss:Type=\"String\">Jumlah Orang Vaksin 2</Data></Cell>
     <Cell ss:StyleID=\"s72\"><Data ss:Type=\"String\">Cakupan Vaksin 2</Data></Cell>
    </Row>";
