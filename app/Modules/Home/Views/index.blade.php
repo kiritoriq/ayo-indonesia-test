@@ -685,11 +685,11 @@
                         cell.innerHTML = i + 1;
                     });
                 }).draw();
-                $("#cariDataSentra").on("keyup", function (e) {
+                $("#cariDataIsolasi").on("keyup", function (e) {
                     if ($(this).val() === "") {
-                        table.search($("#cariDataSentra").val()).draw();
+                        table.search($("#cariDataIsolasi").val()).draw();
                     } else {
-                        table.columns(1).search($("#cariDataSentra").val()).draw();
+                        table.columns(3).search($("#cariDataIsolasi").val()).draw();
                     }
                 });
             };
