@@ -26,10 +26,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data_psc = DB::table('data_psc119')->select('*')->get();
-        $data_vaksinasi = DB::table('lokasi_vaksin')->select('*')->where('is_aktif', '=', 1)->orderBy('id', 'desc')->get();
-        $data_isolasi = DB::table('lokasi_isolasi')->select('*')->where('is_aktif', '=', 1)->get();
-        return view("Home::index", ['data_psc' => $data_psc, 'data_vaksinasi' => $data_vaksinasi, 'data_isolasi' => $data_isolasi]);
+        return view("Home::index");
     }
 
     /**
@@ -212,5 +209,16 @@ class HomeController extends Controller
         foreach($data as $item) {
             echo $item->tanggal.", ".$item->jumlah."\r\n";
         }
+    }
+
+    public function getDataFaskes() {
+        $data_psc = DB::table('data_psc119')->select('*')->get();
+        return view('Home::data_faskes', ['data_psc' => $data_psc]);
+    }
+
+    public function getDataLain() {
+        $data_vaksinasi = DB::table('lokasi_vaksin')->select('*')->where('is_aktif', '=', 1)->orderBy('id', 'desc')->get();
+        $data_isolasi = DB::table('lokasi_isolasi')->select('*')->where('is_aktif', '=', 1)->get();
+        return view('Home::data_lain', ['data_vaksinasi' => $data_vaksinasi, 'data_isolasi' => $data_isolasi]);
     }
 }

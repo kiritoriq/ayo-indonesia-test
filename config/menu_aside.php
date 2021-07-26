@@ -8,9 +8,28 @@ return [
             'role' => ['1','2'],
             'title' => 'Dashboard',
             'root' => true,
+            'bullet' => 'dot',
             'icon' => 'media/svg/icons/Design/Layers.svg', // or can be 'flaticon-home' or any flaticon-*
-            'page' => 'dashboard',
-            'new-tab' => false,
+            'submenu' => [
+                [
+                    'title' => 'Halaman Utama',
+                    'bullet' => 'dot',
+                    'page' => 'dashboard',
+                    'role' => ['1','2']
+                ],
+                [
+                    'title' => 'Data Fasilitas Kesehatan',
+                    'bullet' => 'dot',
+                    'page' => 'dashboard/data-faskes',
+                    'role' => ['1','2'],
+                ],
+                [
+                    'title' => 'Data Lain-lain',
+                    'bullet' => 'dot',
+                    'page' => 'dashboard/data-lain',
+                    'role' => ['1','2'],
+                ]
+            ]
         ],
 
         // Custom
@@ -36,6 +55,14 @@ return [
         ],
         [
             'section' => 'Admin',
+            'role' => ['1'],
+        ],
+        [
+            'title' => 'Master Jenis Aduan',
+            'root' => true,
+            'icon' => 'media/svg/icons/Home/Commode2.svg',
+            'page' => 'master-jenis-aduan',
+            'new-tab' => false,
             'role' => ['1'],
         ],
         [
