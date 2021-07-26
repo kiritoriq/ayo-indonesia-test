@@ -105,4 +105,11 @@ class RegisterController extends Controller
 
         return response()->json($datas, 200);
     }
+
+    public function cetakDataMingguan() {
+        $kategoris = DB::select("select * from call_center_jumlah_aduan_kategori()");
+        $kabkotas = DB::select("select * from call_center_jumlah_aduan_kabkota()");
+        // dd($kabkotas);
+        return view('auth.cetak_aduan_mingguan', ['kategoris' => $kategoris, 'kabkotas' => $kabkotas]);
+    }
 }

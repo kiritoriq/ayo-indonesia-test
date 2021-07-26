@@ -9,4 +9,8 @@ Route::group(['module' => 'Home', 'middleware' => ['web','prevent-back-history']
     Route::post('laporan/load-data-puskesmas', 'HomeController@loadDataTablesPuskesmas')->name('load-data-puskesmas');
     Route::post('laporan/load-data-grafik', 'HomeController@loadDataGrafik')->name('load-data-grafik');
 
+    // Route submenu dashboard
+    Route::get('dashboard/data-faskes', 'HomeController@getDataFaskes')->name('dashboard.data-faskes');
+    Route::get('dashboard/data-lain', 'HomeController@getDataLain')->name('dashboard.data-lain');
+
 });

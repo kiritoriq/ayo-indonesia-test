@@ -1,0 +1,5 @@
+<?php
+
+/**
+ *	JenisAduan Helper
+ */
