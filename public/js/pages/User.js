@@ -119,32 +119,32 @@
           })
       }
 
-      const deleteUser = function deleteUser(param){
-        $('#table-user tbody').on('click', '.hapus-user', function (e) {
-          e.preventDefault();
-          let user = $(this).attr("data-user");
-          let url = $(this).attr("href");
+    //   const deleteUser = function deleteUser(param){
+    //     $('#table-user tbody').on('click', '.hapus-user', function (e) {
+    //       e.preventDefault();
+    //       let user = $(this).attr("data-user");
+    //       let url = $(this).attr("href");
 
-          Swal.fire({
-            title: `Yakin hapus user ${user} ?`,
-            text: `Jika di hapus user tidak dapat login ke aplikasi`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes!'
-          }).then((result) => {
-            if (result.value) {
+    //       Swal.fire({
+    //         title: `Yakin hapus user ${user} ?`,
+    //         text: `Jika di hapus user tidak dapat login ke aplikasi`,
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: '#3085d6',
+    //         cancelButtonColor: '#d33',
+    //         confirmButtonText: 'Yes!'
+    //       }).then((result) => {
+    //         if (result.value) {
               
-            }
-          })
-        })
-    }
+    //         }
+    //       })
+    //     })
+    // }
 
       return {
         init: function init() {
           aktifUser();
-          deleteUser();
+          // deleteUser();
         }
       };
     }();
