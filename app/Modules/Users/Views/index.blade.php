@@ -96,10 +96,10 @@
                                             {{-- <span class="label label-lg font-weight-bold label-light-primary label-inline">{{ $user->privilege }}</span> --}}
                                         </td>
                                         <td class="text-center" width="20%">
-                                            <a href="#" class="btn btn-sm btn-clean btn-icon" data-toggle="tooltip" data-theme="dark" title="Ubah USer">
+                                            <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('users.edit', $user->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit Jenis Aduan">
                                                 <span class="la la-2x la-edit text-primary"></span>
-                                            </a>
-                                            <a href="#" class="btn btn-sm btn-clean btn-icon hapus-user" data-user="{{ $user->fullname }}" data-toggle="tooltip" data-theme="dark" title="Hapus User">
+                                            </button>
+                                            <a href="#" class="btn btn-sm btn-clean btn-icon hapus-user" data-user="{{ $user->id }}" data-toggle="tooltip" data-theme="dark" title="Hapus User">
                                                 <span class="la la-2x la-trash text-danger"></span>
                                             </a>
                                         </td>
@@ -127,4 +127,52 @@
 
     {{-- page scripts --}}
     <script src="{{ asset('js/pages/User.js') }}" type="text/javascript"></script>
+    <script>
+        $(document).ready(function() {
+            $('#table-user .hapus-user').click(function(e) {
+                e.preventDefault();
+                var id = $(this).attr('data-user')
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Apakah anda yakin akan menghapus data ini?',
+                    text: 'Setelah dihapus, data tidak dapat dikembalikan',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Yakin',
+                    showCancelButton: true,
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if(result.value) {
+                        $.ajax({
+                            url: '{{ route("users.delete") }}',
+                            type: 'POST',
+                            data: { id: id, _token: $('meta[name="csrf-token"]').attr('content') },
+                            success: function(response) {
+                                if(response.status == 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil!',
+                                        text: 'Data Berhasil dihapus',
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    }).then(() => {
+                                        window.location.href = "{{ route('jenis-aduan.index') }}";
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Terjadi Kesalahan!',
+                                        text: response.msg,
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    })
+                                }
+                            }
+                        })
+                    } else {
+
+                    }
+                })
+            })
+        })
+    </script>
 @endsection
