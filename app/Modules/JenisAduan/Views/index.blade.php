@@ -38,14 +38,14 @@
                                             </g>
                                         </svg><!--end::Svg Icon--></span> Cari
                                     </button>
-                                    <a href="{{ route('jenis-aduan.create') }}" class="btn btn-primary btn-sm py-3" title="Tambah User">
+                                    <button type="button" class="btn btn-primary btn-sm py-3" data-fancybox data-type="ajax" data-src="{{ route('jenis-aduan.create') }}" id="tambahData">
                                         <span class="svg-icon svg-icon-white"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-07-07-181510/theme/html/demo1/dist/../src/media/svg/icons/Navigation/Plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                 <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
                                                 <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
                                             </g>
                                         </svg><!--end::Svg Icon--></span> Tambah
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -81,10 +81,10 @@
                                             {{-- <span class="label label-lg font-weight-bold label-light-primary label-inline">{{ $user->privilege }}</span> --}}
                                         </td>
                                         <td class="text-center" width="20%">
-                                            <a href="#" class="btn btn-sm btn-clean btn-icon" data-toggle="tooltip" data-theme="dark" title="Edit Jenis Aduan">
+                                            <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('jenis-aduan.edit', $aduan->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit Jenis Aduan">
                                                 <span class="la la-2x la-edit text-primary"></span>
-                                            </a>
-                                            <a href="#" class="btn btn-sm btn-clean btn-icon hapus-user" data-user="{{ $aduan->id }}" data-toggle="tooltip" data-theme="dark" title="Hapus Jenis Aduan">
+                                            </button>
+                                            <a href="#" class="btn btn-sm btn-clean btn-icon hapus-aduan" data-aduan="{{ $aduan->id }}" data-toggle="tooltip" data-theme="dark" title="Hapus Jenis Aduan">
                                                 <span class="la la-2x la-trash text-danger"></span>
                                             </a>
                                         </td>
@@ -111,5 +111,52 @@
     <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
 
     {{-- page scripts --}}
-    <script src="{{ asset('js/pages/User.js') }}" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#table-user .hapus-aduan').click(function(e) {
+                e.preventDefault();
+                var id = $(this).attr('data-aduan')
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Apakah anda yakin akan menghapus data ini?',
+                    text: 'Setelah dihapus, data tidak dapat dikembalikan',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Yakin',
+                    showCancelButton: true,
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if(result.value) {
+                        $.ajax({
+                            url: '{{ route("jenis-aduan.delete") }}',
+                            type: 'POST',
+                            data: { id: id, _token: $('meta[name="csrf-token"]').attr('content') },
+                            success: function(response) {
+                                if(response.status == 'success') {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil!',
+                                        text: 'Data Berhasil dihapus',
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    }).then(() => {
+                                        window.location.href = "{{ route('jenis-aduan.index') }}";
+                                    })
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Terjadi Kesalahan!',
+                                        text: response.msg,
+                                        timer: 2000,
+                                        showConfirmButton: false
+                                    })
+                                }
+                            }
+                        })
+                    } else {
+
+                    }
+                })
+            })
+        })
+    </script>
 @endsection

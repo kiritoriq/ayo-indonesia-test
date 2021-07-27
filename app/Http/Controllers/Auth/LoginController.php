@@ -91,7 +91,7 @@ class LoginController extends Controller
                     $user = User::with(['roles.role'])->where('username', '=', Auth::user()->username)->first();
                     // dd($user->roles);
                     Session::put('name', Auth::user()->username);
-                    Session::put('user_id', Auth::user()->user_id);
+                    Session::put('user_id', Auth::user()->id);
                     $role_id = array();
                     foreach($user->roles as $roles) {
                         array_push($role_id, $roles->role_id);

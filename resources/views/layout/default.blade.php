@@ -63,7 +63,7 @@
                 "positionClass": "toast-bottom-left",
                 "preventDuplicates": false,
                 "onclick": null,
-                "showDuration": "300",
+                "showDuration": "600",
                 "hideDuration": "1000",
                 "timeOut": 5000,
                 "extendedTimeOut": 0,
@@ -73,8 +73,18 @@
                 "hideMethod": "fadeOut",
                 "tapToDismiss": false
             };
+            var date = new Date();
+            var dd = date.getDate();
+            // var dd = String(date.getDate()).padStart(2, '0');
+            var mm = String(date.getMonth() + 1).padStart(2, '0');
+            var yyyy = date.getFullYear();
+            var today = String(dd).padStart(2, '0') + '/' + mm + '/' + yyyy;
 
-            toastr.success("<strong>Informasi:</strong> Penambahan pilihan Jenis Aduan pada input laporan. Pada index laporan terdapat juga filter pencarian berdasarkan Jenis Aduan.");
+            var end_date = String(dd + 3).padStart(2, '0') + '/' + mm + '/' + yyyy;
+            // console.log(end_date);
+            if(today <= end_date) {
+                toastr.success("<strong>Informasi:</strong> Tampilan Dashboard telah berubah. Untuk melihat data informasi rumah sakit dan lain-lainnya sekarang melalui sub-menu Dashboard.");
+            }
         </script>
 
     </body>
