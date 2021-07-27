@@ -40,7 +40,7 @@
                 <tr>
                     <td width="30%">Jenis Pelapor</td>
                     <td>
-                        {{ ($laporan->instansi==1)?'Umum':'Faskes' }}
+                        {{ ($laporan->instansi==1)?'Umum':'Instansi/Perusahaan' }}
                     </td>
                 </tr>
                 @if($laporan->instansi==2)

@@ -70,6 +70,7 @@
                                     timer: 1500,
                                     showConfirmButton: false
                                 }).then(() => {
+                                    $.fancybox.close()
                                     window.location.href = "{{ route('jenis-aduan.index') }}";
                                 })
                             } else {

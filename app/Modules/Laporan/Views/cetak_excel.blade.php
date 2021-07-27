@@ -115,7 +115,7 @@
       <Column ss:AutoFitWidth=\"0\" ss:Width=\"141.75\"/>
       <Column ss:AutoFitWidth=\"0\" ss:Width=\"69.75\"/>
       <Row ss:Index=\"2\" ss:Height=\"18.75\">
-        <Cell ss:Index=\"2\" ss:MergeAcross=\"6\" ss:StyleID=\"s27\"><Data ss:Type=\"String\">DATA PENCATATAN HOTLINE COVID-19 PROVINSI JAWA TENGAH</Data></Cell>
+        <Cell ss:Index=\"2\" ss:MergeAcross=\"6\" ss:StyleID=\"s27\"><Data ss:Type=\"String\">DATA PENCATATAN HOTLINE DINKOP UMKM PROVINSI JAWA TENGAH</Data></Cell>
       </Row>
       <Row ss:Height=\"18.75\">
         <Cell ss:Index=\"2\" ss:MergeAcross=\"6\" ss:StyleID=\"s27\"><Data ss:Type=\"String\">PADA TANGGAL ".$pada_1." PUKUL ".date('H:i', strtotime($tanggal_1))." WIB s.d ".$pada_2." PUKUL ".date('H:i', strtotime($tanggal_2))." WIB</Data></Cell>
@@ -133,7 +133,7 @@
       </Row>
       <Row ss:Height=\"15.75\">
         <Cell ss:Index=\"6\" ss:StyleID=\"s20\"><Data ss:Type=\"String\">Umum</Data></Cell>
-        <Cell ss:StyleID=\"s20\"><Data ss:Type=\"String\">Faskes (Asal Faskes)</Data></Cell>
+        <Cell ss:StyleID=\"s20\"><Data ss:Type=\"String\">Instansi (Asal Instansi)</Data></Cell>
       </Row>";
       $n = 0;
       foreach($datas as $row => $data) {

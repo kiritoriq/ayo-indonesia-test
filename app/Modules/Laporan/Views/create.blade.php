@@ -101,38 +101,18 @@
                                 <select name="instansi" class="form-control" id="instansi" required>
                                     <option value="">.: Pilih Instansi :.</option>
                                     <option value="1">Umum</option>
-                                    <option value="2">Faskes</option>
+                                    <option value="2">Instansi/Perusahaan</option>
                                 </select>
-                                {{-- <input type="text" class="form-control border-primary" id="nama" placeholder="Masukkan nama kelompok" name="nama"> --}}
                             </div>
                         </div>
                         <div id="asalfaskes">
                             <div class="form-group row">
-                                <label class="col-lg-3 col-3 col-form-label">Asal Instansi / Faskes <span class="text-danger">*</span></label>
+                                <label class="col-lg-3 col-3 col-form-label">Asal Instansi / Perusahaan <span class="text-danger">*</span></label>
                                 <div class="col-lg-8 col-8">
-                                    <input type="text" class="form-control" id="asal_instansi" placeholder="Masukkan Asal Instansi / Faskes" name="asal_instansi">
+                                    <input type="text" class="form-control" id="asal_instansi" placeholder="Masukkan Asal Instansi / Perusahaan" name="asal_instansi">
                                 </div>
                             </div>
                         </div>
-                        <hr>
-                        <button type="button" class="btn btn-primary float-right" data-fancybox data-type="ajax" data-src="{{ route('laporan.add-pasien') }}" id="btn-add-pasien"><i class="fa fa-plus-circle"></i> Tambah Pasien</button>
-                        <div class="float-right" style="padding-right:20px; margin-top:4px;">
-                            {{-- <input type="checkbox" id="isSame" /> Apakah Pelapor adalah Pasien? --}}
-                        </div>
-                        <br />
-                        <h5><strong>Data Pasien</strong></h5>
-                        <table class="table table-bordered table-striped mt-4">
-                            <thead>
-                                <th>NIK</th>
-                                <th>Nama</th>
-                                <th>Alamat</th>
-                                <th>Golongan Darah</th>
-                                <th>Aksi</th>
-                            </thead>
-                            <tbody id="place-tb-pasien">
-                                
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>

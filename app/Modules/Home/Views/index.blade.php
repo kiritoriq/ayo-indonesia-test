@@ -17,26 +17,11 @@
                             </g>
                         </svg><!--end::Svg Icon--></span>
                     </div>
-                    <div class="alert-text">Selamat datang di Aplikasi Hotline Corona Jateng.</div>
+                    <div class="alert-text">Selamat datang di Aplikasi Hotline Dinkop UMKM Jateng.</div>
                     <div class="alert-close">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"><i class="ki ki-close"></i></span>
                         </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card card-custom gutter-b">
-                    <div class="card-body d-flex align-items-center justify-content-between flex-lg-wrap-reverse">
-                        <div class="mr-2">
-                            <h3 class="font-weight-bolder">Data Stok Obat</h3>
-                            <div class="text-dark-50 font-size-lg mt-2">Klik tombol untuk menuju website Kemkes</div>
-                        </div>
-                        <a href="https://farmaplus.kemkes.go.id/" target="_blank" rel="noopener noreferrer" class="btn btn-primary font-weight-bold py-3 px-6">
-                            Lihat Sekarang
-                        </a>
                     </div>
                 </div>
             </div>
@@ -74,7 +59,7 @@
             var chart = echarts.init(document.getElementById('chart'));
             var option = {
                 title: {
-                    text: 'Grafik Laporan Harian Hotline Corona Jateng'
+                    text: 'Grafik Laporan Harian Hotline Dinkop UMKM'
                 },
                 tooltip: {},
                 dataZoom: [{

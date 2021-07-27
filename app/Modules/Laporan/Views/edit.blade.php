@@ -105,61 +105,19 @@
                                 <select name="instansi" class="form-control" id="instansi" required>
                                     <option value="">.: Pilih Instansi :.</option>
                                     <option value="1" {{ ($laporan->instansi==1)?'selected':'' }}>Umum</option>
-                                    <option value="2" {{ ($laporan->instansi==2)?'selected':'' }}>Faskes</option>
+                                    <option value="2" {{ ($laporan->instansi==2)?'selected':'' }}>Instansi/Perusahaan</option>
                                 </select>
                                 {{-- <input type="text" class="form-control border-primary" id="nama" placeholder="Masukkan nama kelompok" name="nama"> --}}
                             </div>
                         </div>
                         <div id="asalfaskes">
                             <div class="form-group row">
-                                <label class="col-lg-3 col-3 col-form-label">Asal Instansi / Faskes <span class="text-danger">*</span></label>
+                                <label class="col-lg-3 col-3 col-form-label">Asal Instansi / Perusahaan <span class="text-danger">*</span></label>
                                 <div class="col-lg-8 col-8">
-                                    <input type="text" class="form-control" id="asal_instansi" placeholder="Masukkan Asal Instansi / Faskes" name="asal_instansi" value="{{ $laporan->asal_instansi }}">
+                                    <input type="text" class="form-control" id="asal_instansi" placeholder="Masukkan Asal Instansi / Perusahaan" name="asal_instansi" value="{{ $laporan->asal_instansi }}">
                                 </div>
                             </div>
                         </div>
-                        <hr>
-                        <button type="button" class="btn btn-primary float-right" data-fancybox data-type="ajax" data-src="{{ route('laporan.add-pasien') }}" id="btn-add-pasien"><i class="fa fa-plus-circle"></i> Tambah Pasien</button>
-                        <div class="float-right" style="padding-right:20px; margin-top:4px;">
-                            {{-- <input type="checkbox" id="isSame" /> Apakah Pelapor adalah Pasien? --}}
-                        </div>
-                        <br />
-                        <h5><strong>Data Pasien</strong></h5>
-                        <table class="table table-bordered table-striped mt-4">
-                            <thead>
-                                <th>NIK</th>
-                                <th>Nama</th>
-                                <th>Alamat</th>
-                                <th>Golongan Darah</th>
-                                <th>Aksi</th>
-                            </thead>
-                            <tbody id="place-tb-pasien">
-                                @if (getEditPasien($laporan->id))
-                                    @foreach (getEditPasien($laporan->id) as $item)
-                                        <tr>
-                                            <td>{{ $item->nik }}</td>
-                                            <td>{{ $item->nama_lengkap }}</td>
-                                            <td>{{ $item->alamat }}</td>
-                                            <td>{{ $item->golongan_darah }}</td>
-                                            <td>
-                                                <input type="hidden" name="nik_pasien[]" value="{{ $item->nik }}" />
-                                                <input type="hidden" name="nama_lengkap_pasien[]" value="{{ $item->nama_lengkap }}" />
-                                                <input type="hidden" name="prov_id_pasien[]" value="{{ $item->prov_id }}" />
-                                                <input type="hidden" name="kab_id_pasien[]" value="{{ $item->kab_id }}" />
-                                                <input type="hidden" name="kec_id_pasien[]" value="{{ $item->kec_id }}" />
-                                                <input type="hidden" name="kel_id_pasien[]" value="{{ $item->kel_id }}" />
-                                                <input type="hidden" name="alamat_pasien[]" value="{{ $item->alamat }}" />
-                                                <input type="hidden" name="tgl_lahir_pasien[]" value="{{ $item->tgl_lahir }}" />
-                                                <input type="hidden" name="golongan_darah_pasien[]" value="{{ $item->golongan_darah }}" />
-                                                <input type="hidden" name="f[]" value="f-db" />
-                                                <input type="hidden" name="mode" value="edit" />
-                                                <a href="javascript:;" class="btn btn-danger btn-delete-pasien" onclick="delete_pasien('{{ $item->id }}')"><i class="fa fa-trash"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>

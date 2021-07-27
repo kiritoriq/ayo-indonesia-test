@@ -115,7 +115,7 @@ class LoginController extends Controller
 
     public function recaptcha()
     {
-        return captcha_src('flat');
+        return captcha_src('default');
     }
 
     public function auth(Request $request)

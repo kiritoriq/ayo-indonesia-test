@@ -202,47 +202,6 @@ class LaporanController extends Controller
             $create->created_at = date('Y-m-d H:i:s');
             $create->save();
 
-            if (isset($request->nik_pasien)) {
-                $_pasien = [];
-                foreach ($request->nik_pasien as $key => $item) {
-                    $_pasien[] = (object)[
-                        'nik_pasien' => $item,
-                        'nama_lengkap_pasien' => ($request->nama_lengkap_pasien[$key] ? $request->nama_lengkap_pasien[$key] : 0),
-                        'prov_id_pasien' => ($request->prov_id_pasien[$key] ? $request->prov_id_pasien[$key] : 0),
-                        'kab_id_pasien' => ($request->kab_id_pasien[$key] ? $request->kab_id_pasien[$key] : 0),
-                        'kec_id_pasien' => ($request->kec_id_pasien[$key] ? $request->kec_id_pasien[$key] : 0),
-                        'kel_id_pasien' => ($request->kel_id_pasien[$key] ? $request->kel_id_pasien[$key] : 0),
-                        'alamat_pasien' => ($request->alamat_pasien[$key] ? $request->alamat_pasien[$key] : 0),
-                        'tgl_lahir_pasien' => ($request->tgl_lahir_pasien[$key] ? $request->tgl_lahir_pasien[$key] : 0),
-                        'golongan_darah_pasien' => ($request->golongan_darah_pasien[$key] ? $request->golongan_darah_pasien[$key] : 0),
-                        'f' => ($request->f[$key] ? $request->f[$key] : 0),
-                    ];
-                }
-                
-                foreach ($_pasien as $items) {
-                    $laporan_pasien = new LaporanPasien;
-                    $laporan_pasien->laporan_id = $create->id;
-                    $laporan_pasien->nama_lengkap = $items->nama_lengkap_pasien;
-                    if ($items->f=='f-api') {
-                        $laporan_pasien->prov_id = getAreaFromKdc($items->prov_id_pasien)[0]->id;
-                        $laporan_pasien->kab_id = getAreaFromKdc($items->kab_id_pasien)[0]->id;
-                        $laporan_pasien->kec_id = getAreaFromKdc($items->kec_id_pasien)[0]->id;
-                        $laporan_pasien->kel_id = getAreaFromKdc($items->kel_id_pasien)[0]->id;
-                    } else {
-                        $laporan_pasien->prov_id = $items->prov_id_pasien;
-                        $laporan_pasien->kab_id = $items->kab_id_pasien;
-                        $laporan_pasien->kec_id = $items->kec_id_pasien;
-                        $laporan_pasien->kel_id = $items->kel_id_pasien;
-                    }
-                    $laporan_pasien->alamat = $items->alamat_pasien;
-                    $laporan_pasien->tgl_lahir = (isset(explode(', ', $items->tgl_lahir_pasien)[1]) ? explode(', ', $items->tgl_lahir_pasien)[1] : $items->tgl_lahir_pasien);
-                    $laporan_pasien->golongan_darah = $items->golongan_darah_pasien;
-                    $laporan_pasien->nik = $items->nik_pasien;
-                    $laporan_pasien->save();
-                }
-            }
-            // exit;
-
             if ($create) {
                 return response()->json(['status' => 'success', 'msg' => 'Laporan telah berhasil disimpan!']);
             } else {
@@ -302,49 +261,6 @@ class LaporanController extends Controller
             $update->role_id = Session::get('role_id')[0];
             $update->updated_at = date('Y-m-d H:i:s');
             $update->save();
-
-            if (isset($request->nik_pasien)) {
-                $_pasien = [];
-                foreach ($request->nik_pasien as $key => $item) {
-                    $_pasien[] = (object)[
-                        'nik_pasien' => $item,
-                        'nama_lengkap_pasien' => ($request->nama_lengkap_pasien[$key] ? $request->nama_lengkap_pasien[$key] : 0),
-                        'prov_id_pasien' => ($request->prov_id_pasien[$key] ? $request->prov_id_pasien[$key] : 0),
-                        'kab_id_pasien' => ($request->kab_id_pasien[$key] ? $request->kab_id_pasien[$key] : 0),
-                        'kec_id_pasien' => ($request->kec_id_pasien[$key] ? $request->kec_id_pasien[$key] : 0),
-                        'kel_id_pasien' => ($request->kel_id_pasien[$key] ? $request->kel_id_pasien[$key] : 0),
-                        'alamat_pasien' => ($request->alamat_pasien[$key] ? $request->alamat_pasien[$key] : 0),
-                        'tgl_lahir_pasien' => ($request->tgl_lahir_pasien[$key] ? $request->tgl_lahir_pasien[$key] : 0),
-                        'golongan_darah_pasien' => ($request->golongan_darah_pasien[$key] ? $request->golongan_darah_pasien[$key] : 0),
-                        'f' => ($request->f[$key] ? $request->f[$key] : 0),
-                    ];
-                }
-                
-                foreach ($_pasien as $items) {
-                    $chk = DB::select("SELECT * FROM laporan_pasien WHERE nik = '$items->nik_pasien' AND laporan_id = $request->id");
-                    if (!$chk) {
-                        $laporan_pasien = new LaporanPasien;
-                        $laporan_pasien->laporan_id = $request->id;
-                        $laporan_pasien->nama_lengkap = $items->nama_lengkap_pasien;
-                        if ($items->f=='f-api') {
-                            $laporan_pasien->prov_id = getAreaFromKdc($items->prov_id_pasien)[0]->id;
-                            $laporan_pasien->kab_id = getAreaFromKdc($items->kab_id_pasien)[0]->id;
-                            $laporan_pasien->kec_id = getAreaFromKdc($items->kec_id_pasien)[0]->id;
-                            $laporan_pasien->kel_id = getAreaFromKdc($items->kel_id_pasien)[0]->id;
-                        } else {
-                            $laporan_pasien->prov_id = $items->prov_id_pasien;
-                            $laporan_pasien->kab_id = $items->kab_id_pasien;
-                            $laporan_pasien->kec_id = $items->kec_id_pasien;
-                            $laporan_pasien->kel_id = $items->kel_id_pasien;
-                        }
-                        $laporan_pasien->alamat = $items->alamat_pasien;
-                        $laporan_pasien->tgl_lahir = (isset(explode(', ', $items->tgl_lahir_pasien)[1]) ? explode(', ', $items->tgl_lahir_pasien)[1] : $items->tgl_lahir_pasien);
-                        $laporan_pasien->golongan_darah = $items->golongan_darah_pasien;
-                        $laporan_pasien->nik = $items->nik_pasien;
-                        $laporan_pasien->save();
-                    }
-                }
-            }
 
             if ($update) {
                 return response()->json(['status' => 'success', 'msg' => 'Laporan telah berhasil disimpan!']);

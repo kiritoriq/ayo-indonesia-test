@@ -3,17 +3,17 @@
 @section('content')
 <div class="d-flex flex-column flex-root">
     <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
-        <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: linear-gradient(white, #fcf26a, #d72126, #0d2e37);">
+        <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: url({{ asset('media/bg/banner.jpg') }});">
             <div class="d-flex flex-column-auto flex-column mt-15">
                 <a href="#" class="text-center mb-10">
                     <img src="{{ asset('media/logos/logo-jateng2.png') }}" class="max-h-90px" alt="" />
                 </a>
-                <h3 class="font-weight-bolder text-center font-size-h5">
+                <h2 class="font-weight-bolder text-center font-size-h5" style="color: white">
 					PEMERINTAH PROVINSI JAWA TENGAH <br />
-					<span class="text-primary">Government Resources Management System</span>
-				</h3>
+					<span>Government Resources Management System</span>
+				</h2>
             </div>
-            <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-bottom bgi-position-x-center" style="background-image: url({{ asset('media/bg/Master-01.png') }}); background-size: 63vh"></div>
+            {{-- <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-top bgi-position-x-center" style="background-image: url({{ asset('media/bg/photo-33.jpg') }}); background-size: 65vh"></div> --}}
         </div>
         <div class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
             <div class="d-flex flex-column-fluid flex-center">
@@ -50,7 +50,7 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-7 col-7">
-                                    <img src="{{ captcha_src('flat') }}" id="captchaCode" alt="" class="captcha img-responsive img-fluid">
+                                    <img src="{{ captcha_src('default') }}" id="captchaCode" alt="" class="captcha img-responsive img-fluid">
                                     <div>
                                         <a href="javascript:void(0)" class="reloadCaptcha">
                                             Reload Captcha

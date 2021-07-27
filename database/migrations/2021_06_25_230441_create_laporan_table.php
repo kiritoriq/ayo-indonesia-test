@@ -18,11 +18,15 @@ class CreateLaporanTable extends Migration
             $table->string('nama_pelapor');
             $table->string('alamat_pelapor');
             $table->string('no_telp_pelapor');
+            $table->integer('prov_id')->nullable();
             $table->integer('kab_id')->nullable();
             $table->integer('kec_id')->nullable();
             $table->integer('kel_id')->nullable();
             $table->text('isi_laporan');
             $table->tinyInteger('instansi');
+            $table->tinyInteger('asal_instansi');
+            $table->string('solusi');
+            $table->tinyInteger('id_jenis_aduan');
             $table->tinyInteger('user_id');
             $table->tinyInteger('role_id');
             $table->timestamps();

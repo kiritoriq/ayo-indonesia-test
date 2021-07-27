@@ -9,27 +9,28 @@ return [
             'title' => 'Dashboard',
             'root' => true,
             'bullet' => 'dot',
+            'page' => 'dashboard',
             'icon' => 'media/svg/icons/Design/Layers.svg', // or can be 'flaticon-home' or any flaticon-*
-            'submenu' => [
-                [
-                    'title' => 'Halaman Utama',
-                    'bullet' => 'dot',
-                    'page' => 'dashboard',
-                    'role' => ['1','2']
-                ],
-                [
-                    'title' => 'Data Fasilitas Kesehatan',
-                    'bullet' => 'dot',
-                    'page' => 'dashboard/data-faskes',
-                    'role' => ['1','2'],
-                ],
-                [
-                    'title' => 'Data Lain-lain',
-                    'bullet' => 'dot',
-                    'page' => 'dashboard/data-lain',
-                    'role' => ['1','2'],
-                ]
-            ]
+            // 'submenu' => [
+            //     [
+            //         'title' => 'Halaman Utama',
+            //         'bullet' => 'dot',
+            //         'page' => 'dashboard',
+            //         'role' => ['1','2']
+            //     ],
+            //     [
+            //         'title' => 'Data Fasilitas Kesehatan',
+            //         'bullet' => 'dot',
+            //         'page' => 'dashboard/data-faskes',
+            //         'role' => ['1','2'],
+            //     ],
+            //     [
+            //         'title' => 'Data Lain-lain',
+            //         'bullet' => 'dot',
+            //         'page' => 'dashboard/data-lain',
+            //         'role' => ['1','2'],
+            //     ]
+            // ]
         ],
 
         // Custom
