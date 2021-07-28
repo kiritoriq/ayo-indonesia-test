@@ -3,17 +3,18 @@
 @section('content')
 <div class="d-flex flex-column flex-root">
     <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
-        <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: url({{ asset('media/bg/banner.jpg') }});">
+        <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: url({{ asset('media/bg/banner_1.jpg') }});">
+        {{-- <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: linear-gradient(rgb(32, 44, 69), rgb(49, 64, 97), #0d2e37);"> --}}
             <div class="d-flex flex-column-auto flex-column mt-15">
                 <a href="#" class="text-center mb-10">
                     <img src="{{ asset('media/logos/logo-jateng2.png') }}" class="max-h-90px" alt="" />
                 </a>
-                <h2 class="font-weight-bolder text-center font-size-h5" style="color: white">
+                <h3 class="font-weight-bolder text-center font-size-h3" style="color: white">
 					PEMERINTAH PROVINSI JAWA TENGAH <br />
 					<span>Government Resources Management System</span>
-				</h2>
+				</h3>
             </div>
-            {{-- <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-top bgi-position-x-center" style="background-image: url({{ asset('media/bg/photo-33.jpg') }}); background-size: 65vh"></div> --}}
+            {{-- <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-top bgi-position-x-center" style="background-image: url({{ asset('media/bg/banner.jpg') }}); background-size: 65vh"></div> --}}
         </div>
         <div class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
             <div class="d-flex flex-column-fluid flex-center">

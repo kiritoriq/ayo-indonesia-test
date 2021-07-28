@@ -111,7 +111,7 @@
                 {{-- Toggle --}}
                 <div class="topbar-item" data-toggle="dropdown" data-offset="0px,0px">
                     <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2 text-right">
-                        <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ Auth::user()->username }} <br /> <small>{{ Auth::user()->about }}</small></span>
+                        <span class="text-white font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ Auth::user()->username }} <br /> <small>{{ Auth::user()->about }}</small></span>
                         <span class="symbol symbol-35 symbol-light-primary">
 							@if(Session::get('foto') != "")
 								<img alt="Pic" src="{{ Session::get('foto') }}"/>

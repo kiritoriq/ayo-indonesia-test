@@ -78,7 +78,7 @@ return [
         'self' => [
             'display' => true,
             'width' => 'fluid', // fixed, fluid
-            'theme' => 'ocean', // light, dark
+            'theme' => 'dark', // light, dark
             'fixed' => [
                 'desktop' => true,
                 'mobile' => true
@@ -96,14 +96,14 @@ return [
                 'arrow' => true,
                 'toggle' => 'click',
                 'submenu' => [
-                    'theme' => 'ocean',
+                    'theme' => 'dark',
                     'arrow' => true,
                 ]
             ],
 
             'mobile' => [
                 'submenu' => [
-                    'theme' => 'ocean',
+                    'theme' => 'dark',
                     'accordion' => true
                 ],
             ],
@@ -136,14 +136,14 @@ return [
     // Brand
     'brand' => [
         'self' => [
-            'theme' => 'ocean' // light, dark, ocean
+            'theme' => 'dark' // light, dark, ocean
         ]
     ],
 
     // Aside
     'aside' => [
         'self' => [
-            'theme' => 'ocean', // light, dark, ocean
+            'theme' => 'dark', // light, dark, ocean
             'display' => true,
             'fixed' => true,
             'minimize' => [

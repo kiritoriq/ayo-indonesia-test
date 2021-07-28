@@ -88,7 +88,7 @@
                         type: 'bar',
                         data: [],
                         itemStyle: {
-                            color: 'rgba(0, 170, 19, 1)'
+                            color: 'rgba(239, 129, 5, 1)'
                         },
                         label: {
                             show: true,
