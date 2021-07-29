@@ -1,20 +1,49 @@
 @extends('auth.app')
 @section('title', 'Login')
 @section('content')
+<style>
+    @media screen and (min-width: 1920px) {
+        .background-image-hotline-sm {
+            background-image: url('{{ asset('media/bg/hotline-dinkop.jpg') }}');
+            background-size: 65vh;
+        }
+    }
+    
+    @media screen and (min-width: 1366px) and (max-width: 1900px) {
+        .background-image-hotline-lg {
+            background-image: url('{{ asset('media/bg/hotline-dinkop.jpg') }}');
+            background-size: 39vw 70vh;
+        }
+    }
+
+    @media screen and (min-width: 600px) and (max-width: 1366px) {
+        .background-image-hotline-md {
+            background-image: url('{{ asset('media/bg/hotline-dinkop.jpg') }}');
+            background-size: 35vw 70vh;
+        }
+    }
+
+    @media screen and (max-width: 575px){
+        .background-image-hotline-xs {
+            background-image: url('{{ asset('media/bg/hotline-dinkop.jpg') }}');
+            background-size: 120vh !important;
+        }
+    }
+</style>
 <div class="d-flex flex-column flex-root">
     <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
-        <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: url({{ asset('media/bg/banner_1.jpg') }});">
-        {{-- <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: linear-gradient(rgb(32, 44, 69), rgb(49, 64, 97), #0d2e37);"> --}}
+        {{-- <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: url({{ asset('media/bg/banner_1.jpg') }});"> --}}
+            <div class="login-aside d-flex flex-column flex-row-auto" style="background-image: linear-gradient(#ff9e01, #fac045, #fac045, #0d2e37);">
             <div class="d-flex flex-column-auto flex-column mt-15">
                 <a href="#" class="text-center mb-10">
                     <img src="{{ asset('media/logos/logo-jateng2.png') }}" class="max-h-90px" alt="" />
                 </a>
-                <h3 class="font-weight-bolder text-center font-size-h3" style="color: white">
+                <h3 class="font-weight-bolder text-center font-size-h3" style="color: white;">
 					PEMERINTAH PROVINSI JAWA TENGAH <br />
 					<span>Government Resources Management System</span>
 				</h3>
             </div>
-            {{-- <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-top bgi-position-x-center" style="background-image: url({{ asset('media/bg/banner.jpg') }}); background-size: 65vh"></div> --}}
+            <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-bottom bgi-position-x-center background-image-hotline-sm background-image-hotline-lg background-image-hotline-xs background-image-hotline-md"></div>
         </div>
         <div class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
             <div class="d-flex flex-column-fluid flex-center">
