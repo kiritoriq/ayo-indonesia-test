@@ -38,6 +38,54 @@
                 </div>
             </div>
         </div>
+        <div class="row mb-5 mt-3">
+            <div class="col-xl-12">
+                <div class="card card-custom gutter-b">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Grafik Laporan Berdasarkan Jenis Aduan
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        {{-- <div class="row"> --}}
+                            <div class="table-responsive mb-5">
+                                <table class="table table-bordered">
+                                    <thead style="background-color: rgb(239, 129, 5)">
+                                        <tr>
+                                            <th width="2%" class="text-center text-white">No</th>
+                                            <th class="text-center text-white">Jenis Aduan</th>
+                                            <th class="text-center text-white">Jumlah</th>
+                                            <th class="text-center text-white">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($data_aduan as $key=>$data)
+                                            @if($data->jenis_aduan != 'Total')
+                                                <tr>
+                                                    <td>{{ $key+1 }}</td>
+                                                    <td>{{ $data->jenis_aduan }}</td>
+                                                    <td class="text-right">{{ $data->jml_laporan }}</td>
+                                                    <td class="text-right">{{ $data->prosentase_show }}</td>
+                                                </tr>
+                                            @else
+                                            <tr>
+                                                <td colspan="2" class="text-center font-weight-bolder">{{ $data->jenis_aduan }}</td>
+                                                <td class="text-right">{{ $data->jml_laporan }}</td>
+                                                <td class="text-right">{{ $data->prosentase_asli }}</td>
+                                            </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        {{-- </div>
+                        <div class="row"> --}}
+                            <div id="chartAduan" style="min-height: 400px"></div>
+                        {{-- </div> --}}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
@@ -57,6 +105,7 @@
 
         $(document).ready(function() {
             var chart = echarts.init(document.getElementById('chart'));
+            var chartAduan = echarts.init(document.getElementById('chartAduan'));
             var option = {
                 title: {
                     text: 'Grafik Laporan Harian Hotline Dinkop UMKM'
@@ -71,7 +120,30 @@
                     data: []
                 },
                 yAxis: {
-                    name: 'Laporan',
+                    name: 'Jumlah Laporan',
+                    nameLocation: 'middle',
+                    nameGap: 50
+                },
+                series: []
+            };
+            var optionAduan = {
+                title: {
+                    // text: 'Grafik Laporan Harian Hotline Dinkop UMKM Berdasarkan Jenis Aduan'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'right',
+                    padding: 10
+                },
+                tooltip: {
+                    trigger: 'item',
+                },
+                xAxis: {
+                    data: [],
+                    axisLabel: { interval: 0, rotate: 20 }
+                },
+                yAxis: {
+                    name: 'Jumlah Laporan',
                     nameLocation: 'middle',
                     nameGap: 50
                 },
@@ -80,7 +152,7 @@
             $.ajax({
                 url: `{{ route('load-data-grafik') }}`,
                 type: 'post',
-                data: { _token: $('meta[name="csrf-token"]').attr('content'), },
+                data: { _token: $('meta[name="csrf-token"]').attr('content'),},
                 success: function(response) {
                     var laporan = response.split('\n')
                     var series = {
@@ -97,7 +169,7 @@
                     }
                     $.each(laporan, function(key, value) {
                         var items = value.split(',')
-                        console.log(value)
+                        // console.log(value)
                         if(value!='') {
                             option.xAxis.data.push(items[0])
                             series.data.push(parseInt(items[1]))
@@ -106,6 +178,61 @@
                     option.series.push(series)
                     chart.setOption(option);
                 }
+            })
+
+            $.ajax({
+                url: `{{ route('load-data-grafik-aduan') }}`,
+                type: 'post',
+                data: { _token: $('meta[name="csrf-token"]').attr('content'), tanggal: 0 },
+                success: function(response) {
+                    var laporan = response.split('\n')
+                    var series = {
+                        name: 'Jumlah Laporan',
+                        type: 'pie',
+                        radius: '50%',
+                        data: [],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        },
+                    }
+                    $.each(laporan, function(key, value) {
+                        var items = value.split(',')
+                        // console.log(items[0])
+                        var data_s = {};
+                        if(value!='' && items[0]!='Total') {
+                            data_s.value = items[1]
+                            data_s.name = items[0]
+                            // console.log(data_s)
+                            series.data.push(data_s)
+                            // series.data.name.push(items[0])
+                            // series.data.value.push(parseInt(items[1]))
+                        }
+                    });
+                    optionAduan.series.push(series)
+                    chartAduan.setOption(optionAduan);
+                    // console.log(optionAduan)
+                }
+            })
+
+            chart.on('click', function(e) {
+                console.log(e.name);
+                $.ajax({
+                    url: '{{ route("load-page-aduan") }}',
+                    type: 'get',
+                    data: { _token: $('meta[name="csrf-token"]').attr('content'), tanggal: e.name },
+                    success: function(response) {
+                        $.fancybox.open([
+                            {
+                                src: response,
+                                type: 'html'
+                            }
+                        ])
+                    }
+                })
             })
             
         })
