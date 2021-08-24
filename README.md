@@ -23,6 +23,15 @@ composer install
 cp .env.example .env
 ```
 
+Configure your connection to env then
+```bash
+php artisan migrate
+```
+
+```bash
+php artisan db:seed
+```
+
 ```bash
 php artisan key:generate
 ```

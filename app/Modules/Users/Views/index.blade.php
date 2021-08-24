@@ -155,7 +155,7 @@
                                         timer: 2000,
                                         showConfirmButton: false
                                     }).then(() => {
-                                        window.location.href = "{{ route('jenis-aduan.index') }}";
+                                        window.location.href = "{{ route('users.index') }}";
                                     })
                                 } else {
                                     Swal.fire({

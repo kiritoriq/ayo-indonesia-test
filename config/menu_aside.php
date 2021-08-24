@@ -34,36 +34,12 @@ return [
         ],
 
         // Custom
-        [
-            'section' => 'Main Menu',
-            'role' => ['1','2'],
-        ],
-        [
-            'title' => 'Laporan',
-            'icon' => 'media/svg/icons/Communication/Mail.svg',
-            'bullet' => 'dot',
-            'root' => true,
-            'role' => ['1','2'],
-            'submenu' => [
-                [
-                    'title' => 'Input Laporan',
-                    'bullet' => 'dot',
-                    'page' => 'laporan',
-                    'role' => ['1','2'],
-                ],
-
-            ],
-        ],
+        // [
+        //     'section' => 'Main Menu',
+        //     'role' => ['1','2'],
+        // ],
         [
             'section' => 'Admin',
-            'role' => ['1'],
-        ],
-        [
-            'title' => 'Master Jenis Aduan',
-            'root' => true,
-            'icon' => 'media/svg/icons/Home/Commode2.svg',
-            'page' => 'master-jenis-aduan',
-            'new-tab' => false,
             'role' => ['1'],
         ],
         [

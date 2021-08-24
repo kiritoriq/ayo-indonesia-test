@@ -17,7 +17,7 @@
                             </g>
                         </svg><!--end::Svg Icon--></span>
                     </div>
-                    <div class="alert-text">Selamat datang di Aplikasi Hotline Dinkop UMKM Jateng.</div>
+                    <div class="alert-text">Welcome to Metronic Laravel 7 Framework.</div>
                     <div class="alert-close">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true"><i class="ki ki-close"></i></span>
@@ -31,57 +31,6 @@
                 <div class="card card-custom gutter-b">
                     <div class="card-body">
                         <div id="chart" style="height: 400px"></div>
-                        {{-- <div class="pt-5" style="background-color: #ffff">
-                            <h2 class="text-center mb-5">Grafik Laporan Harian Hotline Corona Jateng</h2>
-                        </div> --}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row mb-5 mt-3">
-            <div class="col-xl-12">
-                <div class="card card-custom gutter-b">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            Grafik Laporan Berdasarkan Jenis Aduan
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        {{-- <div class="row"> --}}
-                            <div class="table-responsive mb-5">
-                                <table class="table table-bordered">
-                                    <thead style="background-color: rgb(239, 129, 5)">
-                                        <tr>
-                                            <th width="2%" class="text-center text-white">No</th>
-                                            <th class="text-center text-white">Jenis Aduan</th>
-                                            <th class="text-center text-white">Jumlah</th>
-                                            <th class="text-center text-white">%</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($data_aduan as $key=>$data)
-                                            @if($data->jenis_aduan != 'Total')
-                                                <tr>
-                                                    <td>{{ $key+1 }}</td>
-                                                    <td>{{ $data->jenis_aduan }}</td>
-                                                    <td class="text-right">{{ $data->jml_laporan }}</td>
-                                                    <td class="text-right">{{ $data->prosentase_show }}</td>
-                                                </tr>
-                                            @else
-                                            <tr>
-                                                <td colspan="2" class="text-center font-weight-bolder">{{ $data->jenis_aduan }}</td>
-                                                <td class="text-right">{{ $data->jml_laporan }}</td>
-                                                <td class="text-right">{{ $data->prosentase_asli }}</td>
-                                            </tr>
-                                            @endif
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        {{-- </div>
-                        <div class="row"> --}}
-                            <div id="chartAduan" style="min-height: 400px"></div>
-                        {{-- </div> --}}
                     </div>
                 </div>
             </div>
@@ -105,10 +54,9 @@
 
         $(document).ready(function() {
             var chart = echarts.init(document.getElementById('chart'));
-            var chartAduan = echarts.init(document.getElementById('chartAduan'));
             var option = {
                 title: {
-                    text: 'Grafik Laporan Harian Hotline Dinkop UMKM'
+                    text: 'Monthly Sales Chart'
                 },
                 tooltip: {},
                 dataZoom: [{
@@ -117,48 +65,22 @@
                     type: 'slider'
                 }],
                 xAxis: {
-                    data: []
+                    data: [
+                        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+                    ]
                 },
                 yAxis: {
-                    name: 'Jumlah Laporan',
+                    name: 'Sales Ammount',
                     nameLocation: 'middle',
                     nameGap: 50
                 },
-                series: []
-            };
-            var optionAduan = {
-                title: {
-                    // text: 'Grafik Laporan Harian Hotline Dinkop UMKM Berdasarkan Jenis Aduan'
-                },
-                legend: {
-                    orient: 'vertical',
-                    left: 'right',
-                    padding: 10
-                },
-                tooltip: {
-                    trigger: 'item',
-                },
-                xAxis: {
-                    data: [],
-                    axisLabel: { interval: 0, rotate: 20 }
-                },
-                yAxis: {
-                    name: 'Jumlah Laporan',
-                    nameLocation: 'middle',
-                    nameGap: 50
-                },
-                series: []
-            };
-            $.ajax({
-                url: `{{ route('load-data-grafik') }}`,
-                type: 'post',
-                data: { _token: $('meta[name="csrf-token"]').attr('content'),},
-                success: function(response) {
-                    var laporan = response.split('\n')
-                    var series = {
-                        name: 'Jumlah Laporan Harian',
+                series: [
+                    {
+                        name: 'Monthly Sales Ammount',
                         type: 'bar',
-                        data: [],
+                        data: [
+                            50,120,70,30,240,413,500,527,0,0,0,0
+                        ],
                         itemStyle: {
                             color: 'rgba(239, 129, 5, 1)'
                         },
@@ -167,56 +89,9 @@
                             position: 'top'
                         }
                     }
-                    $.each(laporan, function(key, value) {
-                        var items = value.split(',')
-                        // console.log(value)
-                        if(value!='') {
-                            option.xAxis.data.push(items[0])
-                            series.data.push(parseInt(items[1]))
-                        }
-                    });
-                    option.series.push(series)
-                    chart.setOption(option);
-                }
-            })
-
-            $.ajax({
-                url: `{{ route('load-data-grafik-aduan') }}`,
-                type: 'post',
-                data: { _token: $('meta[name="csrf-token"]').attr('content'), tanggal: 0 },
-                success: function(response) {
-                    var laporan = response.split('\n')
-                    var series = {
-                        name: 'Jumlah Laporan',
-                        type: 'pie',
-                        radius: '50%',
-                        data: [],
-                        emphasis: {
-                            itemStyle: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        },
-                    }
-                    $.each(laporan, function(key, value) {
-                        var items = value.split(',')
-                        // console.log(items[0])
-                        var data_s = {};
-                        if(value!='' && items[0]!='Total') {
-                            data_s.value = items[1]
-                            data_s.name = items[0]
-                            // console.log(data_s)
-                            series.data.push(data_s)
-                            // series.data.name.push(items[0])
-                            // series.data.value.push(parseInt(items[1]))
-                        }
-                    });
-                    optionAduan.series.push(series)
-                    chartAduan.setOption(optionAduan);
-                    // console.log(optionAduan)
-                }
-            })
+                ]
+            };
+            chart.setOption(option);
 
             chart.on('click', function(e) {
                 console.log(e.name);

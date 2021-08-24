@@ -68,48 +68,27 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
-            'name' => $data['name'],
             'email' => $data['email'],
+            'username' => $data['username'],
+            'name' => $data['name'],
             'password' => Hash::make($data['password']),
+            'is_active' => 1,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
         ]);
     }
 
     public function register(Request $request) {
         $validator = $this->validator($request->all());
         if($validator->fails()) {
-            return response()->json(['status' => 'failed', 'msg' => 'Harap cek kembali inputan Anda!', 'errors' => $validator->errors()]);
+            return response()->json(['status' => 'failed', 'msg' => 'Please check your input again', 'errors' => $validator->errors()]);
         } else {
-            User::create([
-                'username' => $request->username,
-                'password' => Hash::make($request->password)
-            ]);
-            
-            return response()->json(['status' => 'success', 'msg' => 'Data Berhasil disimpan']);
+            $user_create = $this->create($request->all());
+            if($user_create) {
+                return response()->json(['status' => 'success', 'msg' => 'Data has ben saved']);
+            } else {
+                return response()->json(['status' => 'failed', 'msg' => 'Register cannot be complete!', 'errors' => $user_create]);
+            }
         }
-    }
-
-    public function cetakDataVaksinasi() {
-        $data = DB::select("select * from get_vaksinasi()");
-        $tgl_skrg = Helper::formatTanggalPanjang(date('Y-m-d', strtotime($data[0]->tanggal_scraping)));
-        
-        return view('auth.cetak_excel_vaksinasi', ['datas' => $data, 'tgl_skrg' => $tgl_skrg]);
-    }
-
-    public function getDataVaksin() {
-        $datas = DB::table('lokasi_vaksin as v')
-                ->select('kab.name as kab_name', 'kec.name as kec_name', 'kel.name as kel_name', 'v.sentra_vaksinasi', 'v.alamat')
-                ->leftjoin('area as kab', 'kab.id', '=', 'v.kab_id')
-                ->leftjoin('area as kec', 'kec.id', '=', 'v.kec_id')
-                ->leftjoin('area as kel', 'kel.id', '=', 'v.kel_id')
-                ->where('is_aktif', '=', 1)->get();
-
-        return response()->json($datas, 200);
-    }
-
-    public function cetakDataMingguan() {
-        $kategoris = DB::select("select * from call_center_jumlah_aduan_kategori()");
-        $kabkotas = DB::select("select * from call_center_jumlah_aduan_kabkota()");
-        // dd($kabkotas);
-        return view('auth.cetak_aduan_mingguan', ['kategoris' => $kategoris, 'kabkotas' => $kabkotas]);
     }
 }

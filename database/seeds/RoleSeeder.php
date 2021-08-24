@@ -13,15 +13,15 @@ class RoleSeeder extends Seeder
     public function run()
     {
         $roles = [
-            [1, 'Admin', 1, '2021-06-25 21:34:26', '2021-06-25 21:34:26'],
-            [2, 'Call Center', 1, '2021-06-26 06:34:26', '2021-06-26 06:34:26'],
+            [1, 'Superadmin', 1, '2021-06-25 21:34:26', '2021-06-25 21:34:26'],
+            [2, 'Admin', 1, '2021-06-26 06:34:26', '2021-06-26 06:34:26'],
         ];
 
         foreach($roles as $key => $row) {
             Roles::create([
                 'id' => $row[0],
                 'roles' => $row[1],
-                'isActive' => $row[2],
+                'is_active' => $row[2],
                 'created_at' => $row[3],
                 'updated_at' => $row[4]
             ]);

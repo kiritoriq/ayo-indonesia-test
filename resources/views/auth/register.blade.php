@@ -4,16 +4,15 @@
 <div class="d-flex flex-column flex-root">
     <div class="login login-1 login-signin-on d-flex flex-column flex-lg-row flex-column-fluid bg-white" id="kt_login">
         <div class="login-aside d-flex flex-column flex-row-auto" style="background-color: #E8F4FF;">
-            <div class="d-flex flex-column-auto flex-column mt-15">
+            <div class="d-flex flex-column-auto flex-column pt-lg-40 pt-15">
                 <a href="#" class="text-center mb-10">
-                    <img src="{{ asset('media/logos/logo-jateng2.png') }}" class="max-h-90px" alt="" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png" class="max-h-70px" alt="" />
                 </a>
-                <h3 class="font-weight-bolder text-center font-size-h5">
-					PEMERINTAH PROVINSI JAWA TENGAH <br />
-					<span class="text-primary">Government Resources Management System</span>
+                <h3 class="font-weight-bolder text-center font-size-h4 font-size-h1-lg" style="color: #ff2a1b;">
+					Welcome to<br>Metronic Laravel 7 Framework
 				</h3>
             </div>
-            <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-bottom bgi-position-x-center" style="background-image: url({{ asset('media/bg/login-frame.png') }}); background-size: contain"></div>
+            <div class="aside-img d-flex flex-row-fluid bgi-no-repeat bgi-position-y-bottom bgi-position-x-center" style="background-image: url(https://preview.keenthemes.com/metronic/theme/html/demo1/dist/assets/media/svg/illustrations/login-visual-1.svg)"></div>
         </div>
         <div class="login-content flex-row-fluid d-flex flex-column justify-content-center position-relative overflow-hidden p-7 mx-auto">
             <div class="d-flex flex-column-fluid flex-center">
@@ -21,20 +20,43 @@
                     <form class="form" method="post" action="{{ route('register.action') }}" novalidate="novalidate" id="form_register">
                         @csrf
                         <div class="pb-13 pt-lg-0">
-                            <span class="font-weight-bolder text-dark font-size-h1 align-middle">Registrasi</span>
+                            <span class="font-weight-bolder text-dark font-size-h1 align-middle">Register</span>
                         </div>
 
                         <div class="form-group">
+                            <label class="font-size-h6 font-weight-bolder text-dark">Email</label>
+                            <input class="form-control h-auto py-5 px-6 rounded-lg" type="email" id="email" placeholder="example@local.com" name="email" />
+                        </div>
+                        <div class="form-group">
                             <label class="font-size-h6 font-weight-bolder text-dark">Username</label>
-                            <input class="form-control h-auto py-5 px-6 rounded-lg" type="text" id="username" placeholder="Masukkan Username" name="username" />
+                            <input class="form-control h-auto py-5 px-6 rounded-lg" type="text" id="username" placeholder="Unique Username that only you know" name="username" />
+                        </div>
+                        <div class="form-group">
+                            <label class="font-size-h6 font-weight-bolder text-dark">Name</label>
+                            <input class="form-control h-auto py-5 px-6 rounded-lg" type="text" id="name" placeholder="Your Name" name="name" />
                         </div>
                         <div class="form-group">
                             <label class="font-size-h6 font-weight-bolder text-dark">Password</label>
-                            <input class="form-control h-auto py-5 px-6 rounded-lg" type="password" id="password" placeholder="Masukkan Password" name="password" />
+                            <div class="input-group">
+                                <input class="form-control h-auto py-5 px-6" type="password" id="password" placeholder="Type Your new Password" name="password" />
+                                {{-- <input class="form-control h-auto py-7 px-6" id="password_confirmation" type="password" placeholder="Konfirmasi password" name="password_confirmation" autocomplete="off" /> --}}
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="la la-eye icon-lg" id="show-password"></i>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label class="font-size-h6 font-weight-bolder text-dark">Ketik Ulang Password</label>
-                            <input class="form-control h-auto py-5 px-6 rounded-lg" type="password" id="password" placeholder="Masukkan Ulang Password" name="password_confirmation" />
+                            <label class="font-size-h6 font-weight-bolder text-dark">Re-type Password</label>
+                            <div class="input-group">
+                                <input class="form-control h-auto py-5 px-6" type="password" id="password_confirmation" placeholder="Re-type Password" name="password_confirmation" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">
+                                        <i class="la la-eye icon-lg" id="show-password2"></i>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                         <br>
                         <div class="pb-lg-0 pb-5 row">
@@ -51,7 +73,7 @@
                                 </button>
                              </div>
                             <div class="col-lg-5 col-6">
-                                 <a href="{{ route('login') }}" class="btn btn-link font-weight-bolder font-size-h4 text-danger">Batal</a>
+                                 <a href="{{ route('login') }}" class="btn btn-link font-weight-bolder font-size-h4 text-danger">Cancel</a>
                             </div>
                         </div>
                     </form>
@@ -96,17 +118,38 @@
 
                     validation = FormValidation.formValidation(KTUtil.getById('form_register'), {
                         fields: {
+                            email: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Email cannot be empty'
+                                    }
+                                }
+                            },
                             username: {
                                 validators: {
                                     notEmpty: {
-                                        message: 'Username tidak boleh kosong'
+                                        message: 'Username cannot be empty'
+                                    }
+                                }
+                            },
+                            name: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Nama cannot be empty'
                                     }
                                 }
                             },
                             password: {
                                 validators: {
                                     notEmpty: {
-                                        message: 'Password tidak boleh kosong'
+                                        message: 'Password cannot be empty'
+                                    }
+                                }
+                            },
+                            password_confirmation: {
+                                validators: {
+                                    notEmpty: {
+                                        message: 'Password Confirmation cannot be empty'
                                     }
                                 }
                             },
@@ -123,7 +166,9 @@
                             $("#btnRegister").prop("disabled", true);
                             if (status == 'Valid') {
                                 let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                                let email = $('#email').val();
                                 let username = $('#username').val();
+                                let name = $('#name').val();
                                 let password = $('#password').val();
                                 // console.log(tgskpns);
                                 $("#btnRegister").prop("disabled", true);
@@ -134,7 +179,9 @@
                                     timeout: 10000,
                                     data: {
                                         _token: CSRF_TOKEN,
+                                        email: email,
                                         username: username,
+                                        name: name,
                                         password: password,
                                         password_confirmation: $('input[name="password_confirmation"]').val()
                                     },
@@ -146,14 +193,14 @@
                                         if (data.status == "failed") {
                                             // toastr.error("Ops, " + data.msg);
                                             Swal.fire({
-                                                title: 'Gagal Registrasi!',
+                                                title: 'Register Failed!',
                                                 text: data.msg,
                                                 icon: 'error',
                                             })
                                             $("#btnRegister").prop("disabled", false);
                                         } else {
                                             Swal.fire({
-                                                title: 'Register Berhasil!',
+                                                title: 'Register Success!',
                                                 text: data.msg,
                                                 icon: 'success',
                                                 showConfirmButton: false,
@@ -172,10 +219,11 @@
                             } else {
                                 $("#btnRegister").prop("disabled", false);
                                 swal.fire({
-                                    text: "Ops, terjadi kesalahan, semua form harap diisi.",
+                                    title: "Register cannot be complete!",
+                                    text: "Please fill out all the forms.",
                                     icon: "error",
                                     buttonsStyling: false,
-                                    confirmButtonText: "Tutup",
+                                    confirmButtonText: "Close",
                                     customClass: {
                                         confirmButton: "btn font-weight-bold btn-light-primary"
                                     }
@@ -202,6 +250,26 @@
                 let CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
                 Register.init()
+
+                $('#show-password').on("click", function () {
+                    $(this).toggleClass("la-eye-slash");
+                    var input = $("#password");
+                    if (input.attr("type") === "password") {
+                        input.attr("type", "text");
+                    } else {
+                        input.attr("type", "password");
+                    }
+                })
+
+                $('#show-password2').on("click", function () {
+                    $(this).toggleClass("la-eye-slash");
+                    var input = $("#password_confirmation");
+                    if (input.attr("type") === "password") {
+                        input.attr("type", "text");
+                    } else {
+                        input.attr("type", "password");
+                    }
+                })
 
             });
         </script>

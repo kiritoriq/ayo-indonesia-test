@@ -123,21 +123,21 @@ var KTLogin = function () {
         username: {
           validators: {
             notEmpty: {
-              message: 'Username tidak boleh kosong'
+              message: 'Username cannot be empty'
             }
           }
         },
         password: {
           validators: {
             notEmpty: {
-              message: 'Password tidak boleh kosong'
+              message: 'Password cannot be empty'
             }
           }
         },
         captcha: {
           validators: {
             notEmpty: {
-              message: 'Captcha tidak boleh kosong'
+              message: 'Captcha cannot be empty'
             }
           }
         },
@@ -197,7 +197,8 @@ var KTLogin = function () {
         } else {
           $("#btnLogin").prop("disabled", false);
           swal.fire({
-            text: "Ops, terjadi kesalahan, semua form harap diisi.",
+            title: "Register cannot be complete!",
+            text: "Please fill out all the forms.",
             icon: "error",
             buttonsStyling: false,
             confirmButtonText: "Tutup",

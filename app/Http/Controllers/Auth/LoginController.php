@@ -63,8 +63,8 @@ class LoginController extends Controller
         );
 
         $messages = array(
-            'username.required' => 'Username tidak boleh kosong.',
-            'password.required' => 'Password tidak boleh kosong.',
+            'username.required' => 'Username cannot be empty.',
+            'password.required' => 'Password cannot be empty.',
         );
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -75,17 +75,17 @@ class LoginController extends Controller
             'password' => $request->password,
         ];
 
-        $rules = ['captcha' => 'required|captcha'];
-        $cek_captcha = Validator::make($request->all(), $rules);
-        if ($cek_captcha->fails()) {
-            $response = array(
-                'status' => 'failed',
-                'type' => 'captcha',
-                'msg' => 'Kode Captcha Salah',
-            );
-        } else {
+        // $rules = ['captcha' => 'required|captcha'];
+        // $cek_captcha = Validator::make($request->all(), $rules);
+        // if ($cek_captcha->fails()) {
+        //     $response = array(
+        //         'status' => 'failed',
+        //         'type' => 'captcha',
+        //         'msg' => 'Kode Captcha Salah',
+        //     );
+        // } else {
             if ($validator->fails()) {
-                return response()->json(['status' => 'failed', 'errors' => $validator->errors(), 'msg' => 'Gagal Login. Cek kembali username dan password anda', 'item' => '']);
+                return response()->json(['status' => 'failed', 'errors' => $validator->errors(), 'msg' => 'Login failed. Please check your username and password', 'item' => '']);
             } else {
                 if (Auth::attempt($login)) {
                     $user = User::with(['roles.role'])->where('username', '=', Auth::user()->username)->first();
@@ -104,11 +104,11 @@ class LoginController extends Controller
                     ]);
                 } else {
                     $response = array(
-                        'status' => 'failed', 'errors' => 'login', 'msg' => 'Ops, username atau password ada yang salah', 'item' => '',
+                        'status' => 'failed', 'errors' => 'login', 'msg' => 'Oops, username or password is wrong', 'item' => '',
                     );
                 }
             }
-        }
+        // }
 
         return response()->json($response);
     }

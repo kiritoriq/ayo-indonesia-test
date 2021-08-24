@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
         {{-- Favicon --}}
-        <link rel="shortcut icon" href="{{ asset('media/logos/logo-jateng2.png') }}" />
+        <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/free/png-512/laravel-226015.png" />
 
         {{-- Fonts --}}
         {{ Metronic::getGoogleFontsInclude() }}
