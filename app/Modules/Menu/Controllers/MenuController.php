@@ -32,7 +32,8 @@ class MenuController extends Controller
      */
     public function create()
     {
-        return view('Menu::create');
+        $role = Roles::where('is_active', '=', 1)->get();
+        return view('Menu::create', ['roles' => $role]);
     }
 
     /**
