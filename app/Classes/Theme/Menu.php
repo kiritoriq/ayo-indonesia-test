@@ -24,10 +24,13 @@ class Menu
         if (isset($item['separator'])) {
             echo '<li class="menu-separator"><span></span></li>';
         } elseif (isset($item['section'])) {
-            echo '<li class="menu-section ' . ($rec === 0 ? 'menu-section--first' : '') . '">
-                <h4 class="menu-text">' . $item['section'] . '</h4>
-                <i class="menu-icon flaticon-more-v2"></i>
-            </li>';
+            $sectionPermission = strtolower(str_replace(" ", "", $item['title']));
+            if(self::hasSectionPermission('section-'.$sectionPermission.'-show')) {
+                echo '<li class="menu-section ' . ($rec === 0 ? 'menu-section--first' : '') . '">
+                    <h4 class="menu-text">' . $item['section'] . '</h4>
+                    <i class="menu-icon flaticon-more-v2"></i>
+                </li>';
+            }
         } elseif (isset($item['title'])) {
             $menuPermission = strtolower(str_replace(" ", "", $item['title']));
             if(self::hasPermission('menu-'.$menuPermission.'-show')) {
@@ -538,6 +541,7 @@ class Menu
                     ->where('parent_id', '=', 0)
                     ->where('is_active', '=', 1)
                     ->orderBy('order', 'asc')
+                    ->orderBy('id', 'asc')
                     ->get()->toArray();
         foreach($parent_menu as $key => $item) {
             $parent_menu[$key] = array();
@@ -572,6 +576,26 @@ class Menu
     }
 
     public static function hasPermission($permission)
+    {
+        // $roles = Session::get('role_id');
+        if(count(Session::get('role_id')) > 1) {
+            $roles = implode(',', Session::get('role_id'));
+        } else {
+            $roles = Session::get('role_id')[0];
+        }
+        $result = DB::table('permission as p')
+                ->join('role_permission as rp', 'p.id', '=', 'rp.permission_id')
+                ->whereRaw('rp.role_id IN ('.$roles.')')
+                ->where('p.permission_name', '=', $permission)
+                ->first();
+        if(!empty($result)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function hasSectionPermission($permission)
     {
         // $roles = Session::get('role_id');
         if(count(Session::get('role_id')) > 1) {

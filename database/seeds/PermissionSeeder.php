@@ -31,7 +31,6 @@ class PermissionSeeder extends Seeder
 
         foreach($permissions as $key => $row) {
             Permission::create([
-                'id' => $row[0],
                 'permission_name' => $row[1],
                 'description' => $row[2],
                 'is_active' => $row[3],

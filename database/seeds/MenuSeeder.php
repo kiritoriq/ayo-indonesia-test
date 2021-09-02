@@ -41,7 +41,6 @@ class MenuSeeder extends Seeder
 
         foreach ($menus as $key => $row) {
             Menu::create([
-                'id' => $row[0],
                 'parent_id' => $row[1],
                 'is_section' => $row[2],
                 'title' => $row[3],
