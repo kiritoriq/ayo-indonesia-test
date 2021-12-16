@@ -13,7 +13,8 @@ class UsersRolesSeeder extends Seeder
     public function run()
     {
         $users_roles = [
-            [1, 1]
+            [1, 1],
+            [1, 2]
         ];
 
         foreach ($users_roles as $key => $row) {

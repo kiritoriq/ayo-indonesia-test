@@ -44,17 +44,18 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         if($request->is_section == 'true') {
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
-                'bullet' => 'required',
+                // 'bullet' => 'required',
                 'is_active' => 'required',
                 'order' => 'required'
             ]);
         } else {
             $validator = Validator::make($request->all(), [
                 'title' => 'required',
-                'bullet' => 'required',
+                // 'bullet' => 'required',
                 'icon' => 'required',
                 'is_active' => 'required',
                 'order' => 'required'
@@ -74,7 +75,7 @@ class MenuController extends Controller
                 if($request->has('is_section') && $request->is_section == 'true') {
                     $insertMenu = Menu::create([
                         'title' => $request->title,
-                        'bullet' => $request->bullet,
+                        'bullet' => ($request->bullet!="")?$request->bullet:null,
                         'is_section' => 1,
                         'has_submenu' => 0,
                         'parent_id' => 0,
@@ -108,7 +109,7 @@ class MenuController extends Controller
                 } else {
                     $insertMenu = Menu::create([
                         'title' => $request->title,
-                        'bullet' => $request->bullet,
+                        'bullet' => ($request->bullet!="")?$request->bullet:null,
                         'is_section' => (($request->has('is_section'))?1:0),
                         'has_submenu' => (($request->has('is_root'))?1:0),
                         'parent_id' => (($request->has('parent_id'))?$request->parent_id:0),
@@ -152,10 +153,11 @@ class MenuController extends Controller
                     }
                 }
 
-                if($request->page != null or $request->page != '') {
-                    $moduleName = str_replace(" ", "", $request->title);
-                    Artisan::call('make:module '.$moduleName);
-                }
+                // Auto Create Module L5 Modular
+                // if($request->page != null or $request->page != '') {
+                //     $moduleName = str_replace(" ", "", $request->title);
+                //     Artisan::call('make:module '.$moduleName);
+                // }
                 DB::commit();
                 $response['status'] = 'success';
                 $response['msg'] = 'Data Berhasil Disimpan';

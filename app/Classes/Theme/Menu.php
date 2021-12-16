@@ -20,7 +20,6 @@ class Menu
     public static function renderVerMenu($item,  $parent = null, $rec = 0, $singleItem = false)
     {
         self::checkRecursion($rec);
-        // print_r($item);
         if (isset($item['separator'])) {
             echo '<li class="menu-separator"><span></span></li>';
         } elseif (isset($item['section'])) {
@@ -577,17 +576,21 @@ class Menu
 
     public static function hasPermission($permission)
     {
-        // $roles = Session::get('role_id');
-        if(count(Session::get('role_id')) > 1) {
-            $roles = implode(',', Session::get('role_id'));
-        } else {
-            $roles = Session::get('role_id')[0];
-        }
-        $result = DB::table('permission as p')
-                ->join('role_permission as rp', 'p.id', '=', 'rp.permission_id')
-                ->whereRaw('rp.role_id IN ('.$roles.')')
-                ->where('p.permission_name', '=', $permission)
-                ->first();
+        $roles = '['.implode(',', Session::get('role_id')).']';
+        
+        $result = DB::select("SELECT
+                            rp.role_id,
+                            rp.permission_id,
+                            p.permission_name
+                        FROM
+                            role_permission rp
+                        JOIN
+                            permission p ON p.id = rp.permission_id
+                        WHERE
+                            string_to_array(role_id::varchar, ','):: varchar[] && ARRAY ".$roles." ::varchar[]
+                        AND
+                            p.permission_name = '".$permission."' ");
+        
         if(!empty($result)) {
             return true;
         } else {
@@ -597,18 +600,91 @@ class Menu
 
     public static function hasSectionPermission($permission)
     {
-        // $roles = Session::get('role_id');
-        if(count(Session::get('role_id')) > 1) {
-            $roles = implode(',', Session::get('role_id'));
-        } else {
-            $roles = Session::get('role_id')[0];
-        }
-        $result = DB::table('permission as p')
-                ->join('role_permission as rp', 'p.id', '=', 'rp.permission_id')
-                ->whereRaw('rp.role_id IN ('.$roles.')')
-                ->where('p.permission_name', '=', $permission)
-                ->first();
+        $roles = '['.implode(',', Session::get('role_id')).']';
+        
+        $result = DB::select("SELECT
+                            rp.role_id,
+                            rp.permission_id,
+                            p.permission_name
+                        FROM
+                            role_permission rp
+                        JOIN
+                            permission p ON p.id = rp.permission_id
+                        WHERE
+                            string_to_array(role_id::varchar, ','):: varchar[] && ARRAY ".$roles." ::varchar[]
+                        AND
+                            p.permission_name = '".$permission."' ");
+        
         if(!empty($result)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function canAdd($moduleName)
+    {
+        $roles = '['.implode(',', Session::get('role_id')).']';
+        $permission = 'menu-'.$moduleName.'-create';
+        $result = DB::select("SELECT
+                    rp.role_id,
+                    rp.permission_id,
+                    p.permission_name
+                FROM
+                    role_permission rp
+                JOIN
+                    permission p ON p.id = rp.permission_id
+                WHERE
+                    string_to_array(role_id::varchar, ','):: varchar[] && ARRAY ".$roles." ::varchar[]
+                AND
+                    p.permission_name = '".$permission."' ");
+        if(count($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function canEdit($moduleName)
+    {
+        $roles = '['.implode(',', Session::get('role_id')).']';
+        $permission = 'menu-'.$moduleName.'-edit';
+        $result = DB::select("SELECT
+                    rp.role_id,
+                    rp.permission_id,
+                    p.permission_name
+                FROM
+                    role_permission rp
+                JOIN
+                    permission p ON p.id = rp.permission_id
+                WHERE
+                    string_to_array(role_id::varchar, ','):: varchar[] && ARRAY ".$roles." ::varchar[]
+                AND
+                    p.permission_name = '".$permission."' ");
+        if(count($result) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function canDelete($moduleName)
+    {
+        $roles = '['.implode(',', Session::get('role_id')).']';
+        $permission = 'menu-'.$moduleName.'-delete';
+        $result = DB::select("SELECT
+                    rp.role_id,
+                    rp.permission_id,
+                    p.permission_name
+                FROM
+                    role_permission rp
+                JOIN
+                    permission p ON p.id = rp.permission_id
+                WHERE
+                    string_to_array(role_id::varchar, ','):: varchar[] && ARRAY ".$roles." ::varchar[]
+                AND
+                    p.permission_name = '".$permission."' ");
+        if(count($result) > 0) {
             return true;
         } else {
             return false;

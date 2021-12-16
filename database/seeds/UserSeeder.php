@@ -14,6 +14,7 @@ class UserSeeder extends Seeder
     {
         $user = [
             [1, 'superadmin@local.com', 'superadmin', 'Super Administrator', '$2y$10$ao/iDtHHpF.aFrCkOZz5n.F52sjQqtGMVWfrkU2bFGxNhipH8tr.K', 1, '2021-06-25 21:34:26', '2021-06-25 21:34:26'],
+            [2, 'admin@local.com', 'admin', 'Administrator', '$2y$10$ao/iDtHHpF.aFrCkOZz5n.F52sjQqtGMVWfrkU2bFGxNhipH8tr.K', 1, '2021-06-25 21:34:26', '2021-06-25 21:34:26'],
         ];
 
         foreach($user as $key => $row) {

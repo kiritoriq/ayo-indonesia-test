@@ -38,7 +38,7 @@
                                         <span></span> Line
                                     </label>
                                     <label class="radio">
-                                        <input type="radio" name="bullet" value="null">
+                                        <input type="radio" name="bullet" value="">
                                         <span></span> <i style="font-size: 1rem; color: black">Null</i>
                                     </label>
                                 </div>

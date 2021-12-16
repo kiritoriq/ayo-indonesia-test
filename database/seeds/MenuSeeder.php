@@ -33,8 +33,8 @@ class MenuSeeder extends Seeder
          */
         $menus = [
             [1, 0, 0, 'Dashboard', 'dot', 'media/svg/icons/Design/Layers.svg', 0, 'dashboard', 0, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
-            [2, 0, 1, 'Admin', 'dot', 'media/svg/icons/Design/Layers.svg', 0, '', 0, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
-            [3, 0, 0, 'Settings', null, 'fa fa-cog', 1, null, 1, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [2, 0, 1, 'Admin', 'dot', 'media/svg/icons/Design/Layers.svg', 0, '', 3, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [3, 0, 0, 'Settings', null, 'fa fa-cog', 1, null, 4, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
             [4, 3, 0, 'User Management', null, 'media/svg/icons/General/User.svg', 0, 'user', 0, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
             [5, 3, 0, 'Menu', null, 'media/svg/icons/Text/Menu.svg', 0, 'menu', 1, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
         ];

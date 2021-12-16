@@ -19,7 +19,6 @@ class RoleSeeder extends Seeder
 
         foreach($roles as $key => $row) {
             Roles::create([
-                'id' => $row[0],
                 'roles' => $row[1],
                 'is_active' => $row[2],
                 'created_at' => $row[3],

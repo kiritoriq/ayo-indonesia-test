@@ -24,7 +24,8 @@
                     <div class="card-body">
                         <div class="form-group row fv-plugins-icon-container">
                             <div class="col-lg-8">
-                                <a href="{{ route('menu.create') }}" class="btn btn-primary btn-sm py-3" title="Tambah User">
+                                @if(Menu::canAdd(Request::path()))
+                                <a href="{{ route('menu.create') }}" class="btn btn-primary btn-sm py-3" title="Create Menu">
                                     <span class="svg-icon svg-icon-white"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-07-07-181510/theme/html/demo1/dist/../src/media/svg/icons/Navigation/Plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                             <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
@@ -32,6 +33,7 @@
                                         </g>
                                     </svg><!--end::Svg Icon--></span> Create
                                 </a>
+                                @endif
                             </div>
                             <div class="col-lg-4 text-right">
                                 <input type="text" id="search-title" name="title" class="form-control" placeholder="Title Search">
@@ -51,6 +53,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {{-- {{ Request::path() }} --}}
                                     @foreach($menus as $key => $menu)
                                         <tr>
                                             <td>{!! $key++ !!}</td>
@@ -60,13 +63,17 @@
                                             <td>{{ $menu->page }}</td>
                                             <td>{!! ($menu->is_active == 1)?'<span class="text-success">Active</span>':'<span class="text-danger">Inactive</span>' !!}</td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('menu.edit', $menu->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit Menu">
-                                                    <span class="la la-2x la-edit text-primary"></span>
-                                                </button>
+                                                @if(Menu::canEdit(Request::path()))
+                                                    <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('menu.edit', $menu->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit Menu">
+                                                        <span class="la la-2x la-edit text-primary"></span>
+                                                    </button>
+                                                @endif
                                                 @if($menu->parent_id != 0 && $menu->has_submenu != 1)
-                                                <a href="#" class="btn btn-sm btn-clean btn-icon delete-menu" data-menu="{{ $menu->id }}" data-toggle="tooltip" data-theme="dark" title="Delete Menu">
-                                                    <span class="la la-2x la-trash text-danger"></span>
-                                                </a>
+                                                    @if(Menu::canDelete(Request::path()))
+                                                    <a href="#" class="btn btn-sm btn-clean btn-icon delete-menu" data-menu="{{ $menu->id }}" data-toggle="tooltip" data-theme="dark" title="Delete Menu">
+                                                        <span class="la la-2x la-trash text-danger"></span>
+                                                    </a>
+                                                    @endif
                                                 @endif
                                             </td>
                                         </tr>

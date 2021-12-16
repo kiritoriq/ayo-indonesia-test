@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,24 +23,24 @@ Route::get('/', function () {
     }
 });
 
-Route::post('login/auth', 'Auth\LoginController@auth')->name('login.auth');
-Route::post('login/action', 'Auth\LoginController@login_action')->name('login.login_action');
-Route::get('/reload-captcha', 'Auth\LoginController@recaptcha')->name('login.recaptcha');
+Route::post('login/auth', [LoginController::class, 'auth'])->name('login.auth');
+Route::post('login/action', [LoginController::class, 'login_action'])->name('login.login_action');
+Route::get('/reload-captcha', [LoginController::class, 'recaptcha'])->name('login.recaptcha');
 
 
 // Demo routes
-Route::get('/datatables', 'PagesController@datatables');
-Route::get('/ktdatatables', 'PagesController@ktDatatables');
-Route::get('/select2', 'PagesController@select2');
-Route::get('/icons/custom-icons', 'PagesController@customIcons');
-Route::get('/icons/flaticon', 'PagesController@flaticon');
-Route::get('/icons/fontawesome', 'PagesController@fontawesome');
-Route::get('/icons/lineawesome', 'PagesController@lineawesome');
-Route::get('/icons/socicons', 'PagesController@socicons');
-Route::get('/icons/svg', 'PagesController@svg');
+// Route::get('/datatables', 'PagesController@datatables');
+// Route::get('/ktdatatables', 'PagesController@ktDatatables');
+// Route::get('/select2', 'PagesController@select2');
+// Route::get('/icons/custom-icons', 'PagesController@customIcons');
+// Route::get('/icons/flaticon', 'PagesController@flaticon');
+// Route::get('/icons/fontawesome', 'PagesController@fontawesome');
+// Route::get('/icons/lineawesome', 'PagesController@lineawesome');
+// Route::get('/icons/socicons', 'PagesController@socicons');
+// Route::get('/icons/svg', 'PagesController@svg');
 
 // Quick search dummy route to display html elements in search dropdown (header search)
-Route::get('/quick-search', 'PagesController@quickSearch')->name('quick-search');
+Route::get('/quick-search', [PagesController::class, 'quickSearch'])->name('quick-search');
 
 Auth::routes();
-Route::post('register', 'Auth\RegisterController@register')->name('register.action');
+// Route::post('register', 'Auth\RegisterController@register')->name('register.action');
