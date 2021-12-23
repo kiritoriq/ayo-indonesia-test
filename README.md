@@ -1,5 +1,4 @@
-# Metronic 7 + Laravel 7
-
+# Metronic 7 + Laravel 8
 ### Introduction
 
 ...
