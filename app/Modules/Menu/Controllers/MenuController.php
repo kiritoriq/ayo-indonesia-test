@@ -112,7 +112,7 @@ class MenuController extends Controller
                         'bullet' => ($request->bullet!="")?$request->bullet:null,
                         'is_section' => (($request->has('is_section'))?1:0),
                         'has_submenu' => (($request->has('is_root'))?1:0),
-                        'parent_id' => (($request->has('parent_id'))?$request->parent_id:0),
+                        'parent_id' => (($request->has('is_root'))?0:$request->parent_id),
                         'icon' => $request->icon,
                         'page' => $request->page,
                         'order' => $request->order,
