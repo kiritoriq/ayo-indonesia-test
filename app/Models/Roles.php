@@ -8,7 +8,7 @@ class Roles extends Model {
     protected $table = 'roles';
     protected $fillable = [
         'roles',
-        'isActive'
+        'is_active'
     ];
 
     public function users() {

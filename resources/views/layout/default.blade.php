@@ -73,18 +73,37 @@
                 "hideMethod": "fadeOut",
                 "tapToDismiss": false
             };
-            // var date = new Date();
-            // var dd = date.getDate();
-            // // var dd = String(date.getDate()).padStart(2, '0');
-            // var mm = String(date.getMonth() + 1).padStart(2, '0');
-            // var yyyy = date.getFullYear();
-            // var today = String(dd).padStart(2, '0') + '/' + mm + '/' + yyyy;
+            
+            function confirmAlert(title, text, icon, confirmButtonText, cancelButtonText) {
+                return Swal.fire({
+                    title: title,
+                    text: text,
+                    icon: icon,
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: confirmButtonText ?? 'Confirm',
+                    cancelButtonText: cancelButtonText ?? 'Cancel'
+                })
+            }
 
-            // var end_date = String(dd + 3).padStart(2, '0') + '/' + mm + '/' + yyyy;
-            // // console.log(end_date);
-            // if(today <= end_date) {
-            //     toastr.success("<strong>Informasi:</strong> Tampilan Dashboard telah berubah. Untuk melihat data informasi rumah sakit dan lain-lainnya sekarang melalui sub-menu Dashboard.");
-            // }
+            function timerAlert(title, text, icon, duration) {
+                return Swal.fire({
+                    title: title,
+                    text: text,
+                    icon: icon,
+                    timer: duration,
+                    showConfirmButton: false
+                })
+            }
+
+            function basicAlert(title, text, icon, confirmButtonText) {
+                return Swal.fire({
+                    title: title,
+                    text: text,
+                    icon: icon,
+                    confirmButtonText: confirmButtonText ?? 'Ok'
+                })
+            }
         </script>
 
     </body>

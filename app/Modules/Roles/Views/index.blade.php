@@ -1,5 +1,5 @@
 @extends('layout.default')
-@section('title', 'User')
+@section('title', 'Roles')
 @section('content')
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
@@ -9,30 +9,19 @@
                     <div class="card-header">
                         <div class="card-title">
                             <span class="card-icon">
-                                <span class="svg-icon svg-icon-primary svg-icon-3x"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-07-07-181510/theme/html/demo1/dist/../src/media/svg/icons/Communication/Group.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <polygon points="0 0 24 0 24 24 0 24"/>
-                                        <path d="M18,14 C16.3431458,14 15,12.6568542 15,11 C15,9.34314575 16.3431458,8 18,8 C19.6568542,8 21,9.34314575 21,11 C21,12.6568542 19.6568542,14 18,14 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
-                                        <path d="M17.6011961,15.0006174 C21.0077043,15.0378534 23.7891749,16.7601418 23.9984937,20.4 C24.0069246,20.5466056 23.9984937,21 23.4559499,21 L19.6,21 C19.6,18.7490654 18.8562935,16.6718327 17.6011961,15.0006174 Z M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero"/>
-                                    </g>
-                                </svg><!--end::Svg Icon--></span>
+                                <i class="fas fa-user-cog icon-2x mt-3 text-primary"></i>
                             </span>
-                            <h3 class="card-label mt-2 display-4">Data User
-                            <small>Kelola User</small></h3>
+                            <h3 class="card-label mt-2 display-4">Data Roles
+                            <small>Kelola Roles</small></h3>
                         </div>
                     </div>
                     <div class="card-body">
                         <p>Filter Data User</p>
                         <div class="form-group row fv-plugins-icon-container">
                             <div class="col-lg-6">
-                                <input type="text" id="cari-nama" name="nama" class="form-control" placeholder="Nama">
+                                <input type="text" id="cari-nama" name="nama" class="form-control" placeholder="Nama Roles">
                             </div>
                             <div class="col-lg-2">
-                                <select class="form-control" name="jenis" id="role">
-                                    <option value="">Semua Role</option>
-                                    <option value="1">Admin</option>
-                                    <option value="2">Call Center</option>
-                                </select>
                             </div>
                             <div class="col-lg-4 text-right">
                                 <div class="btn-group btn-group-xs" role="group" aria-label="Large button group">
@@ -55,51 +44,36 @@
                                             </g>
                                         </svg><!--end::Svg Icon--></span> Cari
                                     </button>
-                                    <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm py-3" title="Tambah User">
+                                    <button class="btn btn-primary btn-sm py-3" type="button" title="Tambah Roles" data-fancybox data-type="ajax" data-src="{{ route('roles.create') }}" data-toggle="tooltip" data-theme="dark">
                                         <span class="svg-icon svg-icon-white"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-07-07-181510/theme/html/demo1/dist/../src/media/svg/icons/Navigation/Plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                 <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
                                                 <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
                                             </g>
                                         </svg><!--end::Svg Icon--></span> Tambah
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover datatable-init" id="table-user">
+                            <table class="table table-bordered table-hover datatable-init" id="table-role">
                                 <thead>
                                     <tr>
-                                        <th width="5%">No</th>
-                                        <th>Username / Nama</th>
-                                        <th>Role</th>
+                                        <th width="5%" class="text-center">#</th>
+                                        <th>Nama Role</th>
                                         <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Username / Nama</th>
-                                        <th>Role</th>
-                                        <th class="text-center">Aksi</th>
-                                    </tr>
-                                </tfoot>
                                 <tbody>
-                                    @foreach($users as $key => $user)
+                                    @foreach($roles as $key => $role)
                                     <tr>
                                         <td class="text-center">{{ ++$key }}</td>
-                                        <td>{{ $user->username }}</td>
-                                        <td class="text-center align-middle">
-                                            @foreach($user->roles as $role) 
-                                                <span class="label label-lg font-weight-bold label-light-primary label-inline mr-3">{{ $role->role->roles }}</span>
-                                            @endforeach
-                                            {{-- <span class="label label-lg font-weight-bold label-light-primary label-inline">{{ $user->privilege }}</span> --}}
-                                        </td>
+                                        <td>{{ $role->roles }}</td>
                                         <td class="text-center" width="20%">
-                                            <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('users.edit', $user->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit User">
+                                            <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('roles.edit', $role->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit Role">
                                                 <span class="la la-2x la-edit text-primary"></span>
                                             </button>
-                                            <a href="#" class="btn btn-sm btn-clean btn-icon hapus-user" data-user="{{ $user->id }}" data-toggle="tooltip" data-theme="dark" title="Hapus User">
+                                            <a href="javascript:void(0)" class="btn btn-sm btn-clean btn-icon hapus-role" data-role="{{ $role->id }}" data-href="{{ route('roles.destroy', $role->id) }}" data-toggle="tooltip" data-theme="dark" title="Hapus Role">
                                                 <span class="la la-2x la-trash text-danger"></span>
                                             </a>
                                         </td>
@@ -126,12 +100,38 @@
     <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
 
     {{-- page scripts --}}
-    <script src="{{ asset('js/pages/User.js') }}" type="text/javascript"></script>
     <script>
         $(document).ready(function() {
-            $('#table-user .hapus-user').click(function(e) {
+            let table = $('.datatable-init').DataTable({
+              responsive: true,
+              dom: "<'row'<'col-sm-12'tr>>\n\t\t\t<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>",
+              lengthMenu: [5, 10, 25, 50],
+              pageLength: 10,
+              info: false,
+              ordering: false,
+              language: {
+                  'lengthMenu': 'Display _MENU_'
+              },
+              columnDefs: []
+            });
+
+          table.on('order.dt search.dt', function () {
+              table.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                  cell.innerHTML = i + 1;
+              });
+          }).draw();
+
+          $("#cari-nama").on("keyup", function (e) {
+              if ($(this).val() === "") {
+                table.search($("#cari-nama").val()).draw();
+              } else {
+                table.columns(1).search($("#cari-nama").val()).draw();
+              }
+          });
+
+            $('#table-role .hapus-role').click(function(e) {
                 e.preventDefault();
-                var id = $(this).attr('data-user')
+                var id = $(this).attr('data-role')
                 Swal.fire({
                     icon: 'warning',
                     title: 'Apakah anda yakin akan menghapus data ini?',
@@ -143,9 +143,8 @@
                 }).then((result) => {
                     if(result.value) {
                         $.ajax({
-                            url: '{{ route("users.delete") }}',
-                            type: 'POST',
-                            data: { id: id, _token: $('meta[name="csrf-token"]').attr('content') },
+                            url: $(this).attr('data-href'),
+                            type: 'DELETE',
                             success: function(response) {
                                 if(response.status == 'success') {
                                     Swal.fire({
@@ -155,7 +154,7 @@
                                         timer: 2000,
                                         showConfirmButton: false
                                     }).then(() => {
-                                        window.location.href = "{{ route('users.index') }}";
+                                        window.location.href = "{{ route('roles.index') }}";
                                     })
                                 } else {
                                     Swal.fire({
