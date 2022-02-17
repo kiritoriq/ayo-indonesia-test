@@ -2,6 +2,8 @@
 namespace App\Classes\Theme;
 
 use App\Classes\Theme\Metronic;
+use App\Models\Permission;
+use App\Models\RolePermission;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
@@ -576,20 +578,14 @@ class Menu
 
     public static function hasPermission($permission)
     {
-        $roles = '['.implode(',', Session::get('role_id')).']';
-        
-        $result = DB::select("SELECT
-                            rp.role_id,
-                            rp.permission_id,
-                            p.permission_name
-                        FROM
-                            role_permission rp
-                        JOIN
-                            permission p ON p.id = rp.permission_id
-                        WHERE
-                            string_to_array(role_id::varchar, ','):: varchar[] && ARRAY ".$roles." ::varchar[]
-                        AND
-                            p.permission_name = '".$permission."' ");
+        // $roles = '['.implode(',', Session::get('role_id')).']';
+        $roles = Session::get('role_id');
+        $result = RolePermission::with('permission', 'roles')
+                ->whereIn('role_id', $roles)
+                ->whereHas('permission', function($q) use ($permission) {
+                    $q->where('permission_name', $permission);
+                })
+                ->get();
         
         if(!empty($result)) {
             return true;
@@ -600,20 +596,15 @@ class Menu
 
     public static function hasSectionPermission($permission)
     {
-        $roles = '['.implode(',', Session::get('role_id')).']';
+        // $roles = '['.implode(',', Session::get('role_id')).']';
+        $roles = Session::get('role_id');
         
-        $result = DB::select("SELECT
-                            rp.role_id,
-                            rp.permission_id,
-                            p.permission_name
-                        FROM
-                            role_permission rp
-                        JOIN
-                            permission p ON p.id = rp.permission_id
-                        WHERE
-                            string_to_array(role_id::varchar, ','):: varchar[] && ARRAY ".$roles." ::varchar[]
-                        AND
-                            p.permission_name = '".$permission."' ");
+        $result = RolePermission::with('permission', 'roles')
+                ->whereIn('role_id', $roles)
+                ->whereHas('permission', function($q) use ($permission) {
+                    $q->where('permission_name', $permission);
+                })
+                ->get();
         
         if(!empty($result)) {
             return true;
@@ -624,20 +615,15 @@ class Menu
 
     public static function canAdd($moduleName)
     {
-        $roles = '['.implode(',', Session::get('role_id')).']';
+        // $roles = '['.implode(',', Session::get('role_id')).']';
+        $roles = Session::get('role_id');
         $permission = 'menu-'.$moduleName.'-create';
-        $result = DB::select("SELECT
-                    rp.role_id,
-                    rp.permission_id,
-                    p.permission_name
-                FROM
-                    role_permission rp
-                JOIN
-                    permission p ON p.id = rp.permission_id
-                WHERE
-                    string_to_array(role_id::varchar, ','):: varchar[] && ARRAY ".$roles." ::varchar[]
-                AND
-                    p.permission_name = '".$permission."' ");
+        $result = RolePermission::with('permission', 'roles')
+                ->whereIn('role_id', $roles)
+                ->whereHas('permission', function($q) use ($permission) {
+                    $q->where('permission_name', $permission);
+                })
+                ->get();
         if(count($result) > 0) {
             return true;
         } else {
@@ -647,20 +633,27 @@ class Menu
 
     public static function canEdit($moduleName)
     {
-        $roles = '['.implode(',', Session::get('role_id')).']';
+        // $roles = '['.implode(',', Session::get('role_id')).']';
+        $roles = Session::get('role_id');
         $permission = 'menu-'.$moduleName.'-edit';
-        $result = DB::select("SELECT
-                    rp.role_id,
-                    rp.permission_id,
-                    p.permission_name
-                FROM
-                    role_permission rp
-                JOIN
-                    permission p ON p.id = rp.permission_id
-                WHERE
-                    string_to_array(role_id::varchar, ','):: varchar[] && ARRAY ".$roles." ::varchar[]
-                AND
-                    p.permission_name = '".$permission."' ");
+        $result = RolePermission::with('permission', 'roles')
+                ->whereIn('role_id', $roles)
+                ->whereHas('permission', function($q) use ($permission) {
+                    $q->where('permission_name', $permission);
+                })
+                ->get();
+        // $result = DB::select("SELECT
+        //             rp.role_id,
+        //             rp.permission_id,
+        //             p.permission_name
+        //         FROM
+        //             role_permission rp
+        //         JOIN
+        //             permission p ON p.id = rp.permission_id
+        //         WHERE
+        //             string_to_array(role_id::varchar, ','):: varchar[] && ARRAY ".$roles." ::varchar[]
+        //         AND
+        //             p.permission_name = '".$permission."' ");
         if(count($result) > 0) {
             return true;
         } else {
@@ -670,20 +663,15 @@ class Menu
 
     public static function canDelete($moduleName)
     {
-        $roles = '['.implode(',', Session::get('role_id')).']';
+        // $roles = '['.implode(',', Session::get('role_id')).']';
+        $roles = Session::get('role_id');
         $permission = 'menu-'.$moduleName.'-delete';
-        $result = DB::select("SELECT
-                    rp.role_id,
-                    rp.permission_id,
-                    p.permission_name
-                FROM
-                    role_permission rp
-                JOIN
-                    permission p ON p.id = rp.permission_id
-                WHERE
-                    string_to_array(role_id::varchar, ','):: varchar[] && ARRAY ".$roles." ::varchar[]
-                AND
-                    p.permission_name = '".$permission."' ");
+        $result = RolePermission::with('permission', 'roles')
+                ->whereIn('role_id', $roles)
+                ->whereHas('permission', function($q) use ($permission) {
+                    $q->where('permission_name', $permission);
+                })
+                ->get();
         if(count($result) > 0) {
             return true;
         } else {

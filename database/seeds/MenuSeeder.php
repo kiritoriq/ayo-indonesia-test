@@ -37,6 +37,7 @@ class MenuSeeder extends Seeder
             [3, 0, 0, 'Settings', null, 'fa fa-cog', 1, null, 4, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
             [4, 3, 0, 'User Management', null, 'media/svg/icons/General/User.svg', 0, 'user', 0, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
             [5, 3, 0, 'Menu', null, 'media/svg/icons/Text/Menu.svg', 0, 'menu', 1, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [6, 3, 0, 'Roles', null, 'fas fa-user-cog', 0, 'roles', 2, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
         ];
 
         foreach ($menus as $key => $row) {

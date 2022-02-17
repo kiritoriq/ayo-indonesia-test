@@ -18,5 +18,17 @@ class RolePermission extends Model
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $guarded = [
+        'id'
+    ];
+
+    public function permission()
+    {
+        return $this->belongsTo(Permission::class, 'permission_id');
+    }
+
+    public function roles()
+    {
+        return $this->belongsTo(Roles::class, 'role_id');
+    }
 }
