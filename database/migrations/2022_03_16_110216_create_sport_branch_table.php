@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateSportBranchTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('sport_branch', function (Blueprint $table) {
             $table->id();
-            $table->integer('role_id');
-            $table->string('email')->unique();
-            $table->string('name');
-            $table->string('password');
-            $table->tinyInteger('is_active');
+            $table->string('sport_branch');
+            $table->enum('is_active', ['0', '1'])->default('1');
             $table->integer('created_by')->nullable();
             $table->integer('updated_by')->nullable();
             $table->timestamps();
@@ -34,6 +31,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('sport_branch');
     }
 }

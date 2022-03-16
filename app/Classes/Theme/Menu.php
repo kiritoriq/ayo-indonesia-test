@@ -469,8 +469,10 @@ class Menu
     // Check for active Vertical Menu item
     public static function isActiveVerMenuItem($item, $page, $rec = 0)
     {
-        if (@$item['redirect'] === true) {
-            return false;
+        if(isset($item['redirect'])) {
+            if (@$item['redirect'] === true) {
+                return false;
+            }
         }
 
         self::checkRecursion($rec);
@@ -581,7 +583,7 @@ class Menu
         // $roles = '['.implode(',', Session::get('role_id')).']';
         $roles = Session::get('role_id');
         $result = RolePermission::with('permission', 'roles')
-                ->whereIn('role_id', $roles)
+                ->where('role_id', $roles)
                 ->whereHas('permission', function($q) use ($permission) {
                     $q->where('permission_name', $permission);
                 })
@@ -600,7 +602,7 @@ class Menu
         $roles = Session::get('role_id');
         
         $result = RolePermission::with('permission', 'roles')
-                ->whereIn('role_id', $roles)
+                ->where('role_id', $roles)
                 ->whereHas('permission', function($q) use ($permission) {
                     $q->where('permission_name', $permission);
                 })
@@ -619,7 +621,7 @@ class Menu
         $roles = Session::get('role_id');
         $permission = 'menu-'.$moduleName.'-create';
         $result = RolePermission::with('permission', 'roles')
-                ->whereIn('role_id', $roles)
+                ->where('role_id', $roles)
                 ->whereHas('permission', function($q) use ($permission) {
                     $q->where('permission_name', $permission);
                 })
@@ -637,7 +639,7 @@ class Menu
         $roles = Session::get('role_id');
         $permission = 'menu-'.$moduleName.'-edit';
         $result = RolePermission::with('permission', 'roles')
-                ->whereIn('role_id', $roles)
+                ->where('role_id', $roles)
                 ->whereHas('permission', function($q) use ($permission) {
                     $q->where('permission_name', $permission);
                 })
@@ -667,7 +669,7 @@ class Menu
         $roles = Session::get('role_id');
         $permission = 'menu-'.$moduleName.'-delete';
         $result = RolePermission::with('permission', 'roles')
-                ->whereIn('role_id', $roles)
+                ->where('role_id', $roles)
                 ->whereHas('permission', function($q) use ($permission) {
                     $q->where('permission_name', $permission);
                 })

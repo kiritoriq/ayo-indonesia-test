@@ -13,14 +13,13 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
-    public $incrementing = false;
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'email', 'username', 'name', 'password', 'is_active', 'created_at', 'updated_at'
+    protected $guarded = [
+        'id'
     ];
 
     /**
@@ -29,55 +28,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'email_verified_at', 'deleted_at',
+        'password', 'deleted_at',
     ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    public function setEmailAttribute($email)
-    {
-        // Ensure valid email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new \Exception("Invalid email address.");
-        }
-
-        // Ensure email does not exist
-        elseif (static::whereEmail($email)->count() > 0) {
-            throw new \Exception("Email already exists.");
-        }
-
-        $this->attributes['email'] = $email;
-    }
-
-    protected function serialExists($serial)
-    {
-        return User::whereId($serial)->exists();
-    }
-
-    public function generateSerial()
-    {
-        $serial = Keygen::alphanum(6)->generate('strtoupper');
-        if ($this->serialExists($serial)) {
-            return $this->generateSerial();
-        }
-        return $serial;
-    }
-
-    public function genId()
-    {
-        $id = time() . '' . mt_rand();
-        return (integer) $id;
-    }
 
     public function roles() {
-        return $this->hasMany(UsersRoles::class, 'user_id', 'id');
+        return $this->belongsTo(Roles::class, 'role_id', 'id');
     }
-
 }

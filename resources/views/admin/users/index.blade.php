@@ -17,21 +17,22 @@
                                     </g>
                                 </svg><!--end::Svg Icon--></span>
                             </span>
-                            <h3 class="card-label mt-2 display-4">Data User
-                            <small>Kelola User</small></h3>
+                            <h3 class="card-label mt-2 display-4">User Data
+                            <small>Manage User Data</small></h3>
                         </div>
                     </div>
                     <div class="card-body">
                         <p>Filter Data User</p>
                         <div class="form-group row fv-plugins-icon-container">
                             <div class="col-lg-6">
-                                <input type="text" id="cari-nama" name="nama" class="form-control" placeholder="Nama">
+                                <input type="text" id="search" name="search" class="form-control" value="{{ Request()->search }}" placeholder="Search (Email or Name)">
                             </div>
                             <div class="col-lg-2">
-                                <select class="form-control" name="jenis" id="role">
-                                    <option value="">Semua Role</option>
-                                    <option value="1">Admin</option>
-                                    <option value="2">Call Center</option>
+                                <select class="form-control" name="role" id="role">
+                                    <option value="" {{ Request()->role == '' ? 'selected' : '' }}>All Roles</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role->id }}" {{ Request()->role == $role->id ? 'selected' : '' }}>{{ $role->roles }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-lg-4 text-right">
@@ -46,23 +47,31 @@
                                             </g>
                                         </svg><!--end::Svg Icon--></span>
                                     </button>
-                                    <button class="btn btn-success btn-sm py-3" type="button" data-toggle="tooltip" data-theme="dark" title="Filter Data">
+                                    
+                                    {{-- Search Button --}}
+                                    <button class="btn btn-success btn-sm py-3 search-btn" type="button" data-toggle="tooltip" data-theme="dark" title="Search">
                                         <span class="svg-icon svg-icon-white"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-07-07-181510/theme/html/demo1/dist/../src/media/svg/icons/General/Search.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                 <rect x="0" y="0" width="24" height="24"/>
                                                 <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"/>
                                                 <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero"/>
                                             </g>
-                                        </svg><!--end::Svg Icon--></span> Cari
+                                        </svg><!--end::Svg Icon-->
+                                        </span> Search
                                     </button>
-                                    <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm py-3" title="Tambah User">
+                                    {{-- ./end of Search Button --}}
+
+                                    {{-- Create Button --}}
+                                    <button data-fancybox data-type="ajax" data-src="{{ route('users.create') }}" class="btn btn-primary btn-sm py-3" title="Create User">
                                         <span class="svg-icon svg-icon-white"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-07-07-181510/theme/html/demo1/dist/../src/media/svg/icons/Navigation/Plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                 <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
                                                 <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
                                             </g>
-                                        </svg><!--end::Svg Icon--></span> Tambah
-                                    </a>
+                                        </svg><!--end::Svg Icon-->
+                                        </span> Create
+                                    </button>
+                                    {{-- ./end of Create Button --}}
                                 </div>
                             </div>
                         </div>
@@ -70,43 +79,48 @@
                             <table class="table table-bordered table-hover datatable-init" id="table-user">
                                 <thead>
                                     <tr>
-                                        <th width="5%">No</th>
-                                        <th>Username / Nama</th>
+                                        <th width="5%" style="text-align: center">#</th>
+                                        <th>Email</th>
+                                        <th>Name</th>
                                         <th>Role</th>
-                                        <th class="text-center">Aksi</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Username / Nama</th>
-                                        <th>Role</th>
-                                        <th class="text-center">Aksi</th>
-                                    </tr>
-                                </tfoot>
                                 <tbody>
-                                    @foreach($users as $key => $user)
-                                    <tr>
-                                        <td class="text-center">{{ ++$key }}</td>
-                                        <td>{{ $user->username }}</td>
-                                        <td class="text-center align-middle">
-                                            @foreach($user->roles as $role) 
-                                                <span class="label label-lg font-weight-bold label-light-primary label-inline mr-3">{{ $role->role->roles }}</span>
-                                            @endforeach
-                                            {{-- <span class="label label-lg font-weight-bold label-light-primary label-inline">{{ $user->privilege }}</span> --}}
-                                        </td>
-                                        <td class="text-center" width="20%">
-                                            <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('users.edit', $user->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit User">
-                                                <span class="la la-2x la-edit text-primary"></span>
-                                            </button>
-                                            <a href="#" class="btn btn-sm btn-clean btn-icon hapus-user" data-user="{{ $user->id }}" data-toggle="tooltip" data-theme="dark" title="Hapus User">
-                                                <span class="la la-2x la-trash text-danger"></span>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
+                                    @if(count($users) > 0)
+                                        @foreach($users as $key => $user)
+                                        <tr>
+                                            <td class="text-center">{{ (($key+1)+(( $users->currentPage() !=0 )?($users->currentPage()-1):$users->currentPage())*env('APP_PAGE_LIMIT')) }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $user->name }}</td>
+                                            <td class="text-center align-middle">
+                                                <span class="label label-lg font-weight-bold label-light-primary label-inline">{{ $user->roles->roles }}</span>
+                                            </td>
+                                            <td class="text-center" width="20%">
+                                                <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('users.edit', $user->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit User">
+                                                    <span class="la la-2x la-edit text-primary"></span>
+                                                </button>
+                                                <a href="#" class="btn btn-sm btn-clean btn-icon delete-user" data-user="{{ $user->id }}" data-href="{{ route('users.destroy', $user->id) }}" data-toggle="tooltip" data-theme="dark" title="Hapus User">
+                                                    <span class="la la-2x la-trash text-danger"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="5" style="text-align: center">
+                                                Data Cannot Be Found!
+                                            </td>
+                                        </tr>
+                                    @endif
+                                    
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div style="float: right">
+                            {!! $users->links() !!}
                         </div>
                     </div>
                 </div>
@@ -126,10 +140,27 @@
     <script src="{{ asset('plugins/custom/datatables/datatables.bundle.js') }}" type="text/javascript"></script>
 
     {{-- page scripts --}}
-    <script src="{{ asset('js/pages/User.js') }}" type="text/javascript"></script>
+    {{-- <script src="{{ asset('js/pages/User.js') }}" type="text/javascript"></script> --}}
     <script>
         $(document).ready(function() {
-            $('#table-user .hapus-user').click(function(e) {
+            $('.search-btn').click(function(e) {
+                e.preventDefault()
+                let search = $('#search').val()
+                let role = $('#role').val()
+                role = (role !== '' ? 'role=' + role : '')
+                search = (search !== '' ? 'search=' + search : '')
+                if(search !== '' && role !== '') {
+                    window.location.href = '{{ url("users") }}?' + search + '&' + role
+                } else if(search !== '') {
+                    window.location.href = '{{ url("users") }}?' + search
+                } else if(role !== '') {
+                    window.location.href = '{{ url("users") }}?' + role
+                } else {
+                    window.location.href = '{{ url("users") }}'
+                }
+            })
+
+            $('#table-user .delete-user').click(function(e) {
                 e.preventDefault();
                 var id = $(this).attr('data-user')
                 Swal.fire({
@@ -143,7 +174,7 @@
                 }).then((result) => {
                     if(result.value) {
                         $.ajax({
-                            url: '{{ route("users.delete") }}',
+                            url: $(this).attr('data-href'),
                             type: 'POST',
                             data: { id: id, _token: $('meta[name="csrf-token"]').attr('content') },
                             success: function(response) {

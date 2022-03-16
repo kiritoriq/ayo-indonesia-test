@@ -15,13 +15,13 @@
                 <div class="login-signin">
                     <div class="mb-20">
                         <h3>Laravel Metronic Framework</h3>
-                        <div class="text-muted font-weight-bold">Masukkan Username dan password untuk masuk ke aplikasi</div>
+                        <div class="text-muted font-weight-bold">Enter your Email and Password to sign in to the Application.</div>
                     </div>
-                    <form class="form" method="post" action="{{ route('login') }}" novalidate="novalidate" id="kt_login_signin_form">
+                    <form class="form" method="post" action="{{ route('login.login_action') }}" novalidate="novalidate" id="kt_login_signin_form">
                         @csrf
                         <div class="form-group mb-5">
-                            <input class="form-control h-auto form-control-solid py-4 px-8" type="text" id="username" placeholder="Username" name="username" autocomplete="off" />
-                            @error('username')
+                            <input class="form-control h-auto form-control-solid py-4 px-8" type="email" id="email" placeholder="email" name="email" autocomplete="off" />
+                            @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -80,9 +80,89 @@
 {{-- Scripts Section --}}
 @section('scripts')
     {{-- page scripts --}}
-    <script src="{{ asset('js/pages/custom/login/login-general.js?v=7.0.6') }}" type="text/javascript"></script>
     <script>
         $(document).ready(function() {
+            let validation = FormValidation.formValidation(KTUtil.getById('kt_login_signin_form'), {
+                fields: {
+                    email: {
+                    validators: {
+                        notEmpty: {
+                        message: 'Email cannot be empty'
+                        }
+                    }
+                    },
+                    password: {
+                    validators: {
+                        notEmpty: {
+                        message: 'Password cannot be empty'
+                        }
+                    }
+                    },
+                    captcha: {
+                    validators: {
+                        notEmpty: {
+                        message: 'Captcha cannot be empty'
+                        }
+                    }
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap()
+                }
+            });
+
+            $('#kt_login_signin_form').submit(function(e) {
+                e.preventDefault();
+                validation.validate()
+                    .then((status) => {
+                        console.log(status)
+                        $('#btnLogin').prop('disabled', true);
+                        if (status == 'Valid') {
+                            $.ajax({
+                                url: $(this).attr('action'),
+                                type: 'POST',
+                                dataType: "JSON",
+                                timeout: 10000,
+                                data: $(this).serialize(),
+                                success: function (data) {
+                                    if(data.status == "failed") {
+                                        toastr.error("Ops, " + data.msg);
+                                        _reloadCaptcha();
+                                        $("#btnLogin").prop("disabled", false);
+                                    } else {
+                                        Swal.fire({
+                                        toast: true,
+                                        position: 'top-end',
+                                        showConfirmButton: false,
+                                        icon: 'success',
+                                        title: 'Yay, ' + data.msg,
+                                        timer: 1500
+                                        }).then(() => {
+                                            window.location.href = '{{ url("dashboard") }}';
+                                        })
+                                    }
+                                }
+                            });
+
+                        } else {
+                            $("#btnLogin").prop("disabled", false);
+                            Swal.fire({
+                                title: "Cannot Sign in!",
+                                text: "Please fill out all the forms.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "Tutup",
+                                customClass: {
+                                confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function () {
+                                KTUtil.scrollTop();
+                            });
+                        }
+                    })
+            })
+
             $('.reloadCaptcha').click(function(e) {
                 e.preventDefault();
                 $.ajax({

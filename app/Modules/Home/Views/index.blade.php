@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <div class="row mb-5 mt-3">
+        {{-- <div class="row mb-5 mt-3">
             <div class="col-xl-12">
                 <div class="card card-custom gutter-b">
                     <div class="card-body">
@@ -34,7 +34,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 @endsection
@@ -53,62 +53,62 @@
     <script type="text/javascript">
 
         $(document).ready(function() {
-            var chart = echarts.init(document.getElementById('chart'));
-            var option = {
-                title: {
-                    text: 'Monthly Sales Chart'
-                },
-                tooltip: {},
-                dataZoom: [{
-                    type: 'inside'
-                }, {
-                    type: 'slider'
-                }],
-                xAxis: {
-                    data: [
-                        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-                    ]
-                },
-                yAxis: {
-                    name: 'Sales Ammount',
-                    nameLocation: 'middle',
-                    nameGap: 50
-                },
-                series: [
-                    {
-                        name: 'Monthly Sales Ammount',
-                        type: 'bar',
-                        data: [
-                            50,120,70,30,240,413,500,527,0,0,0,0
-                        ],
-                        itemStyle: {
-                            color: 'rgba(239, 129, 5, 1)'
-                        },
-                        label: {
-                            show: true,
-                            position: 'top'
-                        }
-                    }
-                ]
-            };
-            chart.setOption(option);
+            // var chart = echarts.init(document.getElementById('chart'));
+            // var option = {
+            //     title: {
+            //         text: 'Monthly Sales Chart'
+            //     },
+            //     tooltip: {},
+            //     dataZoom: [{
+            //         type: 'inside'
+            //     }, {
+            //         type: 'slider'
+            //     }],
+            //     xAxis: {
+            //         data: [
+            //             'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+            //         ]
+            //     },
+            //     yAxis: {
+            //         name: 'Sales Ammount',
+            //         nameLocation: 'middle',
+            //         nameGap: 50
+            //     },
+            //     series: [
+            //         {
+            //             name: 'Monthly Sales Ammount',
+            //             type: 'bar',
+            //             data: [
+            //                 50,120,70,30,240,413,500,527,0,0,0,0
+            //             ],
+            //             itemStyle: {
+            //                 color: 'rgba(239, 129, 5, 1)'
+            //             },
+            //             label: {
+            //                 show: true,
+            //                 position: 'top'
+            //             }
+            //         }
+            //     ]
+            // };
+            // chart.setOption(option);
 
-            chart.on('click', function(e) {
-                console.log(e.name);
-                $.ajax({
-                    url: '{{ route("load-page-aduan") }}',
-                    type: 'get',
-                    data: { _token: $('meta[name="csrf-token"]').attr('content'), tanggal: e.name },
-                    success: function(response) {
-                        $.fancybox.open([
-                            {
-                                src: response,
-                                type: 'html'
-                            }
-                        ])
-                    }
-                })
-            })
+            // chart.on('click', function(e) {
+            //     console.log(e.name);
+            //     $.ajax({
+            //         url: '{{ route("load-page-aduan") }}',
+            //         type: 'get',
+            //         data: { _token: $('meta[name="csrf-token"]').attr('content'), tanggal: e.name },
+            //         success: function(response) {
+            //             $.fancybox.open([
+            //                 {
+            //                     src: response,
+            //                     type: 'html'
+            //                 }
+            //             ])
+            //         }
+            //     })
+            // })
             
         })
     </script>

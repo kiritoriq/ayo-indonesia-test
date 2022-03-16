@@ -27,6 +27,12 @@ Route::post('login/auth', [LoginController::class, 'auth'])->name('login.auth');
 Route::post('login/action', [LoginController::class, 'login_action'])->name('login.login_action');
 Route::get('/reload-captcha', [LoginController::class, 'recaptcha'])->name('login.recaptcha');
 
+// Admin Routes
+require 'admin/users.php';
+require 'admin/organization.php';
+require 'admin/member.php';
+require 'admin/event.php';
+require 'admin/event_log.php';
 
 // Demo routes
 // Route::get('/datatables', 'PagesController@datatables');

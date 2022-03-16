@@ -197,11 +197,11 @@ var KTLogin = function () {
         } else {
           $("#btnLogin").prop("disabled", false);
           swal.fire({
-            title: "Register cannot be complete!",
+            title: "Login cannot be complete!",
             text: "Please fill out all the forms.",
             icon: "error",
             buttonsStyling: false,
-            confirmButtonText: "Tutup",
+            confirmButtonText: "Close",
             customClass: {
               confirmButton: "btn font-weight-bold btn-light-primary"
             }

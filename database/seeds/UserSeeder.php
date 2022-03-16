@@ -19,8 +19,8 @@ class UserSeeder extends Seeder
 
         foreach($user as $key => $row) {
             User::create([
+                'role_id' => $row[0],
                 'email' => $row[1],
-                'username' => $row[2],
                 'name' => $row[3],
                 'password' => $row[4],
                 'is_active' => $row[5],

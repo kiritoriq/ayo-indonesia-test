@@ -58,20 +58,20 @@ class LoginController extends Controller
         );
 
         $rules = array(
-            'username' => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string|min:6',
         );
 
         $messages = array(
-            'username.required' => 'Username cannot be empty.',
+            'email.required' => 'Email cannot be empty.',
             'password.required' => 'Password cannot be empty.',
         );
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
-        $loginType = filter_var($request->username, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $loginType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
         $login = [
-            $loginType => $request->username,
+            $loginType => $request->email,
             'password' => $request->password,
         ];
 
@@ -88,15 +88,10 @@ class LoginController extends Controller
                 return response()->json(['status' => 'failed', 'errors' => $validator->errors(), 'msg' => 'Login failed. Please check your username and password', 'item' => '']);
             } else {
                 if (Auth::attempt($login)) {
-                    $user = User::with(['roles.role'])->where('username', '=', Auth::user()->username)->first();
                     // dd($user->roles);
                     Session::put('name', Auth::user()->username);
                     Session::put('user_id', Auth::user()->id);
-                    $role_id = array();
-                    foreach($user->roles as $roles) {
-                        array_push($role_id, $roles->role_id);
-                    }
-                    Session::put('role_id', $role_id);
+                    Session::put('role_id', Auth::user()->role_id);
 
                     return response()->json([
                         'status' => 'success',
