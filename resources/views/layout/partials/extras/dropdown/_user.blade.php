@@ -7,7 +7,7 @@
         </div>
 
         {{-- Text --}}
-        <div class="text-dark m-0 flex-grow-1 mr-3 font-size-h5">{{ Auth::user()->username }}</div>
+        <div class="text-dark m-0 flex-grow-1 mr-3 font-size-h5">{{ Auth::user()->name }}</div>
     </div>
     <div class="separator separator-solid"></div>
 @else
@@ -19,12 +19,12 @@
                 @if(Session::get('foto') != "")
 					<img alt="Pic" src="{{ Session::get('foto') }}"/>
 				@else
-					<span class="symbol-label font-size-h5">{{ substr(Auth::user()->username,0,1) }}</span>
+					<span class="symbol-label font-size-h5">{{ substr(Auth::user()->name,0,1) }}</span>
 				@endif
             </div>
 
             {{-- Text --}}
-            <div class="m-0 flex-grow-1 mr-3 font-size-h5">{{ Auth::user()->username }}</div>
+            <div class="m-0 flex-grow-1 mr-3 font-size-h5">{{ Auth::user()->name }}</div>
         </div>
     </div>
 @endif

@@ -11,23 +11,18 @@
                             <span class="card-icon">
                                 <i class="fas fa-users fa-2x text-primary"></i>
                             </span>
-                            <h3 class="card-label mt-2 display-4">Master Organisasi
-                            <small>Manajemen Organisasi</small></h3>
+                            <h3 class="card-label mt-2 display-4">Master Anggota
+                            <small>Manajemen Anggota</small></h3>
                         </div>
                     </div>
                     <div class="card-body">
-                        <p>Filter Data Organisasi</p>
+                        <p>Filter Data Anggota</p>
                         <div class="form-group row fv-plugins-icon-container">
                             <div class="col-lg-6">
-                                <input type="text" id="search" name="search" class="form-control" value="{{ Request()->search }}" placeholder="Cari Nama Organisasi">
+                                <input type="text" id="search" name="search" class="form-control" value="{{ Request()->search }}" placeholder="Cari Nama Anggota">
                             </div>
                             <div class="col-lg-2">
-                                <select class="form-control" name="sports" id="sports">
-                                    <option value="" {{ Request()->sports == '' ? 'selected' : '' }}>Semua Cabang Olahraga</option>
-                                    @foreach ($sports as $sport)
-                                        <option value="{{ $sport->id }}" {{ Request()->sports == $sport->id ? 'selected' : '' }}>{{ $sport->sport_branch }}</option>
-                                    @endforeach
-                                </select>
+                                
                             </div>
                             <div class="col-lg-4 text-right">
                                 <div class="btn-group btn-group-xs" role="group" aria-label="Large button group">
@@ -56,14 +51,14 @@
                                     {{-- ./end of Search Button --}}
 
                                     {{-- Create Button --}}
-                                    <button data-fancybox data-type="ajax" data-src="{{ route('organization.create') }}" class="btn btn-primary btn-sm py-3" title="Buat Organisasi">
+                                    <button data-fancybox data-type="ajax" data-src="{{ route('member.create') }}" class="btn btn-primary btn-sm py-3" title="Buat Anggota">
                                         <span class="svg-icon svg-icon-white"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-07-07-181510/theme/html/demo1/dist/../src/media/svg/icons/Navigation/Plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                 <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
                                                 <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
                                             </g>
                                         </svg><!--end::Svg Icon-->
-                                        </span> Buat Organisasi
+                                        </span> Buat Anggota Baru
                                     </button>
                                     {{-- ./end of Create Button --}}
                                 </div>
@@ -74,33 +69,37 @@
                                 <thead>
                                     <tr>
                                         <th width="5%" style="text-align: center">#</th>
-                                        <th>Nama Organisasi</th>
-                                        <th>Logo</th>
-                                        <th>Tahun Berdiri</th>
-                                        <th>Alamat</th>
-                                        <th>Cabang Olahraga</th>
+                                        <th>Nama Anggota</th>
+                                        <th>Tinggi Badan</th>
+                                        <th>Berat Badan</th>
+                                        <th>Email</th>
+                                        <th>Nomor Ponsel</th>
+                                        <th>Posisi - Organisasi</th>
                                         <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(count($orgs) > 0)
-                                        @foreach($orgs as $key => $org)
+                                    @if(count($members) > 0)
+                                        @foreach($members as $key => $member)
                                         <tr>
-                                            <td class="text-center">{{ (($key+1)+(( $orgs->currentPage() !=0 )?($orgs->currentPage()-1):$orgs->currentPage())*env('APP_PAGE_LIMIT')) }}</td>
-                                            <td>{{ $org->org_name }}</td>
-                                            <td style="text-align: center">
-                                                <img src="{{ asset('media/upload/logo/' . $org->logo) }}" alt="logo {{ $org->org_name }}" style="max-width: 65px">
-                                            </td>
-                                            <td>{{ $org->since }}</td>
-                                            <td>{{ $org->address }}</td>
+                                            <td class="text-center">{{ (($key+1)+(( $members->currentPage() !=0 )?($members->currentPage()-1):$members->currentPage())*env('APP_PAGE_LIMIT')) }}</td>
+                                            <td>{{ $member->name }}</td>
+                                            <td>{{ $member->height }}</td>
+                                            <td>{{ $member->weight }}</td>
+                                            <td>{{ $member->email }}</td>
+                                            <td>{{ $member->phone_number }}</td>
                                             <td class="text-center align-middle">
-                                                <span class="label label-lg font-weight-bold label-light-primary label-inline">{{ $org->sports->sport_branch }}</span>
+                                                @if(count($member->org_member) > 0)
+                                                    @foreach ($member->org_member as $org_member)
+                                                        <span class="label label-lg font-weight-bold label-light-primary label-inline">{{ ($org_member->position_id == 1 ? 'Ketua' : ($org_member->position_id == 2 ? 'Staf' : 'Anggota')) }} - {{ $org_member->organization->org_name }}</span>
+                                                    @endforeach
+                                                @endif
                                             </td>
                                             <td class="text-center" width="20%">
-                                                <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('organization.edit', $org->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit Data">
+                                                <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('member.edit', $member->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit Data">
                                                     <span class="la la-2x la-edit text-primary"></span>
                                                 </button>
-                                                <a href="#" class="btn btn-sm btn-clean btn-icon delete-data" data-id="{{ $org->id }}" data-href="{{ route('organization.destroy', $org->id) }}" data-toggle="tooltip" data-theme="dark" title="Hapus Data">
+                                                <a href="#" class="btn btn-sm btn-clean btn-icon delete-data" data-id="{{ $member->id }}" data-href="{{ route('member.destroy', $member->id) }}" data-toggle="tooltip" data-theme="dark" title="Hapus Data">
                                                     <span class="la la-2x la-trash text-danger"></span>
                                                 </a>
                                             </td>
@@ -108,7 +107,7 @@
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td colspan="7" style="text-align: center">
+                                            <td colspan="8" style="text-align: center">
                                                 Data Tidak Ditemukan!
                                             </td>
                                         </tr>
@@ -120,7 +119,7 @@
                     </div>
                     <div class="card-footer">
                         <div style="float: right">
-                            {!! $orgs->links() !!}
+                            {!! $members->links() !!}
                         </div>
                     </div>
                 </div>
@@ -150,19 +149,19 @@
                 sports = (sports !== '' ? 'sports=' + sports : '')
                 search = (search !== '' ? 'search=' + search : '')
                 if(search !== '' && sports !== '') {
-                    window.location.href = '{{ url("organization") }}?' + search + '&' + sports
+                    window.location.href = '{{ url("member") }}?' + search + '&' + sports
                 } else if(search !== '') {
-                    window.location.href = '{{ url("organization") }}?' + search
+                    window.location.href = '{{ url("member") }}?' + search
                 } else if(sports !== '') {
-                    window.location.href = '{{ url("organization") }}?' + sports
+                    window.location.href = '{{ url("member") }}?' + sports
                 } else {
-                    window.location.href = '{{ url("organization") }}'
+                    window.location.href = '{{ url("member") }}'
                 }
             })
 
             $('.reset-form').click(function(e) {
                 e.preventDefault()
-                window.location.href = '{{ url("organization") }}'
+                window.location.href = '{{ url("member") }}'
             })
 
             $('#table-org .delete-data').click(function(e) {
@@ -189,7 +188,7 @@
                                         timer: 2000,
                                         showConfirmButton: false
                                     }).then(() => {
-                                        window.location.href = "{{ route('organization.index') }}";
+                                        window.location.href = "{{ route('member.index') }}";
                                     })
                                 } else {
                                     Swal.fire({

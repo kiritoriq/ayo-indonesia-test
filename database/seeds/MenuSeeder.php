@@ -33,11 +33,18 @@ class MenuSeeder extends Seeder
          */
         $menus = [
             [1, 0, 0, 'Dashboard', 'dot', 'media/svg/icons/Design/Layers.svg', 0, 'dashboard', 0, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
-            [2, 0, 1, 'Admin', 'dot', 'media/svg/icons/Design/Layers.svg', 0, '', 3, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
-            [3, 0, 0, 'Settings', null, 'fa fa-cog', 1, null, 4, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [2, 0, 1, 'Admin', 'dot', 'media/svg/icons/Design/Layers.svg', 0, '', 4, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [3, 0, 0, 'Settings', null, 'fa fa-cog', 1, null, 5, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
             [4, 3, 0, 'User Management', null, 'media/svg/icons/General/User.svg', 0, 'user', 0, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
             [5, 3, 0, 'Menu', null, 'media/svg/icons/Text/Menu.svg', 0, 'menu', 1, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
             [6, 3, 0, 'Roles', null, 'fas fa-user-cog', 0, 'roles', 2, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [7, 0, 1, 'Main Menu', null, 'default icon', 0, null, 1, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [8, 0, 0, 'Manajemen Organisasi', null, 'fas fa-users', 1, null, 2, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [9, 8, 0, 'Organisasi', null, 'fas fa-chevron-circle-right', 0, 'organization', 0, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [10, 8, 0, 'Manajemen Anggota', null, 'fas fa-chevron-circle-right', 0, 'member', 1, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [11, 0, 0, 'Manajemen Acara', null, 'far fa-calendar-alt', 1, null, 3, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [12, 11, 0, 'Master Acara', null, 'fas fa-chevron-circle-right', 0, 'event', 0, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
+            [13, 11, 0, 'Laporan Acara', null, 'fas fa-chevron-circle-right', 0, 'eventlog', 1, 1, '2021-08-10 14:19:26', '2021-08-10 14:19:26', null],
         ];
 
         foreach ($menus as $key => $row) {

@@ -9,24 +9,24 @@
                     <div class="card-header">
                         <div class="card-title">
                             <span class="card-icon">
-                                <i class="fas fa-users fa-2x text-primary"></i>
+                                <i class="fas fa-calendar-alt fa-2x text-primary"></i>
                             </span>
-                            <h3 class="card-label mt-2 display-4">Master Organisasi
-                            <small>Manajemen Organisasi</small></h3>
+                            <h3 class="card-label mt-2 display-4">Master Acara
+                            <small>Manajemen Acara</small></h3>
                         </div>
                     </div>
                     <div class="card-body">
-                        <p>Filter Data Organisasi</p>
+                        <p>Filter Data Acara</p>
                         <div class="form-group row fv-plugins-icon-container">
                             <div class="col-lg-6">
                                 <input type="text" id="search" name="search" class="form-control" value="{{ Request()->search }}" placeholder="Cari Nama Organisasi">
                             </div>
                             <div class="col-lg-2">
-                                <select class="form-control" name="sports" id="sports">
-                                    <option value="" {{ Request()->sports == '' ? 'selected' : '' }}>Semua Cabang Olahraga</option>
-                                    @foreach ($sports as $sport)
-                                        <option value="{{ $sport->id }}" {{ Request()->sports == $sport->id ? 'selected' : '' }}>{{ $sport->sport_branch }}</option>
-                                    @endforeach
+                                <select class="form-control" name="priority" id="priority">
+                                    <option value="" {{ Request()->priority == '' ? 'selected' : '' }}>Semua Prioritas Acara</option>
+                                    <option value="1" {{ Request()->priority == 1 ? 'selected' : '' }}>Wajib</option>
+                                    <option value="2" {{ Request()->priority == 2 ? 'selected' : '' }}>Tidak Wajib</option>
+                                    <option value="3" {{ Request()->priority == 3 ? 'selected' : '' }}>Hanya Staff</option>
                                 </select>
                             </div>
                             <div class="col-lg-4 text-right">
@@ -56,51 +56,49 @@
                                     {{-- ./end of Search Button --}}
 
                                     {{-- Create Button --}}
-                                    <button data-fancybox data-type="ajax" data-src="{{ route('organization.create') }}" class="btn btn-primary btn-sm py-3" title="Buat Organisasi">
+                                    <button data-fancybox data-type="ajax" data-src="{{ route('event.create') }}" class="btn btn-primary btn-sm py-3" title="Buat Acara">
                                         <span class="svg-icon svg-icon-white"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-07-07-181510/theme/html/demo1/dist/../src/media/svg/icons/Navigation/Plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                 <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
                                                 <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
                                             </g>
                                         </svg><!--end::Svg Icon-->
-                                        </span> Buat Organisasi
+                                        </span> Buat Acara
                                     </button>
                                     {{-- ./end of Create Button --}}
                                 </div>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover datatable-init" id="table-org">
+                            <table class="table table-bordered table-hover datatable-init" id="table-event">
                                 <thead>
                                     <tr>
                                         <th width="5%" style="text-align: center">#</th>
-                                        <th>Nama Organisasi</th>
-                                        <th>Logo</th>
-                                        <th>Tahun Berdiri</th>
-                                        <th>Alamat</th>
-                                        <th>Cabang Olahraga</th>
+                                        <th>Nama Acara</th>
+                                        <th>Tanggal, Waktu Acara</th>
+                                        <th>Deskripsi Acara</th>
+                                        <th>Prioritas</th>
                                         <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(count($orgs) > 0)
-                                        @foreach($orgs as $key => $org)
+                                    @if(count($events) > 0)
+                                        @foreach($events as $key => $event)
                                         <tr>
-                                            <td class="text-center">{{ (($key+1)+(( $orgs->currentPage() !=0 )?($orgs->currentPage()-1):$orgs->currentPage())*env('APP_PAGE_LIMIT')) }}</td>
-                                            <td>{{ $org->org_name }}</td>
-                                            <td style="text-align: center">
-                                                <img src="{{ asset('media/upload/logo/' . $org->logo) }}" alt="logo {{ $org->org_name }}" style="max-width: 65px">
+                                            <td class="text-center">{{ (($key+1)+(( $events->currentPage() !=0 )?($events->currentPage()-1):$events->currentPage())*env('APP_PAGE_LIMIT')) }}</td>
+                                            <td>{{ $event->event_name }}</td>
+                                            <td>
+                                                {{ Helper::formatTanggalPanjang($event->event_date) }} {{ date('H:i', strtotime($event->event_time)) }} WIB
                                             </td>
-                                            <td>{{ $org->since }}</td>
-                                            <td>{{ $org->address }}</td>
-                                            <td class="text-center align-middle">
-                                                <span class="label label-lg font-weight-bold label-light-primary label-inline">{{ $org->sports->sport_branch }}</span>
+                                            <td>
+                                                {{ substr($event->description, 0, 30) }}
                                             </td>
+                                            <td>{{ ($event->priority == 1 ? 'Wajib' : ($event->priority == 2 ? 'Tidak Wajib' : 'Hanya Staf')) }}</td>
                                             <td class="text-center" width="20%">
-                                                <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('organization.edit', $org->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit Data">
+                                                <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('event.edit', $event->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit Data">
                                                     <span class="la la-2x la-edit text-primary"></span>
                                                 </button>
-                                                <a href="#" class="btn btn-sm btn-clean btn-icon delete-data" data-id="{{ $org->id }}" data-href="{{ route('organization.destroy', $org->id) }}" data-toggle="tooltip" data-theme="dark" title="Hapus Data">
+                                                <a href="#" class="btn btn-sm btn-clean btn-icon delete-data" data-id="{{ $event->id }}" data-href="{{ route('event.destroy', $event->id) }}" data-toggle="tooltip" data-theme="dark" title="Hapus Data">
                                                     <span class="la la-2x la-trash text-danger"></span>
                                                 </a>
                                             </td>
@@ -120,7 +118,7 @@
                     </div>
                     <div class="card-footer">
                         <div style="float: right">
-                            {!! $orgs->links() !!}
+                            {!! $events->links() !!}
                         </div>
                     </div>
                 </div>
@@ -146,26 +144,26 @@
             $('.search-btn').click(function(e) {
                 e.preventDefault()
                 let search = $('#search').val()
-                let sports = $('#sports').val()
-                sports = (sports !== '' ? 'sports=' + sports : '')
+                let priority = $('#priority').val()
+                priority = (priority !== '' ? 'priority=' + priority : '')
                 search = (search !== '' ? 'search=' + search : '')
-                if(search !== '' && sports !== '') {
-                    window.location.href = '{{ url("organization") }}?' + search + '&' + sports
+                if(search !== '' && priority !== '') {
+                    window.location.href = '{{ url("event") }}?' + search + '&' + priority
                 } else if(search !== '') {
-                    window.location.href = '{{ url("organization") }}?' + search
-                } else if(sports !== '') {
-                    window.location.href = '{{ url("organization") }}?' + sports
+                    window.location.href = '{{ url("event") }}?' + search
+                } else if(priority !== '') {
+                    window.location.href = '{{ url("event") }}?' + priority
                 } else {
-                    window.location.href = '{{ url("organization") }}'
+                    window.location.href = '{{ url("event") }}'
                 }
             })
 
             $('.reset-form').click(function(e) {
                 e.preventDefault()
-                window.location.href = '{{ url("organization") }}'
+                window.location.href = '{{ url("event") }}'
             })
 
-            $('#table-org .delete-data').click(function(e) {
+            $('#table-event .delete-data').click(function(e) {
                 e.preventDefault();
                 Swal.fire({
                     icon: 'warning',
@@ -189,7 +187,7 @@
                                         timer: 2000,
                                         showConfirmButton: false
                                     }).then(() => {
-                                        window.location.href = "{{ route('organization.index') }}";
+                                        window.location.href = "{{ route('event.index') }}";
                                     })
                                 } else {
                                     Swal.fire({

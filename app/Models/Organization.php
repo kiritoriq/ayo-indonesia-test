@@ -11,8 +11,17 @@ class Organization extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'organization';
-    protected $primaryKey = 'org_id';
     protected $guarded = [
-        'org_id'
+        'id'
     ];
+
+    public function sports()
+    {
+        return $this->belongsTo(SportBranch::class, 'sport_branch_id');
+    }
+
+    public function org_member()
+    {
+        return $this->hasMany(OrgMember::class, 'org_id', 'id');
+    }
 }

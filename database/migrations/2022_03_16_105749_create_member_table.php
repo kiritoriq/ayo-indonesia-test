@@ -16,9 +16,8 @@ class CreateMemberTable extends Migration
         Schema::create('member', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
-            $table->double('height', 3, 1);
-            $table->double('weight', 3, 1);
-            $table->integer('position');
+            $table->integer('height');
+            $table->integer('weight');
             $table->string('email')->unique();
             $table->string('phone_number', 20)->unique();
             $table->integer('created_by')->nullable();

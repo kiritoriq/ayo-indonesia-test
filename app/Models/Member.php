@@ -15,8 +15,8 @@ class Member extends Model
         'id'
     ];
 
-    public function organization()
+    public function org_member()
     {
-        return $this->belongsTo(Organization::class, 'org_id');
+        return $this->hasMany(OrgMember::class, 'member_id', 'id');
     }
 }

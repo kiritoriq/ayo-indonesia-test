@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class SportBranch extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $table = 'sport_branch';
+    protected $guarded = [
+        'id'
+    ];
 }

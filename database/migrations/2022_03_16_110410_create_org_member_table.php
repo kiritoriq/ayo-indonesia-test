@@ -15,6 +15,7 @@ class CreateOrgMemberTable extends Migration
     {
         Schema::create('org_member', function (Blueprint $table) {
             $table->integer('org_id');
+            $table->integer('position_id');
             $table->integer('member_id');
         });
     }

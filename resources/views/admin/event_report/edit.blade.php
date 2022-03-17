@@ -7,35 +7,36 @@
     <div class="card card-custom gutter-b">
         <div class="card-header">
             <h3 class="card-title">
-                Buat Organisasi Baru
+                Buat Acara Baru
             </h3>
         </div>
-        <form class="form" id="org_form" method="POST" action="{{ route('organization.store') }}" enctype="multipart/form-data">
+        <form class="form" id="event_form" method="POST" action="{{ route('event.update', $event->id) }}">
+            @method('PUT')
             @csrf
             <div class="card-body">
                 <div class="form-group">
-                    <label>Nama Organisasi</label>
-                    <input type="text" name="org_name" class="form-control" placeholder="Masukkan Nama Organisasi">
+                    <label>Nama Acara</label>
+                    <input type="text" name="event_name" class="form-control" value="{{ $event->event_name }}" placeholder="Masukkan Nama Acara">
                 </div>
                 <div class="form-group">
-                    <label>Logo</label>
-                    <input type="file" accept="image/png, image/gif, image/jpeg" name="logo" class="form-control">
-                    <small>* Ukuran gambar maks 1 MB</small>
+                    <label>Tanggal Acara</label>
+                    <input type="text" name="event_date" class="form-control" value="{{ date('d-m-Y', strtotime($event->event_date)) }}" placeholder="Tanggal Acara">
                 </div>
                 <div class="form-group">
-                    <label>Tahun Berdiri</label>
-                    <input type="text" name="since" class="form-control" placeholder="Tahun Berdiri Organisasi">
+                    <label>Jam Acara</label>
+                    <input type="text" name="event_time" class="form-control" value="{{ date('H:i', strtotime($event->event_time)) }}" placeholder="Waktu Acara">
                 </div>
                 <div class="form-group">
-                    <label>Alamat Organisasi</label>
-                    <textarea name="address" class="form-control" id="address" rows="5"></textarea>
+                    <label>Deskripsi Acara</label>
+                    <textarea name="description" class="form-control" id="description" rows="5">{{ $event->description }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label>Cabang Olahraga</label>
-                    <select name="sport_branch" id="sport_branch" class="form-control">
-                        @foreach ($sports as $sport)
-                            <option value="{{ $sport->id }}">{{ $sport->sport_branch }}</option>
-                        @endforeach
+                    <label>Prioritas Acara</label>
+                    <select name="priority" id="priority" class="form-control">
+                        <option value=""  {{ ($event->priority == '' ? 'selected' : '') }}>Semua Prioritas Acara</option>
+                        <option value="1" {{ ($event->priority == 1 ? 'selected' : '') }}>Wajib</option>
+                        <option value="2" {{ ($event->priority == 2 ? 'selected' : '') }}>Tidak Wajib</option>
+                        <option value="3" {{ ($event->priority == 3 ? 'selected' : '') }}>Hanya Staff</option>
                     </select>
                 </div>
             </div>
@@ -49,7 +50,14 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#org_form').submit(function(e) {
+        $('input[name="event_date"]').datepicker({
+            format: 'dd-mm-yyyy'
+        })
+        $('input[name="event_time"]').timepicker({
+            showMeridian: false
+        })
+
+        $('#event_form').submit(function(e) {
             e.preventDefault()
             confirmAlert(
                 'Yakin simpan data ini?',
@@ -60,14 +68,10 @@
             )
             .then((result) => {
                 if(result.value) {
-                    let formData = new FormData(this)
                     $.ajax({
                         url: $(this).attr('action'),
                         type: $(this).attr('method'),
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
+                        data: $(this).serialize(),
                         success: function(response) {
                             if(response.status == 'success') {
                                 timerAlert(
@@ -77,7 +81,7 @@
                                     2000
                                 )
                                 .then(() => {
-                                    window.location.href = '{{ route("organization.index") }}'
+                                    window.location.href = '{{ route("event.index") }}'
                                 })
                             }
 
