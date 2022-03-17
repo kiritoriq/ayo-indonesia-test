@@ -1,3 +1,4 @@
+# Test Case Ayo Indonesia Based On:
 # Metronic 7 + Laravel 8
 ### Introduction
 
@@ -24,11 +25,7 @@ cp .env.example .env
 
 Configure your connection to env then
 ```bash
-php artisan migrate
-```
-
-```bash
-php artisan db:seed
+php artisan migrate --seed
 ```
 
 ```bash
@@ -49,7 +46,7 @@ php artisan serve
 
 And navigate to generated server link (http://127.0.0.1:8000)
 
-PS: user-pas = superadmin - polke123
+PS: email-pas = superadmin@local.com - polke123 or admin@local.com - polke123
 
 ### Copyright
 

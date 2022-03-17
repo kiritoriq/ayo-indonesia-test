@@ -77,7 +77,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="text" value="{{ Helper::getOrgById($org_member->org_id)->org_name }}" disabled>
+                                            <input type="text" class="form-control" value="{{ Helper::getOrgById($org_member->org_id)->org_name }}" disabled>
                                             <input type="hidden" name="org[{{ $index }}][org_id]" value="{{ $org_member->org_id }}">
                                         </td>
                                     </tr>

@@ -157,9 +157,13 @@ class MemberController extends Controller
         $member = $this->model->with('org_member')
             ->where('id', $id)
             ->first();
+        $sports_branch = SportBranch::where('is_active', '1')
+            ->orderBy('id', 'asc')
+            ->get();
 
         return view('admin.member.edit', [
-            'member' => $member
+            'member' => $member,
+            'sports' => $sports_branch
         ]);
     }
 
