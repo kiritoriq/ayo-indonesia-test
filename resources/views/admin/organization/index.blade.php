@@ -1,5 +1,5 @@
 @extends('layout.default')
-@section('title', 'User')
+@section('title', 'Organization')
 @section('content')
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">

@@ -1,5 +1,5 @@
 @extends('layout.default')
-@section('title', 'User')
+@section('title', 'Event Report')
 @section('content')
 <div class="d-flex flex-column-fluid">
     <div class="container-fluid">
@@ -11,23 +11,17 @@
                             <span class="card-icon">
                                 <i class="fas fa-calendar-alt fa-2x text-primary"></i>
                             </span>
-                            <h3 class="card-label mt-2 display-4">Master Acara
-                            <small>Manajemen Acara</small></h3>
+                            <h3 class="card-label mt-2 display-4">Report Acara
+                            <small>Manajemen Report Acara</small></h3>
                         </div>
                     </div>
                     <div class="card-body">
-                        <p>Filter Data Acara</p>
+                        <p>Filter Data Report Acara</p>
                         <div class="form-group row fv-plugins-icon-container">
                             <div class="col-lg-6">
                                 <input type="text" id="search" name="search" class="form-control" value="{{ Request()->search }}" placeholder="Cari Nama Organisasi">
                             </div>
                             <div class="col-lg-2">
-                                <select class="form-control" name="priority" id="priority">
-                                    <option value="" {{ Request()->priority == '' ? 'selected' : '' }}>Semua Prioritas Acara</option>
-                                    <option value="1" {{ Request()->priority == 1 ? 'selected' : '' }}>Wajib</option>
-                                    <option value="2" {{ Request()->priority == 2 ? 'selected' : '' }}>Tidak Wajib</option>
-                                    <option value="3" {{ Request()->priority == 3 ? 'selected' : '' }}>Hanya Staff</option>
-                                </select>
                             </div>
                             <div class="col-lg-4 text-right">
                                 <div class="btn-group btn-group-xs" role="group" aria-label="Large button group">
@@ -56,14 +50,14 @@
                                     {{-- ./end of Search Button --}}
 
                                     {{-- Create Button --}}
-                                    <button data-fancybox data-type="ajax" data-src="{{ route('event.create') }}" class="btn btn-primary btn-sm py-3" title="Buat Acara">
+                                    <button data-fancybox data-type="ajax" data-src="{{ route('eventlog.create') }}" class="btn btn-primary btn-sm py-3" title="Buat Acara">
                                         <span class="svg-icon svg-icon-white"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-07-07-181510/theme/html/demo1/dist/../src/media/svg/icons/Navigation/Plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                                 <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
                                                 <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
                                             </g>
                                         </svg><!--end::Svg Icon-->
-                                        </span> Buat Acara
+                                        </span> Buat Laporan Acara
                                     </button>
                                     {{-- ./end of Create Button --}}
                                 </div>
@@ -75,17 +69,18 @@
                                     <tr>
                                         <th width="5%" style="text-align: center">#</th>
                                         <th>Nama Acara</th>
-                                        <th>Tanggal, Waktu Acara</th>
-                                        <th>Deskripsi Acara</th>
-                                        <th>Prioritas</th>
+                                        <th>Resume Acara</th>
+                                        <th>Anggota Yang Datang</th>
+                                        <th>Kontribusi Anggota</th>
+                                        <th>Hasil Acara</th>
                                         <th class="text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if(count($events) > 0)
-                                        @foreach($events as $key => $event)
+                                    @if(count($event_logs) > 0)
+                                        @foreach($event_logs as $key => $event)
                                         <tr>
-                                            <td class="text-center">{{ (($key+1)+(( $events->currentPage() !=0 )?($events->currentPage()-1):$events->currentPage())*env('APP_PAGE_LIMIT')) }}</td>
+                                            <td class="text-center">{{ (($key+1)+(( $event_logs->currentPage() !=0 )?($event_logs->currentPage()-1):$event_logs->currentPage())*env('APP_PAGE_LIMIT')) }}</td>
                                             <td>{{ $event->event_name }}</td>
                                             <td>
                                                 {{ Helper::formatTanggalPanjang($event->event_date) }} {{ date('H:i', strtotime($event->event_time)) }} WIB
@@ -118,7 +113,7 @@
                     </div>
                     <div class="card-footer">
                         <div style="float: right">
-                            {!! $events->links() !!}
+                            {!! $event_logs->links() !!}
                         </div>
                     </div>
                 </div>
