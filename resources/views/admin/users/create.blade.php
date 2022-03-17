@@ -67,7 +67,7 @@
             $("#btnSubmit").prop("disabled", true);
             $.ajax({
                 url: $(this).attr("action"),
-                type: 'POST',
+                type: $(this).attr('method'),
                 dataType: "JSON",
                 timeout: 10000,
                 data: $(this).serialize(),

@@ -3,18 +3,34 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
 {
-    /**
+    public function __construct(Organization $org)
+    {
+        $this->model = $org;
+    }
+
+   /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View
      */
     public function index()
     {
-        //
+        $limit = (isset($request->per_page) ? $request->per_page : (env('APP_PAGE_LIMIT') !== null ? env('APP_PAGE_LIMIT') : 10) );
+        $orgs = $this->model
+            ->when(isset($request->search), function($q) use ($request) {
+                $q->where('org_name', 'like', '%'.$request->search.'%');
+            })
+            ->whereNull('deleted_at')
+            ->paginate($limit);
+
+        return view('admin.organization.index', [
+            'orgs' => $orgs
+        ]);
     }
 
     /**

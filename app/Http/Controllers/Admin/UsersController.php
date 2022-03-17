@@ -17,7 +17,6 @@ class UsersController extends Controller
         User $user
     )
     {
-        $this->middleware('auth');
         $this->model = $user;
     }
     /**
@@ -40,7 +39,7 @@ class UsersController extends Controller
             ->paginate($limit);
 
         $roles = Roles::where('is_active', 1)->orderBy('id', 'asc')->get();
-        
+
         return view('admin.users.index', [
             'users' => $user,
             'roles' => $roles
