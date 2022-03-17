@@ -39,6 +39,13 @@
                         <option value="3" {{ ($event->priority == 3 ? 'selected' : '') }}>Hanya Staff</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label>Status Acara</label>
+                    <select name="event_status" id="event_status" class="form-control">
+                        <option value="0"  {{ ($event->event_status == '0' ? 'selected' : '') }}>Belum Dimulai</option>
+                        <option value="1" {{ ($event->event_status == '1' ? 'selected' : '') }}>Selesai</option>
+                    </select>
+                </div>
             </div>
             <div class="card-footer text-right ">
                 <button type="submit" id="btnSubmit" class="btn btn-primary mr-2">Simpan</button>

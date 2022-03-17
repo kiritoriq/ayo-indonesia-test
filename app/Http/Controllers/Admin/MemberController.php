@@ -29,7 +29,7 @@ class MemberController extends Controller
     {
         $limit = (isset($request->per_page) ? $request->per_page : (env('APP_PAGE_LIMIT') !== null ? env('APP_PAGE_LIMIT') : 10) ); // SET DEFAULT PAGE LIMIT BY 10
         $members = $this->model->with('org_member.organization')
-            ->when(isset($request->search), function($q) use ($request) { // CHECKING WHILE REQUEST CONTAIN SEARCH, THEN SEARCH IT IN ORG_NAME FIELD
+            ->when(isset($request->search), function($q) use ($request) { // CHECKING WHILE REQUEST CONTAIN SEARCH, THEN SEARCH IT IN NAME AND EMAIL FIELD
                 $q->where('name', 'like', '%'.$request->search.'%');
                 $q->orWhere('email', 'like', '%'.$request->search.'%');
             })
@@ -50,7 +50,7 @@ class MemberController extends Controller
         $sports_branch = SportBranch::where('is_active', '1')
             ->orderBy('id', 'asc')
             ->get();
-        
+
         return view('admin.member.create', [
             'sports' => $sports_branch
         ]);
@@ -58,7 +58,7 @@ class MemberController extends Controller
 
     /**
      * Get the Organization data by Sports Id
-     * 
+     *
      */
     public function getOrgBySportId(Request $request)
     {

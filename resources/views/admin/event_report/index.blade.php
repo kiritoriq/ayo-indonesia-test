@@ -35,7 +35,7 @@
                                             </g>
                                         </svg><!--end::Svg Icon--></span>
                                     </button>
-                                    
+
                                     {{-- Search Button --}}
                                     <button class="btn btn-success btn-sm py-3 search-btn" type="button" data-toggle="tooltip" data-theme="dark" title="Cari">
                                         <span class="svg-icon svg-icon-white"><!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-07-07-181510/theme/html/demo1/dist/../src/media/svg/icons/General/Search.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -64,7 +64,7 @@
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered table-hover datatable-init" id="table-event">
+                            <table class="table table-bordered table-hover datatable-init" id="table-eventlog">
                                 <thead>
                                     <tr>
                                         <th width="5%" style="text-align: center">#</th>
@@ -81,19 +81,16 @@
                                         @foreach($event_logs as $key => $event)
                                         <tr>
                                             <td class="text-center">{{ (($key+1)+(( $event_logs->currentPage() !=0 )?($event_logs->currentPage()-1):$event_logs->currentPage())*env('APP_PAGE_LIMIT')) }}</td>
-                                            <td>{{ $event->event_name }}</td>
-                                            <td>
-                                                {{ Helper::formatTanggalPanjang($event->event_date) }} {{ date('H:i', strtotime($event->event_time)) }} WIB
-                                            </td>
-                                            <td>
-                                                {{ substr($event->description, 0, 30) }}
-                                            </td>
-                                            <td>{{ ($event->priority == 1 ? 'Wajib' : ($event->priority == 2 ? 'Tidak Wajib' : 'Hanya Staf')) }}</td>
+                                            <td>{{ $event->event->event_name }}</td>
+                                            <td>{{ $event->event_resume }}</td>
+                                            <td>{{ $event->member_attend }}</td>
+                                            <td>{{ $event->member_contribution }}</td>
+                                            <td>{{ $event->event_result }}</td>
                                             <td class="text-center" width="20%">
-                                                <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('event.edit', $event->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit Data">
+                                                <button type="button" class="btn btn-sm btn-clean btn-icon" data-fancybox data-type="ajax" data-src="{{ route('eventlog.edit', $event->id) }}" data-toggle="tooltip" data-theme="dark" title="Edit Data">
                                                     <span class="la la-2x la-edit text-primary"></span>
                                                 </button>
-                                                <a href="#" class="btn btn-sm btn-clean btn-icon delete-data" data-id="{{ $event->id }}" data-href="{{ route('event.destroy', $event->id) }}" data-toggle="tooltip" data-theme="dark" title="Hapus Data">
+                                                <a href="#" class="btn btn-sm btn-clean btn-icon delete-data" data-id="{{ $event->id }}" data-href="{{ route('eventlog.destroy', $event->id) }}" data-toggle="tooltip" data-theme="dark" title="Hapus Data">
                                                     <span class="la la-2x la-trash text-danger"></span>
                                                 </a>
                                             </td>
@@ -106,7 +103,7 @@
                                             </td>
                                         </tr>
                                     @endif
-                                    
+
                                 </tbody>
                             </table>
                         </div>
@@ -143,13 +140,13 @@
                 priority = (priority !== '' ? 'priority=' + priority : '')
                 search = (search !== '' ? 'search=' + search : '')
                 if(search !== '' && priority !== '') {
-                    window.location.href = '{{ url("event") }}?' + search + '&' + priority
+                    window.location.href = '{{ url("eventlog") }}?' + search + '&' + priority
                 } else if(search !== '') {
-                    window.location.href = '{{ url("event") }}?' + search
+                    window.location.href = '{{ url("eventlog") }}?' + search
                 } else if(priority !== '') {
-                    window.location.href = '{{ url("event") }}?' + priority
+                    window.location.href = '{{ url("eventlog") }}?' + priority
                 } else {
-                    window.location.href = '{{ url("event") }}'
+                    window.location.href = '{{ url("eventlog") }}'
                 }
             })
 
@@ -158,7 +155,7 @@
                 window.location.href = '{{ url("event") }}'
             })
 
-            $('#table-event .delete-data').click(function(e) {
+            $('#table-eventlog .delete-data').click(function(e) {
                 e.preventDefault();
                 Swal.fire({
                     icon: 'warning',
@@ -182,7 +179,7 @@
                                         timer: 2000,
                                         showConfirmButton: false
                                     }).then(() => {
-                                        window.location.href = "{{ route('event.index') }}";
+                                        window.location.href = "{{ route('eventlog.index') }}";
                                     })
                                 } else {
                                     Swal.fire({

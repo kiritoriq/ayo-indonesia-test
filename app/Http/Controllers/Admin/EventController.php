@@ -25,10 +25,10 @@ class EventController extends Controller
     {
         $limit = (isset($request->per_page) ? $request->per_page : (env('APP_PAGE_LIMIT') !== null ? env('APP_PAGE_LIMIT') : 10) ); // SET DEFAULT PAGE LIMIT BY 10
         $events = $this->model
-            ->when(isset($request->search), function($q) use ($request) { // CHECKING WHILE REQUEST CONTAIN SEARCH, THEN SEARCH IT IN ORG_NAME FIELD
+            ->when(isset($request->search), function($q) use ($request) { // CHECKING WHILE REQUEST CONTAIN SEARCH, THEN SEARCH IT IN EVENT_NAME FIELD
                 $q->where('event_name', 'like', '%'.$request->search.'%');
             })
-            ->when(isset($request->priority), function($q) use ($request) { // CHECKING WHILE REQUEST CONTAIN SPORTS, THEN GROUP BY SPORT BRANCH FIELD
+            ->when(isset($request->priority), function($q) use ($request) { // CHECKING WHILE REQUEST CONTAIN PRIORITY, THEN GROUP BY PRIORITY FIELD
                 $q->where('priority', $request->priority);
             })
             ->paginate($limit);
@@ -159,6 +159,7 @@ class EventController extends Controller
                 'event_time' => date('H:i:s', strtotime($request->event_time)),
                 'description' => $request->description,
                 'priority' => $request->priority,
+                'event_status' => $request->event_status,
                 'updated_by' => Session::get('user_id'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
